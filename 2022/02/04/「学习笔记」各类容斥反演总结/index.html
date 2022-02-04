@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"do-while-true.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="一点乱记，用于个人理解和巩固，亦可作为一篇学习顺序参考的文章。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="「学习笔记」各类容斥反演总结">
+<meta property="og:url" content="https://do-while-true.github.io/2022/02/04/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%90%84%E7%B1%BB%E5%AE%B9%E6%96%A5%E5%8F%8D%E6%BC%94%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="do_while_true&#39;s blog">
+<meta property="og:description" content="一点乱记，用于个人理解和巩固，亦可作为一篇学习顺序参考的文章。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-02-03T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-02-04T06:57:23.977Z">
+<meta property="article:author" content="do-while-true">
+<meta property="article:tag" content="容斥">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://do-while-true.github.io/2022/02/04/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%90%84%E7%B1%BB%E5%AE%B9%E6%96%A5%E5%8F%8D%E6%BC%94%E6%80%BB%E7%BB%93/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>「学习笔记」各类容斥反演总结 | do_while_true's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">do_while_true's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">喵呜</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">9</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">2</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">8</span></a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://do-while-true.github.io/2022/02/04/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%90%84%E7%B1%BB%E5%AE%B9%E6%96%A5%E5%8F%8D%E6%BC%94%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head.gif">
+      <meta itemprop="name" content="do-while-true">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="do_while_true's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          「学习笔记」各类容斥反演总结
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-02-04 00:00:00 / Modified: 14:57:23" itemprop="dateCreated datePublished" datetime="2022-02-04T00:00:00+08:00">2022-02-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>一点乱记，用于个人理解和巩固，亦可作为一篇学习顺序参考的文章。</p>
+<span id="more"></span>
+<p>如有笔误敬请指出。</p>
+<h1 id="二项式反演"><a href="#二项式反演" class="headerlink" title="二项式反演"></a>二项式反演</h1><h2 id="组合恒等式"><a href="#组合恒等式" class="headerlink" title="组合恒等式"></a>组合恒等式</h2><p>$\binom{n}{k}=\binom{n}{n-k},n\geq 0$，对称恒等式。</p>
+<p>$k\binom{n}{k}=n\binom{n-1}{k-1},k\neq 0$，吸收恒等式。</p>
+<p>$\binom{n}{m}\binom{m}{k}=\binom{n}{k}\binom{n-k}{m-k}$，组合意义易证。</p>
+<p>$\sum_k \binom{r}{m+k}\binom{s}{n-k}=\binom{r+s}{n+m}$，范德蒙德卷积，组合意义易证。</p>
+<p>求一列的前缀和：$\sum\limits_{i=m}^n\binom{i}{m}=\binom{n+1}{m+1}$，放在杨辉三角上易解释。</p>
+<p>更多的可以去看具体数学（？）</p>
+<h3 id="例题一-ARC016F-Card-Game-for-Three"><a href="#例题一-ARC016F-Card-Game-for-Three" class="headerlink" title="例题一 ARC016F Card Game for Three"></a>例题一 ARC016F Card Game for Three</h3><blockquote>
+<p>小 A，小 B，小 C 在玩游戏。他们每个人分别有 $n,m,k$ 张牌，每张牌上面写着 $a,b,c$ 三个字母中的其中一个，每个回合有一个人出牌，如果出牌为 $a$ 则小 A 下一个回合出牌，如果出牌为 $b$ 则小 B 下一个回合出牌，小 C 同理。若轮到某位玩家出牌时，其手中无牌，则该位玩家获胜。</p>
+<p>现在小 A 第一个出牌，对所有 $3^{n+m+k}$ 种手牌拥有的可能性计算小 A 获胜的方案数，对 $10^9+7$ 取模。</p>
+</blockquote>
+<p>如果按照打出的顺序排成一个长度为 $l$ 的序列，小 A 获胜当且仅当：$a$ 恰好出现了 $n$ 次且在最后一次出现，$b$ 出现了不多于 $m$ 次，$c$ 出现了不多于 $k$ 次。</p>
+<p>而这个长度为 $l$ 的序列对应了 $3^{n+m+k-l}$ 种手牌拥有的情况。</p>
+<p>$n$ 次是一定打的，枚举 $b,c$ 出现的次数 $t$，然后枚举 $b$ 出现的次数 $i$：</p>
+<script type="math/tex; mode=display">
+\sum_{t=0}^{m+k}\binom{n+t-1}{n-1}3^{m+k-t}\sum_{i=t-k}^{m}\binom{t}{i}</script><p>第一个组合数是除了最后一个是 $a$，确定 $(n-1)$ 个 $a$ 的位置，$3^{m+k-t}$ 是计算的对应了多少种手牌拥有情况，最后一个组合数为在 $t$ 个 $b,c$ 都可以填的空位挑出 $i$ 个填 $b$，注意这个组合数可能会出现 $i<0$ 或 $i>t$ 的情况，由于是考虑其实际的组合意义，所以当出现这样的情况时视为 $0$．</p>
+<p>最后一个实际上是组合数一行的区间和，<del>众所周知</del>这个的计算是困难的，由于这个区间和的形式比较特殊，考虑递推出这个东西：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+S(t)=&\sum_{i=t-k}^{m}\binom{t}{i}
+\\
+=&\sum_{i=t-k}^{m}\binom{t-1}{i-1}+\sum_{i=t-k}^{m}\binom{t-1}{i}
+\\
+=&\sum_{i=t-k-1}^{m-1}\binom{t-1}{i}+\sum_{i=t-k}^{m}\binom{t-1}{i}
+\\
+=&\ 2\cdot\sum_{i=t-k-1}^{m}\binom{t-1}{i}-\binom{t-1}{m}-\binom{t-1}{t-k-1}
+\\
+=&\ 2\cdot S(t-1)-\binom{t-1}{m}-\binom{t-1}{t-k-1}
+\end{aligned}</script><p>至此，可以在 $\mathcal{O}(n+\log \bmod)$ 的时间复杂度内解决问题。</p>
+<p> <a target="_blank" rel="noopener" href="https://atcoder.jp/contests/arc061/submissions/25189343">Code</a></p>
+<h2 id="二项式反演-1"><a href="#二项式反演-1" class="headerlink" title="二项式反演"></a>二项式反演</h2><p>形式一：</p>
+<script type="math/tex; mode=display">
+f(n)=\sum_{k=0}^n(-1)^k\binom{n}{k}g(k)\Longleftrightarrow g(n)=\sum_{k=0}^n(-1)^k\binom{n}{k}f(k)</script><p>形式二（至多和恰好的转换）：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+f(n)=\sum_{k=0}^{n} \binom{n}{k}g(k)\Longleftrightarrow g(n)=\sum_{k=0}^{n}(-1)^{n-k}\binom{n}{k} f(k)
+\end{aligned}</script><p>形式三（至少和恰好的转换）：</p>
+<script type="math/tex; mode=display">
+f(n)=\sum_{k=n}^m\binom{k}{n}g(k)\Longleftrightarrow g(n)=\sum_{k=n}^m (-1)^{k-n}\binom{k}{n}f(k)</script><p>三种形式的证明类似，可以看 <a target="_blank" rel="noopener" href="https://vfleaking.blog.uoj.ac/blog/87">vfk 的PPT</a>。</p>
+<p>要区分这里的“至多,至少”和前缀和/后缀和对应的“至多至少”，二项式反演的“至多,至少”实际上是钦点一部分满足条件，其余部分随意，而前缀和/后缀和的“至多,至少”是钦点一部分满足条件之后，其他的必须不满足，所以前者是带一个二项式系数的。</p>
+<h3 id="例题二-BZOJ-3622-已经没有什么好害怕的了"><a href="#例题二-BZOJ-3622-已经没有什么好害怕的了" class="headerlink" title="例题二 BZOJ 3622  已经没有什么好害怕的了"></a>例题二 BZOJ 3622  已经没有什么好害怕的了</h3><p>先各自排下序，$k\gets \frac{n+k}{2}$，其含义为要<strong>恰好</strong>有 $k$ 对满足 $a&gt;b$．</p>
+<p>直接 dp 不太好做，因为如果状态设置为”前 $i$ 个 $a$ 匹配了 $j$ 对 $a&gt;b$” 的话，我们要考虑 $b$ 中小于 $a_i$ 的个数 $l_i$ 中有多少个数被之前选过了，然而只从 $j$ 这一维无法体现这个信息。</p>
+<p>所以就钦点 $j$ 这一维表示 $l_i$ 中有多少个 $b$ 被之前的 $a$ 选过了，只让 $a$ 和小于它的 $b$ 匹配，最后剩下的就让他们乱排，乘一个阶乘。由于最后乱排还可能匹配出 $a<b$ 的，所以意义变为了**至少**有 $j$ 对匹配了 $a>b$．</p>
+<p>设 $F(k)$ 为至少有 $k$ 对 $a&gt;b$，$G(k)$ 为恰好有 $k$ 对 $a&gt;b$．</p>
+<p>$F$ 很容易 dp 出来，也就是：</p>
+<script type="math/tex; mode=display">
+F(k)=f_{n,k}(n-k)!</script><p>其中 $f_{i,j}=f_{i-1,j}+f_{i-1,j-1}(l_i-j+1)$，分别表示 $a_i$ 进行匹配而是鸽到最后再匹配 和 $a_i$ 找一个比它小的 $b$ 匹配。</p>
+<p>考虑到：</p>
+<script type="math/tex; mode=display">
+F(k)=\sum_{i=k}^n\binom{i}{k}G(i)</script><p>很好理解，就是考虑这个“至少”的方案实际上有多少对 $a&gt;b$．</p>
+<p>二项式反演得：</p>
+<script type="math/tex; mode=display">
+G(k)=\sum_{i=k}^n(-1)^{i-k}\binom{i}{k}F(i)</script><p>问题解决。</p>
+<h1 id="莫比乌斯反演"><a href="#莫比乌斯反演" class="headerlink" title="莫比乌斯反演"></a>莫比乌斯反演</h1><h2 id="欧拉函数"><a href="#欧拉函数" class="headerlink" title="欧拉函数"></a>欧拉函数</h2><ul>
+<li>$\varphi(p^k)=(p-1)p^{k-1}$</li>
+<li>$\varphi(n)=n\prod (1-\frac{1}{p})$，既可以从容斥原理角度考虑，也可以考虑直接利用 $\varphi$ 为积性函数拆开对于每个素因子单独计算。</li>
+</ul>
+<h2 id="常用狄利克雷卷积"><a href="#常用狄利克雷卷积" class="headerlink" title="常用狄利克雷卷积"></a>常用狄利克雷卷积</h2><ul>
+<li>$1*\mu=\epsilon \Rightarrow\sum\limits_{d|n}\mu(d)=[n==1]$，考虑 $\mu(d)\neq 0$ 的 $d$，按照素因子个数分类在一起，再枚举素因子个数然后二项式定理；</li>
+<li>$id=\varphi*1\Rightarrow id*\mu=\varphi$，考虑对 $\leq n$ 且与 $n$ 的 $\gcd$ 为 $d$ 的正整数个数为 $\varphi(\frac{n}{d})$；</li>
+</ul>
+<h2 id="狄利克雷前缀和-差分-后缀和-差分"><a href="#狄利克雷前缀和-差分-后缀和-差分" class="headerlink" title="狄利克雷前缀和/差分/后缀和/差分"></a>狄利克雷前缀和/差分/后缀和/差分</h2><p>感性理解一下，实际上问题就是关于质因数分解后指数的高维前缀和。</p>
+<p>前缀和实际上是卷了一个 $1$，这个很好理解，因为式子一模一样。</p>
+<p>前缀差分实际上是卷了一个 $\mu$，因为 $b=a<em>\mu \Longleftrightarrow a=b</em>1$，而已知 $a$ 求 $b$ 实际上就是狄利克雷前缀差分。</p>
+<h3 id="狄利克雷前缀和"><a href="#狄利克雷前缀和" class="headerlink" title="狄利克雷前缀和"></a>狄利克雷前缀和</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= pct; ++i)</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j*p[i] &lt;= n; ++j)</span><br><span class="line">		a[j*p[i]] += a[j];</span><br></pre></td></tr></table></figure>
+<h3 id="狄利克雷前缀差分"><a href="#狄利克雷前缀差分" class="headerlink" title="狄利克雷前缀差分"></a>狄利克雷前缀差分</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= pct; ++i)</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> j = n/p[i]; j; --j)</span><br><span class="line">		a[j*p[i]] -= a[j];</span><br></pre></td></tr></table></figure>
+<h3 id="狄利克雷后缀和"><a href="#狄利克雷后缀和" class="headerlink" title="狄利克雷后缀和"></a>狄利克雷后缀和</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= pct; ++i)</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> j = n/p[i]; j; --j)</span><br><span class="line">		a[j] += a[j*p[i]];</span><br></pre></td></tr></table></figure>
+<h3 id="狄利克雷后缀差分"><a href="#狄利克雷后缀差分" class="headerlink" title="狄利克雷后缀差分"></a>狄利克雷后缀差分</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(re <span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= pct; ++i)</span><br><span class="line">	<span class="keyword">for</span>(re <span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n/p[i]; ++j)</span><br><span class="line">		a[j] -= a[j*p[i]];</span><br></pre></td></tr></table></figure>
+<p>更一般的，如果对于任意的积性函数，也有类似的方法。</p>
+<p>设数论函数为 $F$，积性函数为 $G$，欲求 $F*G$．</p>
+<p>先把 $F$ 拆分成若干之和质数 $p$ 有关的积性函数 $F_p$ 的卷积，即：</p>
+<script type="math/tex; mode=display">
+F_p(n)\left\{\begin{matrix}
+F(n)&n=p^k
+\\ 
+0&\mathrm{otherwise} 
+\end{matrix}\right.</script><p>显然有 $F=\prod F_p$．</p>
+<p>把这些 $F_p$ 分别卷到 $G$ 上去即可求得答案。</p>
+<script type="math/tex; mode=display">
+(G*F_p)(n)=\sum_{p^k|n}G(\frac{n}{p^k})F_p(p^k)</script><p>对于每个 $p^k$ 枚举其倍数然后计算，预先存下需要用到的 $G$ 即可。</p>
+<p>这样复杂度为 $\mathcal{O}(\sum n/p^k)$，等比数列求和可得 $\mathcal{O}(\sum n/p^k)=\mathcal{O}(n\sum \frac{1}{p-1})=\mathcal{O}(n\log \log n)$．</p>
+<h3 id="例子-gcd-卷积"><a href="#例子-gcd-卷积" class="headerlink" title="例子 $\gcd$ 卷积"></a>例子 $\gcd$ 卷积</h3><p>求 $c_n=\sum\limits_{(i,j)=n}a_ib_j$ ．</p>
+<p>莫比乌斯反演易做到 $\mathcal{O}(n\log n)$（？）这里可以用狄利克雷前缀和做到 $\mathcal{O}(n\log \log n)$．</p>
+<p>先求 $c$ 的高维后缀和 ${c’}_{n}=\sum\limits_{n|(i,j)}a_ib_j$ 再狄利克雷后缀差分即可求得答案。</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+{c'}_n&=\sum_{n|(i,j)}a_ib_j
+\\
+&=\sum_{n|i,n|j}a_ib_j
+\\
+&=\sum_{n|i}a_i\sum_{n|j}b_j
+\\
+&={a'}_n{b'}_n
+\end{aligned}</script><p>所以，将 $a,b$ 作高维后缀和（狄利克雷后缀和），点乘后作高维后缀差分即可得到 $c$．</p>
+<h2 id="莫比乌斯反演-1"><a href="#莫比乌斯反演-1" class="headerlink" title="莫比乌斯反演"></a>莫比乌斯反演</h2><p>设 $g(n)$ 为数论函数。</p>
+<p>如果 $f$ 为 $g$ 的狄利克雷前缀和即：</p>
+<script type="math/tex; mode=display">
+f(n)=\sum_{d|n}g(d)\tag{1}</script><p>则有：</p>
+<script type="math/tex; mode=display">
+g(n)=\sum_{d|n}\mu(\frac{n}{d})f(d)\tag{2}</script><script type="math/tex; mode=display">
+g=f*\mu</script><p>证明： $f=g<em>1 \Rightarrow f</em>\mu=(g<em>1)</em>\mu=g<em>(1</em>\mu)=g*\epsilon=g$．</p>
+<p>另一种形式：</p>
+<p>如果有：</p>
+<script type="math/tex; mode=display">
+f(n)=\sum_{n|d}g(d)</script><p>则有：</p>
+<script type="math/tex; mode=display">
+g(n)=\sum_{n|d}\mu(\frac{d}{n})f(d)</script><p>这里的 $d$ 通常是小于等于一个界限，也就是题目中所给定的 “$n$”。</p>
+<p>特别地，当 $n=1$ 时，$g(1)=\sum \mu(d)f(d)$，也可以理解为容斥系数为 $\mu$ 的容斥。</p>
+<p>证明可以看 oi-wiki（</p>
+<p>设 $F(n)=\exp(f(n)),G(n)=\exp(g(n))$ 对 $(1)$ 式 $\exp$，得到：</p>
+<script type="math/tex; mode=display">
+F(n)=\prod_{d|n}G(d)</script><p>对 $(2)$ 式 $\exp$，得到：</p>
+<script type="math/tex; mode=display">
+G(n)=\prod_{d|n}F(d)^{\mu(\frac{n}{d})}</script><p>也就是：</p>
+<script type="math/tex; mode=display">
+f(n)=\prod_{d|n}g(d)\Longleftrightarrow g(n)=\prod_{d|n}f(d)^{\mu(\frac{n}{d})}</script><p>知道应该怎么推，避免遇到有 $\prod$ 的数论题直接抓瞎（</p>
+<h3 id="例题一"><a href="#例题一" class="headerlink" title="例题一"></a>例题一</h3><blockquote>
+<p>求长度为 $n$ 且仅包含小写英文字母且循环节长度恰为 $n$ 的字符串的个数。</p>
+<p>$n\leq 10^9$．</p>
+</blockquote>
+<p>设 $f(n)$ 为长度为 $n$ 的字符串个数，$g(n)$ 为长度为 $n$ 且最小循环节长度为 $n$ 的字符串个数。</p>
+<p>$f(n)$ 是易求的，其为 $26^n$．我们可以枚举最小循环节，用 $g$ 来算出 $f$：</p>
+<script type="math/tex; mode=display">
+f(n)=\sum_{d|n}g(d)</script><p>莫比乌斯反演得：</p>
+<script type="math/tex; mode=display">
+g(n)=\sum_{d|n}\mu(\frac{n}{d})f(d)</script><p>轻易解决。</p>
+<h3 id="例题二-Codeforces-1559E-Mocha-and-Stars"><a href="#例题二-Codeforces-1559E-Mocha-and-Stars" class="headerlink" title="例题二 Codeforces 1559E Mocha and Stars"></a>例题二 Codeforces 1559E Mocha and Stars</h3><p>对第三个条件进行莫比乌斯反演，得：</p>
+<script type="math/tex; mode=display">
+ans=\sum_{d=1}^m \mu(d)f(d)</script><p>其中 $f(d)$ 为 $\gcd$ 为 $d$ 的倍数时的答案。</p>
+<p>对于 $f(d)$，每次可以做一下背包，用前缀和优化易做到 $\mathcal{O}(\frac{nm}{d})$，总时间复杂度就是 $\mathcal{O}(nm\log nm)$，注意到 $\mu(d)$ 为 $0$ 的时候不用跑背包，所以这个远远跑不满。</p>
+<p><a target="_blank" rel="noopener" href="https://codeforces.com/contest/1559/submission/126155907">Code</a></p>
+<h1 id="斯特林反演"><a href="#斯特林反演" class="headerlink" title="斯特林反演"></a>斯特林反演</h1><h2 id="第一类斯特林数"><a href="#第一类斯特林数" class="headerlink" title="第一类斯特林数"></a>第一类斯特林数</h2><p>$s(n,k)$ 为把 $n$ 个数分成 $k$ 个无区分轮换的方案数，也可以表示为 $\begin{bmatrix}n\\k\end{bmatrix}$。</p>
+<p>特别地：</p>
+<ul>
+<li>$\begin{bmatrix}n\\0\end{bmatrix}=0,n&gt;0$；</li>
+<li>$\begin{bmatrix}0\\0\end{bmatrix}=1$：我们假装只有一种方法可以把一个空集钦点成零个非空轮换。</li>
+</ul>
+<p>第一类斯特林数有递推式：</p>
+<script type="math/tex; mode=display">
+\begin{bmatrix}n\\k\end{bmatrix}=\begin{bmatrix}n-1\\k-1\end{bmatrix}+(n-1)\begin{bmatrix}n-1\\k\end{bmatrix}</script><p>考虑组合意义，$n$ 是单独一个轮换还是和前面分在一起。</p>
+<script type="math/tex; mode=display">
+\begin{bmatrix}n\\k\end{bmatrix}=\sum_{i=1}^n \binom{n-1}{i-1}(i-1)!\begin{bmatrix}n-i\\k-1\end{bmatrix}</script><p>考虑组合意义，$1$ 所在的轮换的大小是 $i$．</p>
+<h3 id="第一类斯特林数-·-行"><a href="#第一类斯特林数-·-行" class="headerlink" title="第一类斯特林数 · 行"></a>第一类斯特林数 · 行</h3><p>设 $G_n(x)=\sum_i \begin{bmatrix}n\\i\end{bmatrix}x^i$，则根据递推式有 $G_n=xG_{n-1}+(n-1)G_{n-1}=(x+n-1)G+{n-1}$，展开之后得到：</p>
+<script type="math/tex; mode=display">
+G_n(x)=\prod_{i=0}^{n-1}(x+i)=x^{\overline n}</script><p>显然可以分治 + FFT 在 $\mathcal{O}(n\log^2 n)$ 来求得 $G_n$，也可以倍增 + FFT：</p>
+<p>假设现在已经求出了 $G_n(x)=\sum a_ix^i$，想要求得 $G_{2n}(x)$：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+G_{2n}(x)=G_n(x)\times G_n(x+n)
+\\
+G_n(x+n)&=\sum_i a_i(x+n)^i
+\\
+&=\sum_i a_i\sum_{j} \binom{i}{j}x^jn^{i-j}
+\\
+&=\sum_i{x^i}\frac{1}{i!}\sum_{j} a_jj!\frac{n^{j-i}}{(j-i)!}
+\end{aligned}</script><p>这样两次卷积就能求出 $G_{2n}(x)$，复杂度为 $T(n)=T(n/2)+\mathcal{O}(n\log n)=\mathcal{O}(n\log n)$．</p>
+<p>多项式技巧不精，第一类斯特林数 · 列待填坑。</p>
+<h2 id="第二类斯特林数"><a href="#第二类斯特林数" class="headerlink" title="第二类斯特林数"></a>第二类斯特林数</h2><p>$S(n,k)$ 为把 $n$ 个数分成 $k$ 个无区分集合的方案数，也可以表示为 $\begin{Bmatrix}n\\k\end{Bmatrix}$．</p>
+<p>特别地：</p>
+<ul>
+<li>$\begin{Bmatrix}n\\0\end{Bmatrix}=0,n&gt;0$；</li>
+<li>$\begin{Bmatrix}0\\0\end{Bmatrix}=1$：我们假装只有一种方法可以把一个空集钦点成零个非空部分。</li>
+</ul>
+<p>第二类斯特林数有递推式：</p>
+<script type="math/tex; mode=display">
+\begin{Bmatrix}n\\k\end{Bmatrix}=\begin{Bmatrix}n-1\\k-1\end{Bmatrix}+k\begin{Bmatrix}n-1\\k\end{Bmatrix}</script><p>考虑组合意义即可，$n$ 是单独一个集合还是分在前面的集合中。</p>
+<script type="math/tex; mode=display">
+\begin{Bmatrix}n\\k\end{Bmatrix}=\sum_{i=1}^n \begin{Bmatrix}n-i\\k-1\end{Bmatrix}\binom{n-1}{i-1}</script><p>考虑组合意义即可，$i$ 为枚举的 $1$ 所在的集合大小是多少。</p>
+<h3 id="第二类斯特林数通项-第二类斯特林数-·-行"><a href="#第二类斯特林数通项-第二类斯特林数-·-行" class="headerlink" title="第二类斯特林数通项 / 第二类斯特林数 · 行"></a>第二类斯特林数通项 / 第二类斯特林数 · 行</h3><p>有一个恒等式：</p>
+<script type="math/tex; mode=display">
+m^n=\sum_{i=0}^{m}m^{\underline i}\begin{Bmatrix}n\\i\end{Bmatrix}=\sum_{i=0}^m\binom{m}{i}\begin{Bmatrix}n\\i\end{Bmatrix}i!</script><p>考虑组合意义即可，左边是 $n$ 个球放入 $m$ 个可空盒子的方案数，右边是枚举非空的集合数，亦可以用数学归纳法证明。</p>
+<p>二项式反演得：</p>
+<script type="math/tex; mode=display">
+\begin{Bmatrix}n\\m\end{Bmatrix}m!=\sum_{i=0}^m(-1)^{m-i}\binom{m}{i}i^n</script><p>进一步转化可得：</p>
+<script type="math/tex; mode=display">
+\begin{Bmatrix}n\\m\end{Bmatrix}=\sum_{i=0}^{m} \frac{(-1)^{i}}{i !} \cdot \frac{(m-i)^{n}}{(m-i) !}</script><p>这样就化成了一个卷积的形式，可以 $\mathcal{O}(n\log n)$ 求得所有的 $\begin{Bmatrix}n\\i\end{Bmatrix}$．</p>
+<p>多项式技巧不精，第二类斯特林数 · 列待填坑。</p>
+<h3 id="上降幂与普通幂"><a href="#上降幂与普通幂" class="headerlink" title="上降幂与普通幂"></a>上降幂与普通幂</h3><p>在 “一行第一类斯特林数求和” 中提到过<strong>上升幂转普通幂</strong>：</p>
+<script type="math/tex; mode=display">
+x^{\overline n}=\sum_{k=0}^n \begin{bmatrix}n\\k\end{bmatrix}x^k\tag{1}</script><p>另有<strong>普通幂转上升幂</strong>：</p>
+<script type="math/tex; mode=display">
+x^n=\sum_{k=0}^n\begin{Bmatrix}n\\k\end{Bmatrix}(-1)^{n-k}x^{\overline{k}}\tag{2}</script><p>数学归纳法易证。</p>
+<h3 id="下降幂与普通幂"><a href="#下降幂与普通幂" class="headerlink" title="下降幂与普通幂"></a>下降幂与普通幂</h3><p>在 “第二类斯特林数通项 / 一行第二类斯特林数求和” 中提到过<strong>普通幂转下降幂</strong>：</p>
+<script type="math/tex; mode=display">
+x^n=\sum_{k=0}^{n}\begin{Bmatrix}n\\k\end{Bmatrix}x^{\underline k}\tag{3}</script><p>另有<strong>下降幂转上升幂</strong>：</p>
+<script type="math/tex; mode=display">
+x^{\underline n}=\sum_{k=0}^n\begin{bmatrix}n\\k\end{bmatrix}(-1)^{n-k}x^k\tag{4}</script><p>数学归纳法易证。</p>
+<p>不用数学归纳法？显然有 $x^{\underline n}=(-1)^n (-x)^{\overline n}$（直接拆开易证），代入到 $(3)$ 得 $(2)$，代入到 $(2)$ 得 $(4)$．</p>
+<h3 id="反转公式"><a href="#反转公式" class="headerlink" title="反转公式"></a>反转公式</h3><p>将 $(4)$ 代入到 $(3)$ 得：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+x^n&=\sum_{i=0}^{n}\begin{Bmatrix}n\\k\end{Bmatrix}\sum_{m=0}^k\begin{bmatrix}k\\m\end{bmatrix}(-1)^{k-m}x^m
+\\
+&=\sum_{m=0}^nx^m\sum_{k=m}^n\begin{Bmatrix}n\\k\end{Bmatrix}\begin{bmatrix}k\\m\end{bmatrix}(-1)^{k-m}
+\end{aligned}</script><p>对比系数可得：</p>
+<script type="math/tex; mode=display">
+\sum_{k=m}^n\begin{Bmatrix}n\\k\end{Bmatrix}\begin{bmatrix}k\\m\end{bmatrix}(-1)^{k-m}=[m=n]\tag{5}</script><p>同理，把 $(1)$ 代入 $(2)$ 可得：</p>
+<script type="math/tex; mode=display">
+\\
+\sum_{k=m}^n\begin{Bmatrix}n\\k\end{Bmatrix}\begin{bmatrix}k\\m\end{bmatrix}(-1)^{n-k}=[m=n]\tag{6}</script><p>把 $(2)$ 代入 $(1)$ 得：</p>
+<script type="math/tex; mode=display">
+\sum_{k=m}^n\begin{bmatrix}n\\k\end{bmatrix}\begin{Bmatrix}k\\m\end{Bmatrix}(-1)^{k-m}=[m=n]\tag{7}</script><p>把 $(3)$ 代入 $(4)$ 得：</p>
+<script type="math/tex; mode=display">
+\sum_{k=m}^n\begin{bmatrix}n\\k\end{bmatrix}\begin{Bmatrix}k\\m\end{Bmatrix}(-1)^{n-k}=[m=n]\tag{8}</script><p>有的地方将 $(5),(7)$ 称为反转公式，有的地方将 $(6),(8)$ 称为反转公式，在此并不继续深究。</p>
+<h2 id="斯特林反演-1"><a href="#斯特林反演-1" class="headerlink" title="斯特林反演"></a>斯特林反演</h2><script type="math/tex; mode=display">
+f(n)=\sum_{k=0}^n\begin{Bmatrix}n\\k\end{Bmatrix}g(k)\Longleftrightarrow g(n)=\sum_{k=0}^n(-1)^{n-k}\begin{bmatrix}n\\k\end{bmatrix}f(k)\tag{9}</script><script type="math/tex; mode=display">
+f(n)=\sum_{k=0}^n\begin{bmatrix}n\\k\end{bmatrix}g(k)\Longleftrightarrow g(n)=\sum_{k=0}^n(-1)^{n-k}\begin{Bmatrix}n\\k\end{Bmatrix}f(k)\tag{10}</script><p>证明一下 $(9)$：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+g(n)&=\sum_{i=0}^n[n=i]g(i)
+\\
+&=\sum_{i=0}^n\sum_{k=i}^n\begin{bmatrix}n\\k\end{bmatrix}\begin{Bmatrix}k\\i\end{Bmatrix}(-1)^{n-k}g(i)
+\\
+&=\sum_{k=0}^n(-1)^{n-k}\begin{bmatrix}n\\k\end{bmatrix}\sum_{i=0}^k\begin{Bmatrix}k\\i\end{Bmatrix}g(i)
+\\
+&=\sum_{k=0}^n(-1)^{n-k}\begin{bmatrix}n\\k\end{bmatrix}f(k)
+\end{aligned}</script><p>$(10)$ 的证明类似，<strong>证明思路大概是：找到一个 “$if$”，说一句废话，把式子代入，交换求和号，整理一下。</strong></p>
+<p>通过前面二项式反演的证明以及后面提到的反演的证明更加体现了这个思路。</p>
+<p>前面证莫比乌斯反演也是可以这么证的，不过用狄利克雷卷积更简单我就用狄利克雷卷积证了。</p>
+<h3 id="例题一-HDU-4372-Count-the-Buildings"><a href="#例题一-HDU-4372-Count-the-Buildings" class="headerlink" title="例题一 HDU 4372 Count the Buildings"></a>例题一 <a target="_blank" rel="noopener" href="https://acm.hdu.edu.cn/showproblem.php?pid=4372">HDU 4372 Count the Buildings</a></h3><p>$n$ 前面有 $F-1$ 个前缀最大，$n$ 后面有 $B-1$ 个后缀最大，那么把每一个前/后缀最大及其前/后面一段没有碰到前/后缀最大的看成一段，发现是钦定这一段让最大值排最前面，所以这些方案数是 $\begin{bmatrix}n-1\\F+B-2\end{bmatrix}$，然后选出 $F-1$ 个放在 $n$ 前面，答案为 $\binom{F+B-2}{F-1}\begin{bmatrix}n-1\\F+B-2\end{bmatrix}$．</p>
+<h3 id="例题二-HDU-7095-2021-年百度之星·程序设计大赛-复赛-B-Add-or-Multiply-1"><a href="#例题二-HDU-7095-2021-年百度之星·程序设计大赛-复赛-B-Add-or-Multiply-1" class="headerlink" title="例题二 HDU 7095 / 2021 年百度之星·程序设计大赛 - 复赛 B Add or Multiply 1"></a>例题二 <a target="_blank" rel="noopener" href="https://acm.hdu.edu.cn/showproblem.php?pid=7095">HDU 7095 / 2021 年百度之星·程序设计大赛 - 复赛 B Add or Multiply 1</a></h3><blockquote>
+<p>你有一个数字 $x$ 和若干个操作，每个操作是 $+a_i$ 或者乘 $\times a_i$ 中的一种。你可以重新排列这些操作的顺序，然后对数字 $x$ 执行这些操作。</p>
+<p>比如说三个操作是 $+a_1,+a_2,\times a_3$。如果按顺序执行这三个操作，那么得到的结果是 $((x+a_1)+a_2)\times a3$。如果排列成 $+a_2,\times a_3,+a_1$，那么得到的结果是 $((x+a_2)\times a_3)+a_1$。</p>
+<p>我们会发现，有一些操作顺序计算出来的结果是本质相同的，比如说 $+a_1,+a_2,\times a_3$ 和 $+a_2,+a_1,\times a_3 $这样运算下来结果是一样的。我们认为两个操作顺序计算的结果本质相同，当且仅当无论代入什么数，计算出来的结果都是一样的。</p>
+<p>请问有多少种本质不同的操作序列。换句话说就是最多能找到多少个操作序列，使得这些操作序列任意两个都不是本质相同的。由于答案很大，输出对 $10^9+7$ 取模的结果。</p>
+<p>在这个题目中，我们只会给出加法操作和乘法操作的个数，分别是 $n,m$，并不会给出具体的顺序和数字。容易发现，答案与具体的顺序和数字无关。</p>
+<p>共 $T$ 组询问，$1\leq T\leq 10^4,1\leq n,m\leq 3000$．</p>
+</blockquote>
+<p>把 $x$ 个有标号球放进 $y$ 个有区分非空盒子方案数 $= y!\times$ 把 $x$ 个有标号球放进 $y$ 个无区分非空盒子方案数 $= \begin{Bmatrix}x\\y\end{Bmatrix}y!$，设其为 $calc(x,y)$．</p>
+<p>其中 $\begin{Bmatrix}x\\y\end{Bmatrix}$ 为第二类斯特林数。</p>
+<p>考虑枚举有 $i$ 个连起来的乘法块，那么其方案数为 $calc(m,i)$．</p>
+<p>$i$ 个乘法块形成了 $(i+1)$ 个空隙，两边的 $2$ 个可空，中间的 $(m-1)$ 个非空。</p>
+<p>$n$ 个加法有三种方法：</p>
+<ol>
+<li><p>只放中间 $(m-1)$ 个（钦点两个可空的都不放）：$calc(n,i-1)$；</p>
+</li>
+<li><p>钦点一个可空的为非空的，另一个不放：$calc(n,i)\times 2$；</p>
+</li>
+<li><p>钦点两个可空的为非空的：$calc(n,i+1)$．</p>
+</li>
+</ol>
+<p>故答案为</p>
+<script type="math/tex; mode=display">
+\sum_{i=1}^mcalc(m,i)\times(calc(n,i-1)+calc(n,i-1)\times 2+calc(n,i+1))</script><p>时间复杂度为 $\mathcal{O}(m^2+Tm)$．</p>
+<p><a target="_blank" rel="noopener" href="https://vjudge.net/solution/32517415">Code</a></p>
+<h3 id="例题三-「TJOI-HEOI2016」求和"><a href="#例题三-「TJOI-HEOI2016」求和" class="headerlink" title="例题三 「TJOI / HEOI2016」求和"></a>例题三 <a target="_blank" rel="noopener" href="https://loj.ac/p/2058">「TJOI / HEOI2016」求和</a></h3><blockquote>
+<p>求：</p>
+<script type="math/tex; mode=display">
+f(n)=\sum_{i=0}^n\sum_{j=0}^i\begin{Bmatrix}i\\j\end{Bmatrix}2^jj!\bmod998244353</script><p>$1\leq n\leq 10^5$</p>
+</blockquote>
+<p>第二类斯特林数看起来就不好处理，考虑用第二类斯特林数通项公式把 $\begin{Bmatrix}i\\j\end{Bmatrix}j!$ 换掉：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&=\sum_{i=0}^n\sum_{j=0}^i\begin{Bmatrix}i\\j\end{Bmatrix}2^jj!
+\\
+&=\sum_{i=0}^n\sum_{j=0}^i2^j\sum_{k=0}^j(-1)^{j-k}\binom{j}{k}k^i
+\\
+&=\sum_{j=0}^n\sum_{k=0}^j2^j(-1)^{j-k}\binom{j}{k}\sum_{i=j}^nk^i
+\\
+&=\sum_{j=0}^n\sum_{k=0}^j2^j(-1)^{j-k}\frac{j!}{k!(j-k)!}\cdot\frac{k^{n+1}-1}{k-1}
+\end{aligned}</script><p>注意最后一步等比数列求和当 $k=0,1$ 的时候需要特判掉。</p>
+<p>把仅关于 $j$ 的提出来，仅关于 $k$ 的合并，仅关于 $(j-k)$ 的合并，整理成卷积的形式：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&=\sum_{j=0}^n2^jj!\sum_{k=0}^j\frac{(-1)^{j-k}}{(j-k)!}\cdot\frac{k^{n+1}-1}{k!(k-1)}
+\end{aligned}</script><p>快乐 FFT，复杂度 $\mathcal{O}(n\log n)$．</p>
+<h3 id="例题四-TopCoder-13444-CountTables"><a href="#例题四-TopCoder-13444-CountTables" class="headerlink" title="例题四 TopCoder 13444 CountTables"></a>例题四 <a target="_blank" rel="noopener" href="https://vjudge.net/problem/TopCoder-13444">TopCoder 13444 CountTables</a></h3><p>设 $g(m)$ 为 $n$ 行 $m$ 列的矩阵，满足任意两行不相同的方案数，则有 $g(m)=c^m(c^m-1)(c^m-2)…=(c^m)^{\underline n}$．</p>
+<p>设 $f(m)$ 为 $n$ 行 $m$ 列的矩阵，满足任意两行两列都不相同的方案数，则有：</p>
+<script type="math/tex; mode=display">
+g(m)=\sum_{i=0}^m\begin{Bmatrix}m\\i\end{Bmatrix}f(i)</script><p>也就是划分成 $i$ 个集合，每个集合里面都用一样的列。</p>
+<p>斯特林反演一下得到：</p>
+<script type="math/tex; mode=display">
+f(m)=\sum_{i=0}^m(-1)^{m-i}\begin{bmatrix}m\\i\end{bmatrix}g(i)</script><h3 id="例题五-Crash-的文明世界"><a href="#例题五-Crash-的文明世界" class="headerlink" title="例题五 Crash 的文明世界"></a>例题五 <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4827">Crash 的文明世界</a></h3><blockquote>
+<p>给定 $n$ 个点边权均为 $1$ 的树和非负整数 $m$，对于每个点 $i$ 求出：</p>
+<script type="math/tex; mode=display">
+\sum_{j=0}^n\text{dist}(i,j)^m</script><p>对 $10^4+7$ 取模。</p>
+<p>$n\leq 5\times 10^4,m\leq 150$</p>
+</blockquote>
+<p>暴力 点分治+FFT 可以做到 $\mathcal{O}(n\log^2n)$？</p>
+<p>考虑普通幂转下降幂：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&\sum_{j=0}^n\text{dist}(i,j)^m
+\\
+=&\sum_{j=0}^n\sum_{k=0}^{\text{dist}(i,j)}\binom{\text{dist}(i,j)}{k}\begin{Bmatrix}m\\k\end{Bmatrix}k!
+\\
+=&\sum_{j=0}^n\sum_{k=0}^{m}\binom{\text{dist}(i,j)}{k}\begin{Bmatrix}m\\k\end{Bmatrix}k!
+\\
+=&\sum_{k=0}^{m}\begin{Bmatrix}m\\k\end{Bmatrix}k!\sum_{j=0}^n\binom{\text{dist}(i,j)}{k}
+\end{aligned}</script><p>设 $\sum\limits_{j=0}^n\binom{\text{dist}(i,j)}{k}=f_{i,k}$，如果能对于每个 $i$ 求得 $f_{i,k}$ 即可求得答案。</p>
+<p>考虑固定 $i$ 为根，此时的 $j$ 的取值仅能为子树内点的编号。</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+f_{x,k}&=\sum_{v\in son(x)}\sum_{w\in subtree(v)}\binom{\text{dist}(v,w)+1}{k}
+\\
+&=\sum_{v\in son(x)}\sum_{w\in subtree(v)}\binom{\text{dist}(v,w)}{k-1}+\sum_{v\in son(x)}^n\sum_{w\in subtree(v)}\binom{\text{dist}(v,w)}{k}
+\\
+&=\sum_{v\in son(x)}f_{v,k-1}+f_{v,k}
+\end{aligned}</script><p>此时只有根的答案是正确的，再换根 dp 即可。</p>
+<p>时间复杂度 $\mathcal{O}(nm)$．</p>
+<p><a target="_blank" rel="noopener" href="https://pastebin.ubuntu.com/p/MHNhtZFsTV/">Code</a></p>
+<h1 id="子集反演"><a href="#子集反演" class="headerlink" title="子集反演"></a>子集反演</h1><script type="math/tex; mode=display">
+f(S)=\sum_{T\subseteq S}g(T)\Longleftrightarrow g(S)=\sum_{T\subseteq S}(-1)^{|S|-|T|}f(T)</script><p><del>众所周知</del>，子集和超集本质上是相同的，只需要把每个集合看成自己的补集即可，同样有：</p>
+<script type="math/tex; mode=display">
+f(S)=\sum_{S\subseteq T}g(T)\Longleftrightarrow g(S)=\sum_{S\subseteq T}(-1)^{|T|-|S|}f(T)</script><p>证明的基本思路和前面类似：</p>
+<p>首先有：（枚举 $|T|$ 之后就是 $(1-1)^{|S|}$）</p>
+<script type="math/tex; mode=display">
+\sum_{T\subseteq S}(-1)^{|T|}=|S=\varnothing|</script><script type="math/tex; mode=display">
+\begin{aligned}
+g(S)&=\sum_{T\subseteq S}[S-T=\varnothing]g(T)
+\\
+&=\sum_{T\subseteq S}\sum_{A\subseteq S-T}(-1)^{|A|}g(T)
+\\
+&=\sum_{A\subseteq S}(-1)^{|A|}\sum_{T\subseteq S-A}g(T)
+\\
+&=\sum_{A\subseteq S}(-1)^{|S|-|A|}\sum_{T\subseteq A}g(T)
+\\
+&=\sum_{A\subseteq S}(-1)^{|S|-|A|}f(A)
+\end{aligned}</script><p>得证。</p>
+<p>如果扩展到多重集合，如何构造容斥系数 $\mu$ 使得 $\sum\limits_{T\subseteq S}\mu(T)=[S=\varnothing]$？</p>
+<p>只需要让重复的元素都不起作用，对贡献为 $0$ 即可，也就是 $\mu(S)=(-1)^{|S|}[S中无重复元素]$．</p>
+<p>于是：</p>
+<script type="math/tex; mode=display">
+f(S)=\sum_{T\subseteq S}g(T)\Longleftrightarrow g(S)=\sum_{T\subseteq S}\mu(S-T)f(T)</script><p>注意到前文提到的 “莫比乌斯反演” 实际上就是把每个质因子看成一个元素，把每一个数看成一个集合，做这个多重集合的反演，本质上是相同的。</p>
+<p><a target="_blank" rel="noopener" href="https://vfleaking.blog.uoj.ac/slide/87#/13">vfk的PPT</a> 中提到了可以拿来算 and,or 卷积，仔细理一下会发现实际上就是 FMT / 高维前缀/后缀和。</p>
+<h2 id="FMT"><a href="#FMT" class="headerlink" title="FMT"></a>FMT</h2><p>试试从子集反演的角度理解 FMT。</p>
+<p>给定长度为 $2^n$ 的数列 $a,b$，计算 $c$ 满足：</p>
+<script type="math/tex; mode=display">
+c_n=\sum_{i|j=n}a_ib_j</script><p>$n\leq 20$．</p>
+<p>也可以称之为 $or$ 卷积？</p>
+<p>把下标看成集合：</p>
+<script type="math/tex; mode=display">
+c_n=\sum_{u\cup v=n}a_ub_v</script><p>直接计算似乎很难，考虑计算出 $c’_n=\sum\limits_{u\subseteq n}c_u$，然后把 $c’$ 还原成 $c$．</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+c'_n&=\sum_{u\cup v\subseteq n}a_ub_v
+\\
+&=\sum_{u\subseteq n}\sum_{v\subseteq v}a_ub_v
+\\
+&=\sum_{u\subseteq n}a_u\sum_{v\subseteq n}b_v
+\\
+&=a'_ub'_v
+\end{aligned}</script><p>已知 $a,b$ 求 $a’,b’$，可以用高维前缀和完成。</p>
+<p>$a$ 到 $a’$ 的映射就是 FMT 啦（</p>
+<p>已知 $c’$ 求 $c$，就是高维前缀差分了，这个映射就是 IFMT。但其实也可以利用子集反演证明：</p>
+<script type="math/tex; mode=display">
+c'_n=\sum_{u\subseteq n}c_u\Longleftrightarrow c_n=\sum_{u\subseteq n}(-1)^{|n|-|u|}c'_u</script><p>计算 $and$ 卷积也同理，把子集换成超集再来一遍就可以了。</p>
+<h2 id="FWT"><a href="#FWT" class="headerlink" title="FWT"></a>FWT</h2><p>既然都说到了 FMT，自然要提提 FWT？虽然这个东西和子集反演没有什么关系（</p>
+<p>回顾 FMT 的过程，实际上我们是构造了一个可逆的变换 $F$ 满足 $F(c)=F(a)\cdot F(b)$，$or$ 卷积是高维前缀和/差分，$and$ 卷积是高维后缀和/差分。</p>
+<p>给定长度为 $2^n$ 的数列 $a,b$，计算 $c$ 满足：</p>
+<script type="math/tex; mode=display">
+c_n=\sum_{i\oplus j=n}a_ib_j</script><p>$n\leq 20$．</p>
+<p>感觉还是背柿子比较好，以后有了新的理解大概会回来更新（</p>
+<p>$A_0$ 为 $A$ 的偶数下标处组成的序列，$A_1$ 为奇数下标处，$(A,B)$ 指的是将序列 $A$ 和 $B$ 拼接。</p>
+<script type="math/tex; mode=display">
+FWT(A)=(FWT(A_0)+FWT(A_1),FWT(A_0)-FWT(A_1))</script><p>这个式子和 FFT 的很像。</p>
+<script type="math/tex; mode=display">
+IFWT(A)=(\frac{IFWT(A_0)+IFWT(A_1)}{2},\frac{IFWT(A_0)-IFWT(A_1)}{2})</script><p>通过 $FWT$ 的式子易推得这个式子。</p>
+<h1 id="单位根反演"><a href="#单位根反演" class="headerlink" title="单位根反演"></a>单位根反演</h1><blockquote>
+<p>论文哥：感觉就像是把dft推式子证法中这东西抠了出来起了个名字。没在oi外的地方听说这东西还有类似这样的名字，像是近几年的oi造的名词。</p>
+</blockquote>
+<p>记 $n$ 次单位根为 $\omega_n$．</p>
+<p>显然有：</p>
+<script type="math/tex; mode=display">
+\frac{1}{n}\sum_{k=0}^{n-1}\omega_n^{vk}=[v\bmod n = 0]</script><p>等比数列求和，由于 $v\bmod n=0$ 的时候公比为 $1$ 要特判。</p>
+<h2 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h2><h3 id="LOJ6485-LJJ-学二项式定理"><a href="#LOJ6485-LJJ-学二项式定理" class="headerlink" title="LOJ6485 LJJ 学二项式定理"></a>LOJ6485 LJJ 学二项式定理</h3><script type="math/tex; mode=display">
+\begin{aligned}
+ans&=\sum\binom{n}{i}s^i\sum_{j=0}^3\frac{1}{4}\sum_{k=0}^3\omega_{4}^{(i-j)k}
+\\
+&=\frac{1}{4}\sum_{j=0}^3a_j\sum_{k=0}^3\sum\binom{n}{i}s^i\omega_{4}^{(i-j)k}
+\\
+&=\frac{1}{4}\sum_{j=0}^3a_j\sum_{k=0}^3\omega_4^{-jk}\sum\binom{n}{i}s^i\omega_{4}^{ik}
+\\
+&=\frac{1}{4}\sum_{j=0}^3a_j\sum_{k=0}^3\omega_4^{-jk}(s\omega_{4}^{k}+1)^n
+\end{aligned}</script><h1 id="min-max-容斥"><a href="#min-max-容斥" class="headerlink" title="min-max 容斥"></a>min-max 容斥</h1><script type="math/tex; mode=display">
+\max(S)=\sum_{\varnothing\neq T\subseteq S}(-1)^{|T|-1}\min(T)
+\\
+\min(S)=\sum_{\varnothing\neq T\subseteq S}(-1)^{|T|-1}\max(T)</script><p><del>众做周知</del> $\max$ 和 $\min$ 是一样的，把优先级反过来即可。</p>
+<p>现在证明上面那个式子，大体思路为：设出容斥系数，考虑每个元素是否能贡献列出式子，然后二项式反演得到容斥系数。</p>
+<p>设容斥系数为 $f$，也就是 $\max(S)=\sum_{\varnothing\neq T\subseteq S}f(|T|)\min(T)$，钦点一个元素的编号为它的从小到大的排名，则排名为 $k$ 的元素的是否能贡献为：</p>
+<script type="math/tex; mode=display">
+\sum_{i=0}^{n-k}\binom{n-k}{i}f(i+1)=[n-k=0]</script><p>令 $F(n)=f(n+1),G(n)=[n==0]$，则有：</p>
+<script type="math/tex; mode=display">
+\sum_{i=0}^n\binom{n}{i}F(i)=G(n)</script><p>二项式反演：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+F(n)&=\sum_{i=0}^n(-1)^{n-i}\binom{n}{i}G(i)
+\\
+f(n+1)&=\sum_{i=0}^n(-1)^{n-i}\binom ni [i==0]=(-1)^n
+\end{aligned}</script><p>则 $f(n)=(-1)^{n-1}$．</p>
+<p>证毕。</p>
+<p>如果左边的 $\max$ 是第 $k$ 大，推导也同理，可得：</p>
+<script type="math/tex; mode=display">
+k\text{-}th\max(S)=\sum_{\varnothing T\subseteq S}(-1)^{|T|-k}\binom{|T|-1}{k-1}\min(T)</script><p>值得注意的是如果将 $\max/\min$ 换成期望即 $E(\max)/E(\min)$ ，也就是期望意义下的 $\min\text{-}\max$ 容斥也是对的，形式化来讲：</p>
+<p>设全集 $U=\{X_1,X_2,…,X_n\}$，其中 $X_i$ 为互相独立的随机变量并且存在 $E(X_i)$，则有：</p>
+<script type="math/tex; mode=display">
+E(\max(S))=\sum_{\varnothing\neq T\subseteq S}(-1)^{|T|-1}E(\min(T))</script><p>$\max$ 和 $\min$ 互换，以及第 $k$ 大的 $\min\text{-}\max$ 容斥在期望意义下也成立。</p>
+<p>证明很简单：</p>
+<script type="math/tex; mode=display">
+\max(S)=\sum_{\varnothing\neq T\subseteq S}(-1)^{|T|-1}\min(T)
+\\
+E(\max(S))=E\left(\sum_{\varnothing\neq T\subseteq S}(-1)^{|T|-1}\min(T)\right)</script><p>由期望的线性性可得：</p>
+<script type="math/tex; mode=display">
+E(\max(S))=\sum_{\varnothing\neq T\subseteq S}(-1)^{|T|-1}E(\min(T))</script><h2 id="例题-1"><a href="#例题-1" class="headerlink" title="例题"></a>例题</h2><h3 id="一个小例子"><a href="#一个小例子" class="headerlink" title="一个小例子"></a>一个小例子</h3><p>我们知道，若干个数的 $\gcd$ 相当于单独考虑每个质因子，在各个数里面的指数拿出来组成一个可重集然后取 $\min$，最后再把每个质因子以及对应的次幂乘起来。$\text{lcm}$ 也是同理，于是我们可以对这个指数组成的可重集进行 $\min\text{-}\max$ 容斥来做到 $\gcd$ 和 $\text{lcm}$ 的转换。</p>
+<p>更具体地假如说有 $\gcd(S),\text{lcm}(S)$ 分别代表集合 $S$ 中所有数的 $\gcd,\text{lcm}$，则有：</p>
+<script type="math/tex; mode=display">
+\text{lcm}(S)=\prod_{\varnothing\neq T\subseteq S}\gcd(T)^{(-1)^{|T|-1}}</script><p>$\gcd$ 转成 $\text{lcm}$ 来也是同理。</p>
+<h3 id="例题一-HAOI2015-按位或"><a href="#例题一-HAOI2015-按位或" class="headerlink" title="例题一 HAOI2015 按位或"></a>例题一 HAOI2015 按位或</h3><p>二进制为 $1$ 的数位看成一个元素，每个数看成一个集合。</p>
+<p>定义每个元素的权值为第一次变成 $1$ 的时间，那么可以定义每个集合的 $\max,\min$．</p>
+<p>所求即为 $\max(U)$，其中 $U$ 为全集，现在要对任意一个集合 $S$ 计算 $\min(S)$．</p>
+<p>考虑枚举时间，计算其对期望的贡献。</p>
+<p>定义一个集合 $S$ 包含的元素的出现概率和（或者说与 $S$ 有交的集合的概率和）为 $p_{S}$，$i$ 时刻第一次取到 $S$ 中的元素，前 $(i-1)$ 个时刻一定都没有取到 $S$ 中的元素，则有：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\min(S)&=\sum_{i=1}^{+\infty}iP(\min(S)=i)
+\\
+&=\sum_{i=1}^{+\infty}i(1-p_S)^{i-1}p_S
+\\x\gets 1-p_S
+\\
+&=\sum_{i=1}^{+\infty}ix^{i-1}(1-x)
+\\
+&=\sum_{i=1}^{+\infty}ix^{i-1}-ix^i
+\\
+&=x^0+\sum_{i=1}^{+\infty}(i+1)x^{i}-ix^i
+\\
+&=\sum_{i=0}^{+\infty}x^i
+\\
+&=\frac{1}{1-x}=\frac{1}{p_S}
+\end{aligned}</script><p>其实就是每一步成功概率为 $p$，则期望成功步数为 $\frac{1}{p}$．</p>
+<p>$p_S$ 怎么求？注意到 $x=1-p_S$ 为所有与 $S$ 无交的集合概率和，也就是其补集的子集和，高维前缀和计算即可。</p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a target="_blank" rel="noopener" href="https://vfleaking.blog.uoj.ac/blog/87">炫酷反演魔术 vfleaking的博客</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/150779987">斯特林数入门 Hongzy</a></p>
+<p>具体数学 6.1 斯特林数</p>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/blog/command-block/gcd-juan-ji-xiao-ji">狄利克雷相关 command_block 的博客</a></p>
+<p><a target="_blank" rel="noopener" href="https://notes.sshwy.name/Math/Stirling-Number/">斯特林数学习笔记 Sshwy’s Notes</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%AE%B9%E6%96%A5/" rel="tag"># 容斥</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/02/04/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%9B%9B%E8%BE%B9%E5%BD%A2%E4%B8%8D%E7%AD%89%E5%BC%8F%E4%BC%98%E5%8C%96%20%20%E5%86%B3%E7%AD%96%E5%8D%95%E8%B0%83%E6%80%A7%E4%BC%98%E5%8C%96%20dp/" rel="prev" title="「学习笔记」四边形不等式优化 / 决策单调性优化 dp">
+      <i class="fa fa-chevron-left"></i> 「学习笔记」四边形不等式优化 / 决策单调性优化 dp
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/02/04/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E4%BA%8C%E5%88%86%E5%9B%BE%E5%92%8C%E7%BD%91%E7%BB%9C%E6%B5%81/" rel="next" title="「学习笔记」二分图和网络流">
+      「学习笔记」二分图和网络流 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E9%A1%B9%E5%BC%8F%E5%8F%8D%E6%BC%94"><span class="nav-number">1.</span> <span class="nav-text">二项式反演</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%84%E5%90%88%E6%81%92%E7%AD%89%E5%BC%8F"><span class="nav-number">1.1.</span> <span class="nav-text">组合恒等式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98%E4%B8%80-ARC016F-Card-Game-for-Three"><span class="nav-number">1.1.1.</span> <span class="nav-text">例题一 ARC016F Card Game for Three</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E9%A1%B9%E5%BC%8F%E5%8F%8D%E6%BC%94-1"><span class="nav-number">1.2.</span> <span class="nav-text">二项式反演</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98%E4%BA%8C-BZOJ-3622-%E5%B7%B2%E7%BB%8F%E6%B2%A1%E6%9C%89%E4%BB%80%E4%B9%88%E5%A5%BD%E5%AE%B3%E6%80%95%E7%9A%84%E4%BA%86"><span class="nav-number">1.2.1.</span> <span class="nav-text">例题二 BZOJ 3622  已经没有什么好害怕的了</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%8E%AB%E6%AF%94%E4%B9%8C%E6%96%AF%E5%8F%8D%E6%BC%94"><span class="nav-number">2.</span> <span class="nav-text">莫比乌斯反演</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AC%A7%E6%8B%89%E5%87%BD%E6%95%B0"><span class="nav-number">2.1.</span> <span class="nav-text">欧拉函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E7%8B%84%E5%88%A9%E5%85%8B%E9%9B%B7%E5%8D%B7%E7%A7%AF"><span class="nav-number">2.2.</span> <span class="nav-text">常用狄利克雷卷积</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8B%84%E5%88%A9%E5%85%8B%E9%9B%B7%E5%89%8D%E7%BC%80%E5%92%8C-%E5%B7%AE%E5%88%86-%E5%90%8E%E7%BC%80%E5%92%8C-%E5%B7%AE%E5%88%86"><span class="nav-number">2.3.</span> <span class="nav-text">狄利克雷前缀和&#x2F;差分&#x2F;后缀和&#x2F;差分</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8B%84%E5%88%A9%E5%85%8B%E9%9B%B7%E5%89%8D%E7%BC%80%E5%92%8C"><span class="nav-number">2.3.1.</span> <span class="nav-text">狄利克雷前缀和</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8B%84%E5%88%A9%E5%85%8B%E9%9B%B7%E5%89%8D%E7%BC%80%E5%B7%AE%E5%88%86"><span class="nav-number">2.3.2.</span> <span class="nav-text">狄利克雷前缀差分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8B%84%E5%88%A9%E5%85%8B%E9%9B%B7%E5%90%8E%E7%BC%80%E5%92%8C"><span class="nav-number">2.3.3.</span> <span class="nav-text">狄利克雷后缀和</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8B%84%E5%88%A9%E5%85%8B%E9%9B%B7%E5%90%8E%E7%BC%80%E5%B7%AE%E5%88%86"><span class="nav-number">2.3.4.</span> <span class="nav-text">狄利克雷后缀差分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90-gcd-%E5%8D%B7%E7%A7%AF"><span class="nav-number">2.3.5.</span> <span class="nav-text">例子 $\gcd$ 卷积</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%AB%E6%AF%94%E4%B9%8C%E6%96%AF%E5%8F%8D%E6%BC%94-1"><span class="nav-number">2.4.</span> <span class="nav-text">莫比乌斯反演</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98%E4%B8%80"><span class="nav-number">2.4.1.</span> <span class="nav-text">例题一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98%E4%BA%8C-Codeforces-1559E-Mocha-and-Stars"><span class="nav-number">2.4.2.</span> <span class="nav-text">例题二 Codeforces 1559E Mocha and Stars</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%AF%E7%89%B9%E6%9E%97%E5%8F%8D%E6%BC%94"><span class="nav-number">3.</span> <span class="nav-text">斯特林反演</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E7%B1%BB%E6%96%AF%E7%89%B9%E6%9E%97%E6%95%B0"><span class="nav-number">3.1.</span> <span class="nav-text">第一类斯特林数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E7%B1%BB%E6%96%AF%E7%89%B9%E6%9E%97%E6%95%B0-%C2%B7-%E8%A1%8C"><span class="nav-number">3.1.1.</span> <span class="nav-text">第一类斯特林数 · 行</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E7%B1%BB%E6%96%AF%E7%89%B9%E6%9E%97%E6%95%B0"><span class="nav-number">3.2.</span> <span class="nav-text">第二类斯特林数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E7%B1%BB%E6%96%AF%E7%89%B9%E6%9E%97%E6%95%B0%E9%80%9A%E9%A1%B9-%E7%AC%AC%E4%BA%8C%E7%B1%BB%E6%96%AF%E7%89%B9%E6%9E%97%E6%95%B0-%C2%B7-%E8%A1%8C"><span class="nav-number">3.2.1.</span> <span class="nav-text">第二类斯特林数通项 &#x2F; 第二类斯特林数 · 行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8A%E9%99%8D%E5%B9%82%E4%B8%8E%E6%99%AE%E9%80%9A%E5%B9%82"><span class="nav-number">3.2.2.</span> <span class="nav-text">上降幂与普通幂</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8B%E9%99%8D%E5%B9%82%E4%B8%8E%E6%99%AE%E9%80%9A%E5%B9%82"><span class="nav-number">3.2.3.</span> <span class="nav-text">下降幂与普通幂</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8D%E8%BD%AC%E5%85%AC%E5%BC%8F"><span class="nav-number">3.2.4.</span> <span class="nav-text">反转公式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%AF%E7%89%B9%E6%9E%97%E5%8F%8D%E6%BC%94-1"><span class="nav-number">3.3.</span> <span class="nav-text">斯特林反演</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98%E4%B8%80-HDU-4372-Count-the-Buildings"><span class="nav-number">3.3.1.</span> <span class="nav-text">例题一 HDU 4372 Count the Buildings</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98%E4%BA%8C-HDU-7095-2021-%E5%B9%B4%E7%99%BE%E5%BA%A6%E4%B9%8B%E6%98%9F%C2%B7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%A7%E8%B5%9B-%E5%A4%8D%E8%B5%9B-B-Add-or-Multiply-1"><span class="nav-number">3.3.2.</span> <span class="nav-text">例题二 HDU 7095 &#x2F; 2021 年百度之星·程序设计大赛 - 复赛 B Add or Multiply 1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98%E4%B8%89-%E3%80%8CTJOI-HEOI2016%E3%80%8D%E6%B1%82%E5%92%8C"><span class="nav-number">3.3.3.</span> <span class="nav-text">例题三 「TJOI &#x2F; HEOI2016」求和</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98%E5%9B%9B-TopCoder-13444-CountTables"><span class="nav-number">3.3.4.</span> <span class="nav-text">例题四 TopCoder 13444 CountTables</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98%E4%BA%94-Crash-%E7%9A%84%E6%96%87%E6%98%8E%E4%B8%96%E7%95%8C"><span class="nav-number">3.3.5.</span> <span class="nav-text">例题五 Crash 的文明世界</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AD%90%E9%9B%86%E5%8F%8D%E6%BC%94"><span class="nav-number">4.</span> <span class="nav-text">子集反演</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#FMT"><span class="nav-number">4.1.</span> <span class="nav-text">FMT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FWT"><span class="nav-number">4.2.</span> <span class="nav-text">FWT</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%95%E4%BD%8D%E6%A0%B9%E5%8F%8D%E6%BC%94"><span class="nav-number">5.</span> <span class="nav-text">单位根反演</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98"><span class="nav-number">5.1.</span> <span class="nav-text">例题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#LOJ6485-LJJ-%E5%AD%A6%E4%BA%8C%E9%A1%B9%E5%BC%8F%E5%AE%9A%E7%90%86"><span class="nav-number">5.1.1.</span> <span class="nav-text">LOJ6485 LJJ 学二项式定理</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#min-max-%E5%AE%B9%E6%96%A5"><span class="nav-number">6.</span> <span class="nav-text">min-max 容斥</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98-1"><span class="nav-number">6.1.</span> <span class="nav-text">例题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E5%B0%8F%E4%BE%8B%E5%AD%90"><span class="nav-number">6.1.1.</span> <span class="nav-text">一个小例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98%E4%B8%80-HAOI2015-%E6%8C%89%E4%BD%8D%E6%88%96"><span class="nav-number">6.1.2.</span> <span class="nav-text">例题一 HAOI2015 按位或</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">7.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="do-while-true"
+      src="/images/head.gif">
+  <p class="site-author-name" itemprop="name">do-while-true</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Friends
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/h-lka/" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;h-lka&#x2F;" rel="noopener" target="_blank">Refined_heart</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://shanlunjiajian.github.io/" title="https:&#x2F;&#x2F;shanlunjiajian.github.io&#x2F;" rel="noopener" target="_blank">华山抡剑</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/LFCode/" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;LFCode&#x2F;" rel="noopener" target="_blank">LFCode</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://forza-ferrari.github.io/" title="https:&#x2F;&#x2F;forza-ferrari.github.io&#x2F;" rel="noopener" target="_blank">绝顶我为峰</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/alan-zhao-2007/" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;alan-zhao-2007&#x2F;" rel="noopener" target="_blank">Alan_Zhao</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/suxxsfe/" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;suxxsfe&#x2F;" rel="noopener" target="_blank">suxxsfe</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">do-while-true</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

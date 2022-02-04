@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"do-while-true.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="二分图与网络流相关内容的学习笔记。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="「学习笔记」二分图和网络流">
+<meta property="og:url" content="https://do-while-true.github.io/2022/02/04/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E4%BA%8C%E5%88%86%E5%9B%BE%E5%92%8C%E7%BD%91%E7%BB%9C%E6%B5%81/index.html">
+<meta property="og:site_name" content="do_while_true&#39;s blog">
+<meta property="og:description" content="二分图与网络流相关内容的学习笔记。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-02-03T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-02-04T07:00:21.531Z">
+<meta property="article:author" content="do-while-true">
+<meta property="article:tag" content="网络流">
+<meta property="article:tag" content="二分图">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://do-while-true.github.io/2022/02/04/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E4%BA%8C%E5%88%86%E5%9B%BE%E5%92%8C%E7%BD%91%E7%BB%9C%E6%B5%81/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>「学习笔记」二分图和网络流 | do_while_true's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">do_while_true's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">喵呜</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">9</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">2</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">8</span></a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://do-while-true.github.io/2022/02/04/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E4%BA%8C%E5%88%86%E5%9B%BE%E5%92%8C%E7%BD%91%E7%BB%9C%E6%B5%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head.gif">
+      <meta itemprop="name" content="do-while-true">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="do_while_true's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          「学习笔记」二分图和网络流
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-02-04 00:00:00 / Modified: 15:00:21" itemprop="dateCreated datePublished" datetime="2022-02-04T00:00:00+08:00">2022-02-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>二分图与网络流相关内容的学习笔记。</p>
+<span id="more"></span>
+<h1 id="序言"><a href="#序言" class="headerlink" title="序言"></a>序言</h1><p>基本是对<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/blog/ix-35/noi-yi-lun-fu-xi-i-er-fen-tu-wang-lao-liu">ix35</a>整理内容的抄写。所以你会发现大量的重合。</p>
+<p>只有一些不偏向定义的才会用自己能更好理解的话解释出来。</p>
+<p>所以一些证明会相比其他人说明更加繁琐，不过这是写这篇文章此时的我能力内的理解，如果将来有更好的理解，能从更高的角度 / 从更简洁的语言出发，还会更新。</p>
+<p>定理和推论，构造方案相关，也就是除去定义和证明以外比较重要的内容，都加粗了，复习的时候可以直接看加粗的内容。</p>
+<h1 id="二分图"><a href="#二分图" class="headerlink" title="二分图"></a>二分图</h1><h2 id="二分图-1"><a href="#二分图-1" class="headerlink" title="二分图"></a>二分图</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>对于无向图 $G=(V,E)$，若存在将 $V$ 划分成两个不相交子集 $A,B$ 的方案，使得 $A,B$ 的点导出子图都不含边，则称 $G$ 为二分图，$A,B$ 为 $G$ 的两部。</p>
+<p>即 $(u,v)\in E\to (u\in A,v\in B)\vee(u\in B,v\in A)$．</p>
+<p>根据定义，我们可以得出二分图是可以被二染色的图，即把每个节点着黑白两色之一，使得每条边的两个端点颜色不同，这等价于二分图的定义。</p>
+<p><strong>定理：图 $G$ 为二分图，当且仅当 $G$ 中不存在长度为奇数的环。</strong></p>
+<blockquote>
+<p>注：这里讨论的环如无特殊说明均为简单环，具体标准定义参考 <a target="_blank" rel="noopener" href="https://oi-wiki.org/graph/concept/">oi-wiki</a>。</p>
+</blockquote>
+<p>可以用二染色来证明这个定理。</p>
+<p>若 $G$ 中存在长度为奇数的环 $v_1,v_2,…,v_{2k-1}$，那么将 $v_1$ 染成黑色（黑白两色是对称的），那么 $v_2$ 一定要染成白色。以此类推，$v_1,v_3,…,v_{2k-1}$ 都要染成黑色，由于 $v_1$ 和 $v_{2k-1}$ 相邻，所以该图不能被二染色，则该图不是二分图。必要性得证。</p>
+<p>若 $G$ 中不存在长度为奇数的环，由于各个连通分量之间相互独立，考虑其中任意一个连通分量：求出任意一棵生成树，对于生成树上奇数深度的点染成黑色，偶数深度的点染成白色，由于不存在奇环，则相同颜色点之间必然没有边相连，即得到一个二染色方案，则该图是二分图。充分性得证。</p>
+<p><strong>推论：二分图 $G$ 的任意子图都为二分图</strong></p>
+<p><strong>推论：图 $G$ 是二分图当且仅当其每个连通分量都是二分图。</strong></p>
+<p>证明是比较显然的，因为图 $G$ 是二分图则其任意子图中都不存在奇环；图 $G$ 不存在奇环等价于其各个连通分量里都不存在奇环。</p>
+<p>至此，我们可以得出判断一张图是否为二分图的算法：</p>
+<ul>
+<li>对于图 $G$，根据第二条推论，只需要判断每个连通分量是否是二分图。</li>
+<li>对于图 $G$ 的任意一个连通分量，从任意一点开始 dfs，来求出任意一棵生成树，如果遇到非树边，判断深度的奇偶性是否相同，若相同，那么出现了奇环，$G$ 不是二分图；若所有非树边两端点深度奇偶性都相同，则根据深度奇偶性划分可得到一个二染色。</li>
+<li>综上，可在时间复杂度 $\mathcal{O}(|V|+|E|)$ 内解决问题。</li>
+</ul>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/do-while-true/p/15815559.html">栗题：[HNOI 2019] 校园旅行</a></p>
+<p>给定无向图 $G=(V,E)$，每个点有 $0$ 或 $1$ 的一个标记，有 $q$ 组询问，每组询问给定 $s,t\in V$，你需要求出是否存在一条 $s\to t$ 的路径 $P$，使得路径经过的点的标记拼成一个回文。$P$ 可以不是简单路径。</p>
+<p>$1\leq n\leq 5000,1 \leq m \leq 5\times 10^5,1 \leq q \leq 10^6$．</p>
+</blockquote>
+<p>暴力的想法是考虑 $f_{i,j}$ 为 $i$ 是否能走到 $j$，然后用类似 bfs 的方法更新 $f$，每次从队列中取出一个 $f$，往两边扩展，如果能更新新的 $f$ 就扔进队列里面。这样复杂度是 $\sum deg\times\sum deg=\mathcal{O}(m^2)$．想办法优化这个暴力，也就是减少无用的边数。</p>
+<p>如果要经过 $(u,v)$ 从点 $u$ 走到点 $v$，考虑可以在这条边上来回折返，那么我们只关心这两个点组成的 $01$ 串出现次数的奇偶性。</p>
+<p>考虑仅有两端点为 $00$ 或者 $11,10(01)$ 的边及其端点组成的连通块，假设为 $00$：如果要经过这个连通块，由于只关心路径上 $00$ 出现次数的奇偶性，所以要保留的信息仅为任意两点之间路径经过边数奇偶性的可能性。</p>
+<p>考虑到如果连通块中有奇环，那么在这个奇环中走一圈会到起点，即可改变路径奇偶性，则任意两点经过的边数奇偶都可以；如果没有奇环，说明是个二分图，那么两点如果在同一部点中，则经过边数一定是偶数，否则经过边数一定是奇数。</p>
+<p>由于我们只关心经过路径奇偶性，所以如果该连通分量是二分图，那么直接保留一个尽量小的连通子图，保留一棵生成树即可，如果该连通分量不是二分图，保留一棵生成树然后加一个非树边组成一个奇环即可，例如一个自环。可以发现这样边数降到了 $\mathcal{O}(n)$，任意两点之间路径经过边数奇偶性的可能性不变。</p>
+<p>这样子建图之后做那个 bfs 就可以 $\mathcal{O}(n^2+q)$ 解决这个问题。</p>
+<h2 id="二分图最大匹配"><a href="#二分图最大匹配" class="headerlink" title="二分图最大匹配"></a>二分图最大匹配</h2><p>二分图最大匹配问题，即对于给定的二分图 $G=(V,E)$，求出大小最大的边集 $A\subseteq E$ 使得 $A$ 中不存在两条共端点的边。</p>
+<h3 id="匈牙利算法"><a href="#匈牙利算法" class="headerlink" title="匈牙利算法"></a>匈牙利算法</h3><p>令 $P$ 是一个匹配，其中的边称为匹配边，匹配边的端点称为匹配点，如果一条路径从一个未匹配的左部点出发到达一个未匹配的右部点，交替经过不在 $P$ 中的边和在 $P$ 中的边，则称该路径为一条<strong>增广路</strong>。</p>
+<p><strong>定理：匹配 $P$ 是二分图的最大匹配，当且仅当图中不存在增广路。</strong></p>
+<p>必要性：将这条增广路上的所有匹配边改为非匹配边，所有非匹配边改为匹配边，则匹配数量增加。</p>
+<p>充要性：反证法。对于匹配 $P$ 满足图中不存在增广路。假设图中最大匹配为 $P’$，则求出 $P$ 和 $P’$ 边导出子图的对称差 $T$．由于 $P$ 和 $P’$ 都是匹配，则 $T$ 中点的度数均不超过 $2$，则 $T$ 为若干个环和若干条链构成，如果 $P$ 小于 $P’$，说明 $T$ 中属于 $P’$ 的边要更多，由于环和偶链属于两者的边数相等，那么就说明一定存在奇链，即为一条增广路，与假设不符。</p>
+<p>由充要性的证明，引出<strong>匈牙利算法</strong>：</p>
+<p>枚举左部点 $i=1,2,…,n$，维护 $1,2,…,i-1$ 与右部点的匹配，尝试对 $i$ 进行匹配，进入以下过程：</p>
+<ul>
+<li>假设尝试对左部点 $x$ 进行匹配，枚举出边到达的点 $y$：</li>
+<li>若 $y$ 没有被匹配，则找到一个增广路 $x\to y$；</li>
+<li>否则尝试对 $y$ 匹配的左部点 $x’$ 进行匹配，若匹配成功则找到一个增广路 $x\to y\to x’\to …$．若找到增广路，则将增广路上的边选择状态取反，答案 $+1$．</li>
+<li>优化：每次从 $i$ 寻找增广路时，如果一个左部点 $x$ 或者右部点 $y$ 之前被检查过没有找到增广路，则不必再检查一遍。</li>
+<li>对于每个左部点，检查是 $\mathcal{O}(m)$ 的，故算法的时间复杂度为 $\mathcal{O}(nm)$．</li>
+</ul>
+<p>匈牙利算法基于一个贪心的原则：一个点一旦进入匹配，就不会重新成为非匹配点，因此当找不到增广路时表示 $i$ 在保持 $1,\ldots,i-1$ 的匹配情况不变时一定无法加入最大匹配中。</p>
+<p>基于此，我们可以得知，若将匹配成功的左部点视为 $1$，没有匹配的视为 $0$，则按照枚举顺序来拼接这些左部点，得到的字典序是最大的。</p>
+<h3 id="最大流做法"><a href="#最大流做法" class="headerlink" title="最大流做法"></a>最大流做法</h3><p>建立源点 $s$ 和 汇点 $t$，$s$ 向每个左部点连 $(s,x,1)$，每个右部点向 $t$ 连 $(x,t,1)$，二分图上的边都是左部点向右部点连 $(u,v,1)$，求出最大流即为最大匹配。</p>
+<p>用 Dinic 实现复杂度为 $\mathcal{O}(\sqrt n m)$．</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1963">栗题 NOI2009 变换序列</a></p>
+</blockquote>
+<p>容易把问题转化为给定左部点度数均为 $2$ 的二分图，求左部点对应匹配点字典序最小的完美匹配。</p>
+<p>先考虑把能确定的都确定下，也就是考虑度数为一的右部点，将其与对应的左部点匹配，然后删掉。如果出现零度点则无解。</p>
+<p>这样子剩余的左部点和右部点个数相等，并且右部点的度数都 $\geq 2$（出现度数为 $0$ 无解，出现度数为 $1$ 的会被删掉），由于左部点度数都等于 $2$，说明右部点的度数也都等于 $2$．</p>
+<p>所以此时图是若干个环组成的，对于每个环来说，只有两个完美匹配，选取字典序较小的那一个即可。</p>
+<p>时间复杂度易做到线性。</p>
+<h2 id="覆盖与独立集"><a href="#覆盖与独立集" class="headerlink" title="覆盖与独立集"></a>覆盖与独立集</h2><h3 id="二分图最小点覆盖"><a href="#二分图最小点覆盖" class="headerlink" title="二分图最小点覆盖"></a>二分图最小点覆盖</h3><p>最小点覆盖：在图中选择尽量少的点使得每条边至少有一条边被选。</p>
+<p><strong>König定理：二分图最小点覆盖大小等于最大匹配大小。</strong></p>
+<p>这里给出一种最小点覆盖的构造方法：</p>
+<ul>
+<li>对于每个右边每个失配点，尝试走增广路，即“一条没匹配，一条匹配…这样交替出现的路径”，将所有走到的点都打上标记，称之为标记点。</li>
+<li><strong>左侧的标记点和右侧的未标记点组成了最小点覆盖。</strong></li>
+<li>证明其是一个点覆盖：如果一条边左右端点都不在点覆盖集里面，则左端点是未标记点，右端点是标记点：如果这条边是匹配边的话，右端点想要被标记必须由左端点标记之后走匹配边标记到右端点，所以对于匹配边来说，要不然两端点都被标记，要不然都不被标记；如果这条边不是匹配边的话，右端点被标记之后会走未匹配边标记左端点。所以不会存在这种情况，其为一个点覆盖。</li>
+<li>最小点覆盖的点的个数下界为最大匹配数，因为想要覆盖匹配边就需要最大匹配数个点，还有未匹配边要覆盖，所以点集大小不会比最大匹配数更小。</li>
+<li>证明这样得到的点集大小是最大匹配数个：</li>
+<li>对于匹配边，要不然两端点都被标记，要不然都不被标记，这样每一个匹配边都会唯一对应一个覆盖点，匹配边上的覆盖点也都会唯一对应上这条匹配边。</li>
+<li>对于非匹配边来说，如果其右端点是标记点，使得左右端点都打上了标记，那么左端点是覆盖点也一定是匹配点，要不然就找到了一条增广路；如果其右端点不是标记点，其一定为覆盖点，也一定是匹配点，因为如果不是匹配点就会作为路径起点而被标记。这样就说明覆盖点和匹配边构成了一组双射，覆盖点的个数即为匹配边的个数。</li>
+</ul>
+<p>感觉我的说明还是比较细致（麻烦），ix35说的就比较简略，但其实细节上自己推推都能推出来。</p>
+<h3 id="二分图最大独立集"><a href="#二分图最大独立集" class="headerlink" title="二分图最大独立集"></a>二分图最大独立集</h3><p>最大独立集：在图中选出尽量多的点使得其导出子图不含边。</p>
+<p>对于<strong>任意一张无向图</strong>，有如下定理成立：</p>
+<p><strong>定理：最大独立集大小与最大点覆盖大小之和等于点数。</strong></p>
+<p>任何一组独立集选择状态取反之后都为一组点覆盖（对于一条边，独立集是两端点至多选一个，点覆盖值两端点至少选一个），所以独立集和点覆盖是一一对应的。</p>
+<p>二分图是特殊的无向图，所以其在二分图中也是成立的。</p>
+<p>应用的话大概就是在一些求最大/最小个数的题目中，通过建模转化成二分图最大独立集/最小点覆盖的问题。比较常见的就是棋盘黑白染色模型。</p>
+<p>经典栗题：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3355">洛谷 P3355 骑士共存问题</a>，<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P5030">洛谷 P5030 长脖子鹿放置</a>，前者是直接的棋盘黑白染色模型，后者则是需要略微观察找出二分图的棋盘模型。</p>
+<h3 id="二分图最小边覆盖"><a href="#二分图最小边覆盖" class="headerlink" title="二分图最小边覆盖"></a>二分图最小边覆盖</h3><p>最小边覆盖：用最少的边覆盖所有的点。</p>
+<p><strong>定理：最小边覆盖大小等于最大独立集大小</strong></p>
+<p>考虑最小边覆盖的下界：由于最大独立集两两之间没有边相连，所以一条边至多能覆盖掉最大独立集中的一个点，所以最小边覆盖大小 $\geq$ 最大独立集大小。</p>
+<p>构造得到这个下界：先选出所有的匹配边，对于所有的未匹配点，选出任意一条与之相连的边，这样一共选了总点数减去最大匹配数条边，即为最大独立集大小。</p>
+<h3 id="有向无环图最小路径覆盖"><a href="#有向无环图最小路径覆盖" class="headerlink" title="有向无环图最小路径覆盖"></a>有向无环图最小路径覆盖</h3><p>给定简单 DAG，我们要选出其中数目最小的（经过的点）不相交的路径，使得每个点至少在一条路径上。</p>
+<p>对于 DAG $G=(V,E)$，构造二分图 $H$，其中 $H$ 左右各 $|V|$ 个点，如果 $(x,y)\in E$，则将 $H$ 左侧编号为 $x$ 的点和右侧编号为 $y$ 的点相连。</p>
+<p><strong>定理：DAG $G$ 的最小路径覆盖大小等于 $|V|$ 减去 $H$ 的最大匹配数。</strong></p>
+<p>现在构造对 $G$ 的路径覆盖和 $H$ 的匹配构造一个双射：</p>
+<ul>
+<li>对于 $G$ 的一个路径覆盖，考虑一条路径 $v_0,v_1,…,v_k$，则在 $H$ 中将左侧的 $v_i$ 和右侧的 $v_{i+1}$ 匹配。由于路径两两不相交，所以每个点的入度和出度 $\leq 1$，所以选出来的是一个匹配。</li>
+<li>对于 $H$ 的一组匹配，用类似的方法得到 $G$ 的一个路径覆盖：初始时每个点都没有边经过，视为一条空的路径经过，对于每一个匹配边，在 $G$ 中将其左侧点作为终点的路径拼接上其右侧点作为起点的路径。这样不会出现冲突，因为由于其为一个匹配，所以如果一个点被作为起（终）点拼接，它不会给另外一个点作为起（终）点拼接。</li>
+</ul>
+<p>观察将 $H$ 的匹配映射到 $G$ 的路径覆盖的过程中，每一个匹配边都会使得 $G$ 中的两条路径合并，那么 $H$ 的最大匹配得到的就是 $G$ 的最小路径覆盖。合并了 $x$ 次，那么 $G$ 中路径覆盖大小就是 $|V|-x$，定理得证。</p>
+<blockquote>
+<p>栗题：[CTSC 2008] 祭祀</p>
+<p>给定简单有向无环图 $G=(V,E)$，求最大的 $A\subseteq V$ 使得 $\forall x,y\in A$，不存在 $x$ 到 $y$ 的路径。</p>
+<p>$|V|\leq 100,|E|\leq 1000$</p>
+</blockquote>
+<p>将 DAG 传递闭包后得到一个偏序集，即如果 $a$ 可以到达 $b$ 则 $a\leq b$．根据 Dilworth 定理，最长反链长度（两两不可比的最大集合）等于最小链划分大小（划分成尽量少的两两可比的集合），所以答案即为传递闭包后的最小路径覆盖大小。</p>
+<h2 id="二分图最大权匹配"><a href="#二分图最大权匹配" class="headerlink" title="二分图最大权匹配"></a>二分图最大权匹配</h2><h3 id="费用流做法"><a href="#费用流做法" class="headerlink" title="费用流做法"></a>费用流做法</h3><p>建立源点 $s$ 和 汇点 $t$，$s$ 向每个左部点连流量为 $1$，费用为 $0$，每个右部点向 $t$ 连流量为 $1$，费用为 $0$，二分图上的边都是左部点向右部点连流量为 $1$，费用为权值，求出最大费用最大流即为最大权匹配。</p>
+<h2 id="Hall-定理"><a href="#Hall-定理" class="headerlink" title="Hall 定理"></a>Hall 定理</h2><p>对于二分图 $G=(V,E)$，令 $N(v)$ 表示与点 $v$ 相邻的点集，则关于最大匹配，我们有如下结论：</p>
+<p><strong>Hall 定理：设二分图 $G$ 的两部分别为 $X,Y$ 且 $|X|\leq |Y|$，则其存在一个大小为 $|X|$ 的匹配（存在完美匹配）当且仅当 $\forall S\subseteq X$，有 $|S|\leq |\bigcup\limits_{v\in S} N(v)|$．</strong></p>
+<p>必要性（显然）：$S$ 中连出去的边数不足需要的边数，也就是$|\bigcup\limits_{v\in S} N(v)|&lt;|S|$，那么一定不会存在完美匹配。</p>
+<p>充分性：假设最大匹配不是完美匹配，那么左部点集合 $X$ 中至少有一个未匹配点 $x$，从这个 $x$ 开始尝试走增广路，维护左部点集合 $S$ 和右部点集合 $T$：</p>
+<ul>
+<li>每次走到一个新的 $x$，加进 $S$ 中，由于满足 Hall 定理条件，$x$ 一定有一个相邻的点 $y$，满足其不在 $T$ 中。如果其为未匹配点，则找到增广路，和最大匹配的假设矛盾；否则，将 $y$ 加进 $T$ 中，对于 $y$ 的匹配点 $x’$ 递归判断。</li>
+</ul>
+<p>$S$ 每次都会加进去一个新的点，而总的点数是有限的，所以最终一定会推得矛盾，充分性得证，则 Hall 定理得证。</p>
+<p>Hall 定理的简单推论：</p>
+<p><strong>推论：若一个无向图每个点度数都为 $k$，则称其为 $k$ 正则图，那么左右点数相等的 $k$ 正则二分图必有完美匹配（$k\ge 1$）．</strong></p>
+<p>证明：则考虑任意一个左部点集 $L$，若不满足 Hall 定理，其所有的点的邻居组成的集合 $R$ 满足 $|R|&lt;|L|$，$R$ 和 $L$ 之间的边共有 $|L|\times k$ 条，所以 $R$ 的度数和 $|R|\times k\geq |L|\times k$；又由于 $|R|&lt;|L|$，则 $|R|\times k&lt; |L|\times k$，推得矛盾。所以这张图满足 Hall 定理，有完美匹配。</p>
+<p><strong>Hall 定理推广：设二分图 $G$ 的两部分别为 $X,Y$，则其最大匹配为 $|X|-\max(|S|-|\bigcup\limits_{v\in S} N(v)|)$．</strong></p>
+<p>证明和 Hall 定理类似：</p>
+<p>设 $f(S)=|S|-|\bigcup\limits_{v\in S} N(v)|$．</p>
+<p>必要性：对于任意一个 $S$，其至少有 $f(S)$ 个点不能匹配，则整张图至少有 $\max (f(S))$ 个点不能匹配。设其为 $k$．</p>
+<p>充分性：假设最大匹配 $&lt;|X|-k$ 也就是最大匹配中有 $&gt;k$ 个左部点是非匹配点，对于其中任意的 $(k+1)$ 个非匹配点构成的集合 $S$，尝试从这些点开始走增广路，维护左部点集合 $S$ 和右部点集合 $T$，不断递归进行以下操作：</p>
+<ul>
+<li>由于 $|S|-|\bigcup\limits_{v\in S} N(v)|\leq k$，所以至少存在一个右部点 $y$ 满足其不在 $T$ 中。若 $y$ 是非匹配点，则找到一个增广路，与最大匹配的假设矛盾；否则将 $y$ 加进 $T$，对于和 $y$ 匹配的点 $x’$，加进 $S$，递归判断。</li>
+</ul>
+<p>每次都会加进一个新的点，而点数是有限的，所以最终会推出矛盾。充分性得证，则结论得证。</p>
+<h1 id="网络流"><a href="#网络流" class="headerlink" title="网络流"></a>网络流</h1><h3 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h3><p>对于一个有向图 $G=(V,E)$，每条边 $(u,v)\in E$ 都有一个权值 $c(u,v)$，称之为容量，当 $(u,v)\notin E$ 的时候 $c(u,v)=0$，有两个特殊的点，称之为源点 $s\in V$，和汇点 $t\in V$，其中 $s\neq t$．</p>
+<h3 id="流"><a href="#流" class="headerlink" title="流"></a>流</h3><p>设 $f(u,v)$ 定义在二元组 $(u\in V,v\in V)$ 上的实数函数满足：</p>
+<ol>
+<li>容量限制：$f(u,v)\leq c(u,v)$；</li>
+<li>斜对称性：$f(u,v)=-f(v,u)$；</li>
+<li>流守恒性：$\forall x\in V-\{s,t\},\sum_{u,x\sin E}f(u,x)=\sum_{(x,v)\in E}f(x,v)$．</li>
+</ol>
+<p>称 $f$ 为网络 $G$ 的流函数，整个网络的流量即为从源点出发的所有流量之和。</p>
+<h3 id="最大流-费用流-最小割"><a href="#最大流-费用流-最小割" class="headerlink" title="最大流 费用流 最小割"></a>最大流 费用流 最小割</h3><p>具体的做法众所周知，于是就不写了！</p>
+<p>记一下复杂度：</p>
+<p><strong>求解最大流复杂度</strong></p>
+<p>Dinic 最坏复杂度为 $\mathcal{O}(n^2m)$，事实上远远达不到这个上界。</p>
+<p>对于求解类似二分图匹配问题时，所有边的流量均为 $1$，且除了源点和汇点外的所有点，都满足入边最多只有一条，或出边最多只有一条，这样的网络称之为单位网络，对于单位网络 Dinic 复杂度为 $\mathcal{O}(\sqrt nm)$．</p>
+<p><strong>求解费用流复杂度</strong></p>
+<p>SSP 算法：最坏 $\mathcal{O}(nmf)$ 复杂度，其中 $f$ 是最大流。</p>
+<p><strong>定理：最小割等于将每条边的代价转换成其容量后 $s$ 至 $t$ 的最大流。</strong></p>
+<p>首先先将 $s$ 无法到达的点和无法到达 $t$ 的点删去，不影响最大流和最小割的值。</p>
+<p>对于一组割，将 $V$ 分成两个不相交子集 $L,R$，其中 $L$ 为 $s$ 能流到的点集，$R$ 为能流到 $t$ 的点集，$(u,v),u\in L,\in R$ 组成的集合一定是一组割，而且任意割一定能找到一个子集可以表示为这种形式。所以最小割一定可以表示成这种形式。</p>
+<p>由于任意流都需要从 $L$ 到 $R$，必须经过这些边，所以任意流不大于任意割。</p>
+<p>对于最大流，将残量网络上的点分成 $L,R$，则 $(u,v),u\in L,\in R$ 是一组割，其值等于最大流。又由于任意流不大于任意流，所以这组割是最小割。</p>
+<h3 id="最小割的方案"><a href="#最小割的方案" class="headerlink" title="最小割的方案"></a>最小割的方案</h3><p>在做完最大流之后求出残量网络中 $s$ 可以到达的点集 $L$，其余的点构成的集合为 $R$，则所有 $(u,v)$ 满足 $u\in L,v\in R$，则所有的 $(u,v)$ 构成了一组最小割。</p>
+<p>但是最小割可能存在很多种，我们定义一条边为可行边为存在一组最小割使得这条边被割断，必经边定义为在每组最小割中这条边都被割断。</p>
+<p>考虑暴力判断每一条边：</p>
+<ul>
+<li>若删掉 $(u,v,w)$ 这条边，最小割的大小减少 $w$，则这条边是可行边；</li>
+<li>若将 $(u,v,w)$ 这条边权值改为 $+\infty$，最小割变大，则这条边是必经边。</li>
+</ul>
+<p>考虑更快地判断，在 $G$ 跑完最大流的残量网络 $G’$ 上讨论：</p>
+<p>命题：一条边 $(u,v,w)$ 是最小割可行边，当且仅当这条边满流，并且 $G’$ 上不存在 $u\to v$ 的路径。</p>
+<ul>
+<li>若不满流，退掉的流 $&lt; w$，再加上有可能还会有增广路，那么最小割大小减少的量一定 $&lt;w$；</li>
+<li>若满流且 $G’$ 存在 $u\to v$ 的路径，那么将这条边删掉之后还会有增广路，最小割大小减小的量 $&lt;w$；</li>
+<li>同理，若满流且 $G’$ 不存在 $u\to v$ 的路径，将这条边删掉之后没有增广路，最小割大小减小的量 $=w$，其为可行边。</li>
+</ul>
+<p>命题：一条边 $(u,v,w)$ 是最小割必经边，当且仅当 $G’$ 上存在 $s\to u$ 和 $v\to t$ 的路径。</p>
+<p>其实网上找到的命题还要满足满流，我想了一下如果 $G’$ 上存在 $s\to u$ 和 $v\to t$ 的路径，那么这条边一定满流，否则就出现了一条增广路。</p>
+<p>注意到若满足此条件，将 $(u,v,w)$ 这条边权值改为 $+\infty$，产生增广路，最小割变大，则这条边是必经边。</p>
+<p><strong>定理：将 $G’$ 进行缩点，则边 $(u,v,w)$ 是可行边当且仅当满流且 $u,v$ 在不同 SCC，是必经边当且仅当满流且 $s,u$ 在同一 SCC，且 $v,t$ 在同一 SCC。</strong></p>
+<blockquote>
+<p>这里的 $G’$ 是指将残量网络中没有满流的边视作有向边，也就是删掉已经满流的边。</p>
+</blockquote>
+<p>证明的话利用反向边讨论即可：</p>
+<ul>
+<li>若 $(u,v,w)$ 满流，那么其反向边 $v\to u$ 存在于 $G’$ 中，则存在 $u$ 到 $v$ 的路径等价于 $u,v$ 在同一 SCC。所以边 $(u,v,w)$ 是可行边当且仅当满流且 $u,v$ 在不同 SCC；</li>
+<li>若 $(u,v,w)$ 满流，说明一定存在 $s\to u$ 的流，其路径上的反向边在其中，所以 $G’$ 存在 $u\to s$ 的路径，那么 $G’$ 存在 $s\to u$ 的路径等价于 $s$ 和 $u$ 在同一 SCC 中。同理，$G’$ 存在 $v\to t$ 的路径等价于 $v$ 和 $t$ 在同一 SCC 中。</li>
+</ul>
+<p>综上，定理得证。</p>
+<p>根据以上定理，可以得到以下判断最小割方案的方式：</p>
+<p><strong>求出最大流，在残量网络上进行缩点，连接不同 SCC 的满流边是可行边，连接 $s$ 所在 SCC 和 $t$ 所在 SCC 的满流边是必经边。</strong></p>
+<p>也就是 <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4126">[AHOI2009]最小割</a>。</p>
+<h3 id="二分图最大匹配方案与可行边（点）必经边（点）"><a href="#二分图最大匹配方案与可行边（点）必经边（点）" class="headerlink" title="二分图最大匹配方案与可行边（点）必经边（点）"></a>二分图最大匹配方案与可行边（点）必经边（点）</h3><p>感觉没什么用，就不记了。遇到再来补。</p>
+<h3 id="最小割求最大权闭合子图"><a href="#最小割求最大权闭合子图" class="headerlink" title="最小割求最大权闭合子图"></a>最小割求最大权闭合子图</h3><p><strong>定义：有一个有向图，每一个点都有一个权值（可以为正或负或 $0$），选择一个权值和最大的子图，使得每个点的后继都在子图里面，这个子图就叫最大权闭合子图。</strong></p>
+<p>转化成最小割问题：</p>
+<p>建立超级源点 $s$ 和汇点 $t$.</p>
+<p>$s$ 向每个正权点连边，流量为权值的绝对值。这条边存在代表该点<strong>在</strong>所选子图中。</p>
+<p>每个负权点向 $t$ 连边，流量为权值的绝对值。这条边存在代表该点<strong>不在</strong>所选子图中。</p>
+<p>原图边的流量均为 $+\infty$ （不能被割掉）。</p>
+<p>求该网络的最小割，即可求出最大权闭合子图包含哪些点。</p>
+<p>最大权闭合子图的权值 $=$ 正权和 $-$ 最小割。</p>
+<p><strong>合法性</strong></p>
+<p>当 $s$ 和 $t$ 连通时，选出的子图不满足条件。假设有一条增广路，$s\to i\to \ldots \to j\to t$，则 $i$ 被选中，$j$ 没有被选中，不符合限制。</p>
+<p>当 $s$ 和 $t$ 不连通时，选出的子图满足条件。对于任意一个 $s\to i$：</p>
+<ul>
+<li><p>$i$ 的后继负节点到 $t$ 的边被割掉了，它们被选中了；</p>
+</li>
+<li><p>由于已经割掉了 $i$ 的所有后继负节点，$i$ 的后继正节点一定无法走到 $t$，割掉它们与 $s$ 的边是不优的，最小割不会把它们割掉，所以 $i$ 的所有后继正节点都被选中了。</p>
+</li>
+</ul>
+<p><strong>最优性</strong></p>
+<p>根据前面的讨论，任意一个合法的割都对应着唯一一个选点方案；任意一个合法的选点方案都对应着唯一一个割。</p>
+<p>这样任意一个割和选点方案都组成了一个双射。由于一个选点方案的权值 $=$ 正权和 $-$ 割的大小。</p>
+<p>所以最大权闭合子图的权值 $=$ 正权和 $-$ 最小割。</p>
+<h2 id="上下界网络流"><a href="#上下界网络流" class="headerlink" title="上下界网络流"></a>上下界网络流</h2><p>上下界顾名思义就是对于每条边流过的流量，不仅有上界 $c(u,v)$，还存在下界 $b(u,v)$（至少要流过多少流量）。也就是流函数 $f$ 要满足 $b(u,v)\leq f(u,v)\leq c(u,v)$．</p>
+<p>可以有以下分类：</p>
+<ul>
+<li>无源汇和有源汇：因为有上下界，所以网络可以保持流量平衡而没有源点和汇点，这一类成为无源汇上下界网络流。</li>
+<li>可行流，最大流，最小流，费用流。</li>
+</ul>
+<h3 id="无源汇上下界可行流"><a href="#无源汇上下界可行流" class="headerlink" title="无源汇上下界可行流"></a>无源汇上下界可行流</h3><p>给定一张上下界网络图，求一种合法的流量函数，使得每个点都满足流量守恒。</p>
+<p>考虑将其转化成无下界即普通的最大流问题。</p>
+<p>对于每一条边，假装其流了 $b(u,v)$，那么剩余能流的就是 $c’(u,v)=c(u,v)-b(u,v)$，但是这样流量不一定守恒，于是考虑每个点 $x$ 出流量与入流量的差 $M$，并建立超级源点 $S$ 和 $T$：若 $M=0$，则出入流量已经守恒；若 $M&gt;0$，出流量太多了，需要一定的入流量来平衡，于是连边 $(S,x,M)$；若 $M&lt;0$，入流量太多了，需要一定的出流量来平衡，于是连边 $(x,T,-M)$．</p>
+<p>这样求出 $S$ 到 $T$ 的最大流，如果新加的边是满流，就说明这个点可以保持流量平衡，否则就不能保持流量平衡。若所有点都保持流量平衡即求出一个可行流，否则不存在可行流。</p>
+<h3 id="有源汇上下界可行流"><a href="#有源汇上下界可行流" class="headerlink" title="有源汇上下界可行流"></a>有源汇上下界可行流</h3><p>添加一条边 $(t,s,+\infty)$ 即可转化成无源汇上下界可行流。</p>
+<h3 id="有源汇上下界最大流"><a href="#有源汇上下界最大流" class="headerlink" title="有源汇上下界最大流"></a>有源汇上下界最大流</h3><p>看看有没有可行流，如果有的话删掉所有附加边在残量网络上再跑一次最大流（这次只有上界了），将可行流和最大流相加即为答案。</p>
+<p>不会证明正确性，也没找到。</p>
+<p>也可以二分答案，将 $t\to s$ 的边下界设为 $m$ 转成可行流问题。</p>
+<h3 id="有源汇上下界最小流"><a href="#有源汇上下界最小流" class="headerlink" title="有源汇上下界最小流"></a>有源汇上下界最小流</h3><p>类似最大流，考虑将残量网络中不需要的流退掉，在残量网络上跑一次 $t$ 到 $s$ 的最大流，将可行流减去最大流即为答案。</p>
+<p>不会证明正确性，也没找到。同理也可以二分答案。</p>
+<h3 id="有-无-上下界最小-大-费用可行-最大-流"><a href="#有-无-上下界最小-大-费用可行-最大-流" class="headerlink" title="有(无)上下界最小(大)费用可行(最大)流"></a>有(无)上下界最小(大)费用可行(最大)流</h3><p>和上面的都一样，把最大流换成费用流。</p>
+<h3 id="有负环的费用流"><a href="#有负环的费用流" class="headerlink" title="有负环的费用流"></a>有负环的费用流</h3><p>对于价值为负数的边 $(u,v,c,w)$，先假装这条边流满了，答案费用加上 $c\times w$，然后建反边 $(v,u,c,−w)$，这样就都是正权边了。</p>
+<p>但是流量可能不平衡，那就用上下界网络流的思想建立超级源点 $S$ 和超级汇点 $T$，和多流出或者多流入的点连边即可。</p>
+<p>如果原问题是有源汇无源汇，流量有无下界，进一步的解决方法和之前讨论到的都是一样的。</p>
+<hr>
+<p>终于把基础的东西都写完了，待补的还有二分图最大权匹配的KM算法，这个感觉还用不到，也有可能是没什么用，等以后再学吧。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%BD%91%E7%BB%9C%E6%B5%81/" rel="tag"># 网络流</a>
+              <a href="/tags/%E4%BA%8C%E5%88%86%E5%9B%BE/" rel="tag"># 二分图</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/02/04/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%90%84%E7%B1%BB%E5%AE%B9%E6%96%A5%E5%8F%8D%E6%BC%94%E6%80%BB%E7%BB%93/" rel="prev" title="「学习笔记」各类容斥反演总结">
+      <i class="fa fa-chevron-left"></i> 「学习笔记」各类容斥反演总结
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/02/04/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8DFFT%20x%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%B9%E9%85%8D/" rel="next" title="「学习笔记」FFT x 字符串匹配">
+      「学习笔记」FFT x 字符串匹配 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BA%8F%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">序言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E5%88%86%E5%9B%BE"><span class="nav-number">2.</span> <span class="nav-text">二分图</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%88%86%E5%9B%BE-1"><span class="nav-number">2.1.</span> <span class="nav-text">二分图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-number">2.1.1.</span> <span class="nav-text">定义</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%88%86%E5%9B%BE%E6%9C%80%E5%A4%A7%E5%8C%B9%E9%85%8D"><span class="nav-number">2.2.</span> <span class="nav-text">二分图最大匹配</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8C%88%E7%89%99%E5%88%A9%E7%AE%97%E6%B3%95"><span class="nav-number">2.2.1.</span> <span class="nav-text">匈牙利算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E5%A4%A7%E6%B5%81%E5%81%9A%E6%B3%95"><span class="nav-number">2.2.2.</span> <span class="nav-text">最大流做法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A6%86%E7%9B%96%E4%B8%8E%E7%8B%AC%E7%AB%8B%E9%9B%86"><span class="nav-number">2.3.</span> <span class="nav-text">覆盖与独立集</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E5%88%86%E5%9B%BE%E6%9C%80%E5%B0%8F%E7%82%B9%E8%A6%86%E7%9B%96"><span class="nav-number">2.3.1.</span> <span class="nav-text">二分图最小点覆盖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E5%88%86%E5%9B%BE%E6%9C%80%E5%A4%A7%E7%8B%AC%E7%AB%8B%E9%9B%86"><span class="nav-number">2.3.2.</span> <span class="nav-text">二分图最大独立集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E5%88%86%E5%9B%BE%E6%9C%80%E5%B0%8F%E8%BE%B9%E8%A6%86%E7%9B%96"><span class="nav-number">2.3.3.</span> <span class="nav-text">二分图最小边覆盖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%89%E5%90%91%E6%97%A0%E7%8E%AF%E5%9B%BE%E6%9C%80%E5%B0%8F%E8%B7%AF%E5%BE%84%E8%A6%86%E7%9B%96"><span class="nav-number">2.3.4.</span> <span class="nav-text">有向无环图最小路径覆盖</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%88%86%E5%9B%BE%E6%9C%80%E5%A4%A7%E6%9D%83%E5%8C%B9%E9%85%8D"><span class="nav-number">2.4.</span> <span class="nav-text">二分图最大权匹配</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B4%B9%E7%94%A8%E6%B5%81%E5%81%9A%E6%B3%95"><span class="nav-number">2.4.1.</span> <span class="nav-text">费用流做法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hall-%E5%AE%9A%E7%90%86"><span class="nav-number">2.5.</span> <span class="nav-text">Hall 定理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E6%B5%81"><span class="nav-number">3.</span> <span class="nav-text">网络流</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C"><span class="nav-number">3.0.1.</span> <span class="nav-text">网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%81"><span class="nav-number">3.0.2.</span> <span class="nav-text">流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E5%A4%A7%E6%B5%81-%E8%B4%B9%E7%94%A8%E6%B5%81-%E6%9C%80%E5%B0%8F%E5%89%B2"><span class="nav-number">3.0.3.</span> <span class="nav-text">最大流 费用流 最小割</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E5%B0%8F%E5%89%B2%E7%9A%84%E6%96%B9%E6%A1%88"><span class="nav-number">3.0.4.</span> <span class="nav-text">最小割的方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E5%88%86%E5%9B%BE%E6%9C%80%E5%A4%A7%E5%8C%B9%E9%85%8D%E6%96%B9%E6%A1%88%E4%B8%8E%E5%8F%AF%E8%A1%8C%E8%BE%B9%EF%BC%88%E7%82%B9%EF%BC%89%E5%BF%85%E7%BB%8F%E8%BE%B9%EF%BC%88%E7%82%B9%EF%BC%89"><span class="nav-number">3.0.5.</span> <span class="nav-text">二分图最大匹配方案与可行边（点）必经边（点）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E5%B0%8F%E5%89%B2%E6%B1%82%E6%9C%80%E5%A4%A7%E6%9D%83%E9%97%AD%E5%90%88%E5%AD%90%E5%9B%BE"><span class="nav-number">3.0.6.</span> <span class="nav-text">最小割求最大权闭合子图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8A%E4%B8%8B%E7%95%8C%E7%BD%91%E7%BB%9C%E6%B5%81"><span class="nav-number">3.1.</span> <span class="nav-text">上下界网络流</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A0%E6%BA%90%E6%B1%87%E4%B8%8A%E4%B8%8B%E7%95%8C%E5%8F%AF%E8%A1%8C%E6%B5%81"><span class="nav-number">3.1.1.</span> <span class="nav-text">无源汇上下界可行流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%89%E6%BA%90%E6%B1%87%E4%B8%8A%E4%B8%8B%E7%95%8C%E5%8F%AF%E8%A1%8C%E6%B5%81"><span class="nav-number">3.1.2.</span> <span class="nav-text">有源汇上下界可行流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%89%E6%BA%90%E6%B1%87%E4%B8%8A%E4%B8%8B%E7%95%8C%E6%9C%80%E5%A4%A7%E6%B5%81"><span class="nav-number">3.1.3.</span> <span class="nav-text">有源汇上下界最大流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%89%E6%BA%90%E6%B1%87%E4%B8%8A%E4%B8%8B%E7%95%8C%E6%9C%80%E5%B0%8F%E6%B5%81"><span class="nav-number">3.1.4.</span> <span class="nav-text">有源汇上下界最小流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%89-%E6%97%A0-%E4%B8%8A%E4%B8%8B%E7%95%8C%E6%9C%80%E5%B0%8F-%E5%A4%A7-%E8%B4%B9%E7%94%A8%E5%8F%AF%E8%A1%8C-%E6%9C%80%E5%A4%A7-%E6%B5%81"><span class="nav-number">3.1.5.</span> <span class="nav-text">有(无)上下界最小(大)费用可行(最大)流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%89%E8%B4%9F%E7%8E%AF%E7%9A%84%E8%B4%B9%E7%94%A8%E6%B5%81"><span class="nav-number">3.1.6.</span> <span class="nav-text">有负环的费用流</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="do-while-true"
+      src="/images/head.gif">
+  <p class="site-author-name" itemprop="name">do-while-true</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Friends
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/h-lka/" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;h-lka&#x2F;" rel="noopener" target="_blank">Refined_heart</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://shanlunjiajian.github.io/" title="https:&#x2F;&#x2F;shanlunjiajian.github.io&#x2F;" rel="noopener" target="_blank">华山抡剑</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/LFCode/" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;LFCode&#x2F;" rel="noopener" target="_blank">LFCode</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://forza-ferrari.github.io/" title="https:&#x2F;&#x2F;forza-ferrari.github.io&#x2F;" rel="noopener" target="_blank">绝顶我为峰</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/alan-zhao-2007/" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;alan-zhao-2007&#x2F;" rel="noopener" target="_blank">Alan_Zhao</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/suxxsfe/" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;suxxsfe&#x2F;" rel="noopener" target="_blank">suxxsfe</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">do-while-true</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"do-while-true.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="以前看到四边形不等式或叫决策单调性优化 dp，看到绕来绕去的式子和繁琐的证明总是望而却步。 数理基础简单打一下后再来看时发现，其实模型并不复杂，证明大多较为基础，故记此文加以巩固。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="「学习笔记」四边形不等式优化 &#x2F; 决策单调性优化 dp">
+<meta property="og:url" content="https://do-while-true.github.io/2022/02/04/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%9B%9B%E8%BE%B9%E5%BD%A2%E4%B8%8D%E7%AD%89%E5%BC%8F%E4%BC%98%E5%8C%96%20%20%E5%86%B3%E7%AD%96%E5%8D%95%E8%B0%83%E6%80%A7%E4%BC%98%E5%8C%96%20dp/index.html">
+<meta property="og:site_name" content="do_while_true&#39;s blog">
+<meta property="og:description" content="以前看到四边形不等式或叫决策单调性优化 dp，看到绕来绕去的式子和繁琐的证明总是望而却步。 数理基础简单打一下后再来看时发现，其实模型并不复杂，证明大多较为基础，故记此文加以巩固。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s4.ax1x.com/2022/02/04/HZ2CSx.png">
+<meta property="article:published_time" content="2022-02-03T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-02-04T07:04:27.509Z">
+<meta property="article:author" content="do-while-true">
+<meta property="article:tag" content="dp">
+<meta property="article:tag" content="决策单调性优化dp">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s4.ax1x.com/2022/02/04/HZ2CSx.png">
+
+<link rel="canonical" href="https://do-while-true.github.io/2022/02/04/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%9B%9B%E8%BE%B9%E5%BD%A2%E4%B8%8D%E7%AD%89%E5%BC%8F%E4%BC%98%E5%8C%96%20%20%E5%86%B3%E7%AD%96%E5%8D%95%E8%B0%83%E6%80%A7%E4%BC%98%E5%8C%96%20dp/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>「学习笔记」四边形不等式优化 / 决策单调性优化 dp | do_while_true's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">do_while_true's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">喵呜</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">9</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">2</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">8</span></a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://do-while-true.github.io/2022/02/04/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%9B%9B%E8%BE%B9%E5%BD%A2%E4%B8%8D%E7%AD%89%E5%BC%8F%E4%BC%98%E5%8C%96%20%20%E5%86%B3%E7%AD%96%E5%8D%95%E8%B0%83%E6%80%A7%E4%BC%98%E5%8C%96%20dp/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head.gif">
+      <meta itemprop="name" content="do-while-true">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="do_while_true's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          「学习笔记」四边形不等式优化 / 决策单调性优化 dp
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-02-04 00:00:00 / Modified: 15:04:27" itemprop="dateCreated datePublished" datetime="2022-02-04T00:00:00+08:00">2022-02-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>以前看到四边形不等式或叫决策单调性优化 dp，看到绕来绕去的式子和繁琐的证明总是望而却步。</p>
+<p>数理基础简单打一下后再来看时发现，其实模型并不复杂，证明大多较为基础，故记此文加以巩固。</p>
+<span id="more"></span>
+<p>部分证明过程会以 Markdown 中引用的格式进行标注，笔者学艺不精还请指出错误及不足之处。</p>
+<p>代码大部分是自己口胡出来的，可能写得乱了点。</p>
+<h2 id="四边形不等式"><a href="#四边形不等式" class="headerlink" title="四边形不等式"></a>四边形不等式</h2><p>设函数 $w(x,y)$，其中 $x,y$ 整数，若对于任意整数 $a,b,c,d$，满足 $a\leq b\leq c\leq d$，都有 $w(a,c)+w(b,d)\leq w(a,d)+w(b,c)$ 成立，则称 $w$ 满足四边形不等式。</p>
+<p>简记为：<strong>交叉小于等于包含</strong>。</p>
+<p><strong>定理一</strong></p>
+<p>若对于任意正整数 $a,b$，满足 $a&lt;b$ ，都有 $w(a,b)+w(a+1,b+1)\leq w(a,b+1)+w(a+1,b)$ 成立，则 $w$ 满足四边形不等式。</p>
+<p>我的记法是两步一起蹦跶 （$(a,b)\to(a+1,b+1)$）不如一步一步走远 （$(a,b+1),a(a+1,b)$），有点像绕口令的感觉了wwwww。</p>
+<p><img src="https://s4.ax1x.com/2022/02/04/HZ2CSx.png" alt=""></p>
+<blockquote>
+<p>当 $a+1&lt;c$ 时，由条件得 $C+B\leq A+D,D+E\leq B+F$，两式相加化简可得 $C+E\leq A+F$，以此类推，对于 $a\leq b\leq c$ 都有 $w(a,c)+w(b,c+1)\leq w(a,c+1)+w(b,c)$ 成立。</p>
+<p>同理，对于所有 $a\leq b\leq c\leq d$，都有 $w(a,c)+w(b,d)\leq w(a,d)+w(b,c)$ 成立。</p>
+</blockquote>
+<h2 id="1D1D-问题的优化"><a href="#1D1D-问题的优化" class="headerlink" title="1D1D 问题的优化"></a>1D1D 问题的优化</h2><p>决策单调性：设 $p_i$ 为 $f_i$ 最优转移的位置（决策点），$p$ 单调不降即为具有决策单调性。</p>
+<p><strong>一般地，对于 $f_i=\min\{g_j+w(j,i)\}$ 的状态转移方程，若 $w$ 满足四边形不等式，则 $f$ 满足决策单调性。</strong></p>
+<p>值得注意的是，这里的 $g_j$ 是指的关于 $j$ 的函数，其有可能包括 dp 的 $f_j$，也有可能仅包括与 $f_j$ 无关的其他 $a_j,b_j,c_j…$ 其他关于 $j$ 的值，也有可能为常数，但不影响结论的正确性。$\min$ 还是 $\max$ 也不影响。</p>
+<blockquote>
+<p>已知 $g_{p_i}+w(p_i,i)\leq g_j+w(j,i),j&lt;p_i$ 以及 $w$ 满足四边形不等式。</p>
+<p>求证 $p_{i’}\geq p_i,i’&gt;i$。</p>
+<p>为了体现想出这个证明的思路，以下的过程表述并不严谨。</p>
+<p>$p_{i’}\geq p_i$ 等价于 $g_{p_i}+w(p_i,i’)\leq g_j+w(j,i’),j&lt;p_i$。</p>
+<p>那么就是想办法把已知条件 $g_{p_i}+w(p_i,i)\leq g_j+w(j,i),j&lt;p_i$ 中的 $w(p_i,i)$ 换成 $w(p_i,i’)$，$w(j,i)$ 换成$w(j,i’)$。</p>
+<p>由于 $w$ 满足四边形不等式且 $j&lt;p_i&lt;i&lt;i’$，</p>
+<p>所以 $w(j,i)+w(p_i,i’)\leq w(p_i,i)+w(j,i’)$。</p>
+<p>移项得 $w(p_i,i’)-w(p_i,i)\leq w(j,i’)-w(j,i)$。</p>
+<p>与已知中的不等式相加得到 $g_{p_i}+w(p_i,i)\leq g_j+w(j,i),j&lt;p_i$。</p>
+<p>故 $p_{i’}\geq p$。</p>
+</blockquote>
+<h3 id="单调队列-二分"><a href="#单调队列-二分" class="headerlink" title="单调队列 + 二分"></a>单调队列 + 二分</h3><p>考虑维护 $p$ 数组，初始全为 $0$，从前往后计算完 $f_i$ 时，$f_i$ 会更新一个后缀的 $p$。</p>
+<p>暴力做这个东西非常完蛋，考虑将 $p$ 的一段段连续区间看成一个拿下来放到一个单调栈里，二分单调栈的位置，使得前半部分用 $i$ 转移不比之前的 $p$ 优，后半部分用 $i$ 转移比之前的 $p$ 更优，如果需要断开就断开，然后把后缀的都弹出来，压入新的这个后缀。</p>
+<p>当然，dp 到 $i$ 时 $&lt;i$ 的 $p$ 是不需要的，所以可以把单调栈改成单调队列。</p>
+<p>每次最多只会压入一个点代表的区间，均摊下来，加上二分，时间复杂度是 $\mathcal{O}(n\log n)$ 的。</p>
+<p><strong>栗题一：Luogu P3515 [POI2011]Lightning Conductor</strong></p>
+<p>$a_j\leq a_i+p_i-\sqrt{|i-j|}$ 等价于 $p_i\geq a_j-a_i+\sqrt{|i-j|}$。求最小的 $p_i$ 使得这个柿子成立，所以 $p_i=\max\{a_j-a_i+\sqrt{|i-j|}\}$，先钦定 $i&gt;j$，$i&lt;j$ 时反过来再做一遍就行。</p>
+<p>把 $a_i$ 从 $\max$ 中提出来，把 $a_j$ 看成上文中的 $g_j$，也就是关于 $j$ 的函数。</p>
+<p>由于 dp 中为 $\max$，所以需证明 $w(j,i)=-\sqrt{i-j}$ 满足四边形不等式，即可证明 $p$ 的决策单调性，便可以决策单调性优化。</p>
+<blockquote>
+<p>求证：$w(l,r)=-\sqrt{r-l}$ 满足四边形不等式，即对于任意 $a&lt;b$ 均满足 $w(a,b)+w(a+1,b+1)\leq w(a,b+1)+w(a+1,b)$ 即可。</p>
+<script type="math/tex; mode=display">
+ \begin{aligned}
+ w(a,b)+w(a+1,b+1)&\leq w(a,b+1)+w(a+1,b)
+ \\
+ -\sqrt{b-a}-\sqrt{(b+1)-(a+1)}&\leq -\sqrt{(b+1)-a}-\sqrt{b-(a+1)}
+ \\
+ 2\sqrt{b-a}&\geq \sqrt{b-a+1}+\sqrt{b-a-1}
+ \\
+ \text{设}\ x=b-a
+ \\
+ 2\sqrt{x}&\geq \sqrt{x+1}+\sqrt{x-1}
+ \end{aligned}</script><p>注意到 $f(x)=\sqrt{x}$ 是上凸的，所以由琴生不等式结论得证。</p>
+<p>化简到这里，打个表也易知 $2\sqrt{x}\geq \sqrt{x+1}+\sqrt{x-1}$ 成立。</p>
+<p>综上所述，$w$ 满足四边形不等式。</p>
+</blockquote>
+<p>实现上要注意用 <code>double</code> 来比较，根号不上取整而是直接开。</p>
+<p>因为如果转移点 $j,k$ 根号都上取整，在算答案的 $i$ 小时大小可能会一样，$i$ 变大的时候大小会发生变化。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> ll;</span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">double</span> ld;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="function">T <span class="title">Max</span><span class="params">(T x, T y)</span> </span>&#123; <span class="keyword">return</span> x &gt; y ? x : y; &#125;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="function">T <span class="title">Min</span><span class="params">(T x, T y)</span> </span>&#123; <span class="keyword">return</span> x &lt; y ? x : y; &#125;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="function">T <span class="title">Abs</span><span class="params">(T x)</span> </span>&#123; <span class="keyword">return</span> x &lt; <span class="number">0</span> ? -x : x; &#125;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function">T&amp; <span class="title">read</span><span class="params">(T&amp; r)</span> </span>&#123;</span><br><span class="line">	r = <span class="number">0</span>; <span class="keyword">bool</span> w = <span class="number">0</span>; <span class="keyword">char</span> ch = <span class="built_in">getchar</span>();</span><br><span class="line">	<span class="keyword">while</span>(ch &lt; <span class="string">&#x27;0&#x27;</span> || ch &gt; <span class="string">&#x27;9&#x27;</span>) w = ch == <span class="string">&#x27;-&#x27;</span> ? <span class="number">1</span> : <span class="number">0</span>, ch = <span class="built_in">getchar</span>();</span><br><span class="line">	<span class="keyword">while</span>(ch &gt;= <span class="string">&#x27;0&#x27;</span> &amp;&amp; ch &lt;= <span class="string">&#x27;9&#x27;</span>) r = r * <span class="number">10</span> + (ch ^ <span class="number">48</span>), ch = <span class="built_in">getchar</span>();</span><br><span class="line">	<span class="keyword">return</span> r = w ? -r : r;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">500010</span>;</span><br><span class="line"><span class="keyword">int</span> n, a[N], qh, qt;</span><br><span class="line">ll f[N];</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span> &#123;</span></span><br><span class="line">	<span class="keyword">int</span> l, r, p;</span><br><span class="line">	<span class="built_in">Node</span>(<span class="keyword">int</span> ll = <span class="number">0</span>, <span class="keyword">int</span> rr = <span class="number">0</span>, <span class="keyword">int</span> pp = <span class="number">0</span>) &#123; l = ll; r = rr; p = pp; &#125;</span><br><span class="line">&#125;q[N];</span><br><span class="line"><span class="function">ld <span class="title">w</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> a[x] - a[y] + std::<span class="built_in">sqrt</span>(y-x);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">solve</span><span class="params">(<span class="keyword">int</span> op)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; ++i) q[i] = <span class="built_in">Node</span>();</span><br><span class="line">	q[qh = qt = <span class="number">1</span>] = <span class="built_in">Node</span>(<span class="number">1</span>, n, <span class="number">1</span>);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">		<span class="keyword">while</span>(qh &lt; qt &amp;&amp; q[qh].r &lt; i) ++qh;</span><br><span class="line">		<span class="keyword">if</span>(!op) f[i] = <span class="built_in">Max</span>(f[i], (ll)std::<span class="built_in">ceil</span>(<span class="built_in">w</span>(q[qh].p, i)));</span><br><span class="line">		<span class="keyword">else</span> f[n-i+<span class="number">1</span>] = <span class="built_in">Max</span>(f[n-i+<span class="number">1</span>], (ll)std::<span class="built_in">ceil</span>(<span class="built_in">w</span>(q[qh].p, i)));</span><br><span class="line">		<span class="keyword">if</span>(q[qh].l == q[qh].r) ++qh;</span><br><span class="line">		<span class="keyword">else</span> q[qh].l = i+<span class="number">1</span>;</span><br><span class="line">		<span class="keyword">while</span>(qh &lt;= qt &amp;&amp; <span class="built_in">w</span>(q[qt].p, q[qt].l) &lt; <span class="built_in">w</span>(i, q[qt].l)) --qt, q[qt].r = q[qt+<span class="number">1</span>].r;</span><br><span class="line">		<span class="keyword">if</span>(qh &gt; qt) q[++qt] = <span class="built_in">Node</span>(i+<span class="number">1</span>, n, i);</span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">int</span> l = q[qt].l, r = q[qt].r, mid, t = <span class="number">0</span>;</span><br><span class="line">			<span class="keyword">while</span>(l &lt;= r) &#123;</span><br><span class="line">				mid = (l + r) &gt;&gt; <span class="number">1</span>;</span><br><span class="line">				<span class="keyword">if</span>(<span class="built_in">w</span>(q[qt].p, mid) &lt; <span class="built_in">w</span>(i, mid)) t = mid, r = mid<span class="number">-1</span>;</span><br><span class="line">				<span class="keyword">else</span> l = mid+<span class="number">1</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span>(t) &#123;</span><br><span class="line">				<span class="keyword">if</span>(t == q[qt].l) q[qt].p = i;</span><br><span class="line">				<span class="keyword">else</span> ++qt, q[qt] = <span class="built_in">Node</span>(t, q[qt<span class="number">-1</span>].r, i), q[qt<span class="number">-1</span>].r = t<span class="number">-1</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">read</span>(n);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; ++i) <span class="built_in">read</span>(a[i]);</span><br><span class="line">	<span class="built_in">solve</span>(<span class="number">0</span>);</span><br><span class="line">	std::<span class="built_in">reverse</span>(a + <span class="number">1</span>, a + n + <span class="number">1</span>);</span><br><span class="line">	<span class="built_in">solve</span>(<span class="number">1</span>);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; ++i) <span class="built_in">printf</span>(<span class="string">&quot;%lld\n&quot;</span>, f[i]);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>栗题二：[NOI2009] 诗人小G</strong></p>
+<p>设 $f_i$ 为考虑前 $i$ 个单词的最小代价，枚举 $j$，让 $(j,i]$ 的单词分在同一行中。设 $a$ 的前缀和为 $s$，可得：</p>
+<script type="math/tex; mode=display">
+f_i =\min\{f_j+|s_i-s_j+i-j-1-L|^p\}</script><p>为简化计算，将 $a_i,L$ 都 $+1$，得</p>
+<script type="math/tex; mode=display">
+f_i =\min\{f_j+|s_i-s_j-L|^p\}</script><p>设 $w(l,r)=|s_r-s_l-L|^p$，证明 $w$ 满足四边形不等式则可以决策单调性优化。</p>
+<blockquote>
+<p>求证：对于任意 $a&lt;b$ 均满足 $w(a,b)+w(a+1,b+1)\leq w(a,b+1)+w(a+1,b)$ 即可。</p>
+<script type="math/tex; mode=display">
+ \begin{aligned}
+ w(a,b)+w(a+1,b+1)&\leq w(a,b+1)+w(a+1,b)
+ \\
+ w(a,b)-w(a,b+1)&\leq w(a+1,b)-w(a+1,b+1)
+ \\
+ |s_b-s_a-L|^p-|s_{b+1}-s_a-L|^P&\leq |s_b-s_{a+1}-L|^p-|s_{b+1}-s_{a+1}-L|^P
+ \end{aligned}</script><p>由于 $s_{a+1}&gt;s_a$，设函数 $f(x)=|x|^p-|x-c|^p$，其中 $c$ 为 $&gt;0$ 的常数，证明其单调不升即可。<br>分类讨论一下：<br>假如 $p$ 为奇数，并且 $x\in [-\infty,0]$：<br>化简一下 $f$：$f(x)=-x^p+(x-c)^p$。<br>求导得 $f’(x)=-px^{p-1}+(p-1)\cdot (x-c)^{p-1}\leq 0$，所以此时 $f$ 单调不升。<br>其余情况类似，不多赘述，均为化简 $f$ 后证明 $f’(x)\leq 0$ 即可。<br>如此，我们证明了 $w$ 满足四边形不等式，故可以决策单调性优化。</p>
+</blockquote>
+<p>方法就是前面讲过的单调队列 + 二分。注意答案可能很大，开 <code>long double</code>。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">double</span> ll;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="function">T <span class="title">Max</span><span class="params">(T x, T y)</span> </span>&#123; <span class="keyword">return</span> x &gt; y ? x : y; &#125;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="function">T <span class="title">Min</span><span class="params">(T x, T y)</span> </span>&#123; <span class="keyword">return</span> x &lt; y ? x : y; &#125;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="function">T <span class="title">Abs</span><span class="params">(T x)</span> </span>&#123; <span class="keyword">return</span> x &lt; <span class="number">0</span> ? -x : x; &#125;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function">T&amp; <span class="title">read</span><span class="params">(T&amp; r)</span> </span>&#123;</span><br><span class="line">	r = <span class="number">0</span>; <span class="keyword">bool</span> w = <span class="number">0</span>; <span class="keyword">char</span> ch = <span class="built_in">getchar</span>();</span><br><span class="line">	<span class="keyword">while</span>(ch &lt; <span class="string">&#x27;0&#x27;</span> || ch &gt; <span class="string">&#x27;9&#x27;</span>) w = ch == <span class="string">&#x27;-&#x27;</span> ? <span class="number">1</span> : <span class="number">0</span>, ch = <span class="built_in">getchar</span>();</span><br><span class="line">	<span class="keyword">while</span>(ch &gt;= <span class="string">&#x27;0&#x27;</span> &amp;&amp; ch &lt;= <span class="string">&#x27;9&#x27;</span>) r = r * <span class="number">10</span> + (ch ^ <span class="number">48</span>), ch = <span class="built_in">getchar</span>();</span><br><span class="line">	<span class="keyword">return</span> r = w ? -r : r;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">ll <span class="title">qpow</span><span class="params">(ll x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line">	ll sumq = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">while</span>(y) &#123;</span><br><span class="line">		<span class="keyword">if</span>(y &amp; <span class="number">1</span>) sumq = sumq * x;</span><br><span class="line">		x = x * x;</span><br><span class="line">		y &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> sumq;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">100010</span>;</span><br><span class="line"><span class="keyword">int</span> n, L, P, p[N], a[N], s[N];</span><br><span class="line"><span class="keyword">int</span> qh, qt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span> &#123;</span></span><br><span class="line">	<span class="keyword">int</span> p, l, r;</span><br><span class="line">	<span class="built_in">Node</span>(<span class="keyword">int</span> pp = <span class="number">0</span>, <span class="keyword">int</span> ll = <span class="number">0</span>, <span class="keyword">int</span> rr = <span class="number">0</span>) &#123; p = pp; l = ll; r = rr; &#125;</span><br><span class="line">&#125;q[N];</span><br><span class="line"><span class="keyword">char</span> ch[N][<span class="number">31</span>];</span><br><span class="line">ll f[N];</span><br><span class="line"><span class="function">ll <span class="title">w</span><span class="params">(<span class="keyword">int</span> j, <span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> f[j] + <span class="built_in">qpow</span>(<span class="built_in">Abs</span>(s[i] - s[j] - L), P);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(!x) <span class="keyword">return</span> ;</span><br><span class="line">	<span class="built_in">print</span>(p[x]);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = p[x]+<span class="number">1</span>; i &lt;= x; ++i) &#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>, ch[i]+<span class="number">1</span>);</span><br><span class="line">		<span class="keyword">if</span>(i &lt; x) <span class="built_in">putchar</span>(<span class="string">&#x27; &#x27;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">solve</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">read</span>(n); <span class="built_in">read</span>(L); <span class="built_in">read</span>(P); ++L;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%s&quot;</span>, ch[i]+<span class="number">1</span>);</span><br><span class="line">		a[i] = std::<span class="built_in">strlen</span>(ch[i]+<span class="number">1</span>);</span><br><span class="line">		p[i] = q[i].p = q[i].l = q[i].r = <span class="number">0</span>;</span><br><span class="line">		s[i] = s[i<span class="number">-1</span>] + a[i] + <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	qh = <span class="number">1</span>; qt = <span class="number">1</span>;</span><br><span class="line">	q[<span class="number">1</span>] = <span class="built_in">Node</span>(<span class="number">0</span>, <span class="number">1</span>, n);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">		<span class="keyword">while</span>(qh &lt; qt &amp;&amp; q[qh].r &lt; i) ++qh;</span><br><span class="line">		f[i] = <span class="built_in">w</span>(q[qh].p, i); p[i] = q[qh].p;</span><br><span class="line">		<span class="keyword">if</span>(q[qh].l == q[qh].r) ++qh;</span><br><span class="line">		<span class="keyword">else</span> ++q[qh].l;</span><br><span class="line">		<span class="keyword">while</span>(qh &lt;= qt &amp;&amp; <span class="built_in">w</span>(q[qt].p, q[qt].l) &gt; <span class="built_in">w</span>(i, q[qt].l)) --qt, q[qt].r = q[qt+<span class="number">1</span>].r;</span><br><span class="line">		<span class="keyword">if</span>(qh &gt; qt) q[++qt] = <span class="built_in">Node</span>(i, i+<span class="number">1</span>, n);</span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">int</span> l = q[qt].l, r = q[qt].r, mid = <span class="number">0</span>, t = <span class="number">0</span>;</span><br><span class="line">			<span class="keyword">while</span>(l &lt;= r) &#123;</span><br><span class="line">				mid = (l + r) &gt;&gt; <span class="number">1</span>;</span><br><span class="line">				<span class="keyword">if</span>(<span class="built_in">w</span>(q[qt].p, mid) &gt; <span class="built_in">w</span>(i, mid)) t = mid, r = mid<span class="number">-1</span>;</span><br><span class="line">				<span class="keyword">else</span> l = mid+<span class="number">1</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span>(t) &#123;</span><br><span class="line">				<span class="keyword">if</span>(t == q[qt].l) q[qt].p = i;</span><br><span class="line">				<span class="keyword">else</span> ++qt, q[qt] = <span class="built_in">Node</span>(i, t, q[qt<span class="number">-1</span>].r), q[qt<span class="number">-1</span>].r = t<span class="number">-1</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(f[n] &gt; <span class="number">1000000000000000000ll</span>) &#123;</span><br><span class="line">		<span class="built_in">puts</span>(<span class="string">&quot;Too hard to arrange&quot;</span>);</span><br><span class="line">		<span class="keyword">return</span> ;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%lld\n&quot;</span>, (<span class="keyword">long</span> <span class="keyword">long</span>)f[n]);</span><br><span class="line">	<span class="built_in">print</span>(n);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> T; <span class="built_in">read</span>(T);</span><br><span class="line">	<span class="keyword">while</span>(T--) &#123;</span><br><span class="line">		<span class="built_in">solve</span>();</span><br><span class="line">		<span class="built_in">puts</span>(<span class="string">&quot;--------------------&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="分治"><a href="#分治" class="headerlink" title="分治"></a>分治</h3><p>单调队列+二分的方法可以解决大多数的决策单调性优化问题。对于更<strong>特殊</strong>的情况，决策点和决策点如果是互相独立的，那么可以采用分治解决。适用性没有单调队列+二分更强，但是也可能拿来解决某些问题。</p>
+<p>大致的思路是：定义 <code>solve(l,r,L,R)</code> 为求解 $[L,R]$ 的状态值，已知这些状态的最优决策点在 $[l,r]$ 中，每次暴力求出 $mid=[\frac{L+R}{2}]$ 处的状态值，从最优决策点断开分治解决。</p>
+<p>由于每一层递归下去状态数 $len=R-L+1$ 都会折半，所以递归树的层数是 $\mathcal{O}(\log n)$ 级别，递归树每层 <code>solve</code> 的总复杂度是决策点总数即 $\mathcal{O}(n)$，所以总的时间复杂度是 $\mathcal{O}(n\log n)$．</p>
+<p><strong>栗题三：Codeforces 868F Yet Another Minimization Problem</strong></p>
+<p>考虑 $f_{i,j}$ 代表前 $i$ 个数分成 $j$ 段，然后有个决策单调性优化，但是这个一段区间的代价 $w(l,r)$ 比较难算，如果单独看这个东西是小 Z 的袜子，可以归约到 $O(\sqrt n)\times O(\sqrt n)$ 的矩阵乘法，看上去很完蛋。</p>
+<p>但注意到如果选择分治来算这个决策单调性，$w$ 用类似莫队的东西暴力移动两个指针，由于分治最多有 $\log n$ 层，每层的移动次数是 $\mathcal{O}(n)$ 的，所以这个 $w$ 的统计次数是 $\mathcal{O}(n\log n)$ 的，总复杂度就是 $\mathcal{O}(kn\log n)$．</p>
+<h3 id="斜率优化"><a href="#斜率优化" class="headerlink" title="斜率优化"></a>斜率优化</h3><p>有一部分决策单调性问题实际上就是斜率优化的一种，具体的原理就不多谈啦<del>其实就是懒</del>。</p>
+<h2 id="一点总结"><a href="#一点总结" class="headerlink" title="一点总结"></a>一点总结</h2><p>其实大部分的题要点还是能看出来这个满足决策单调性，有时候证不出来也可以打个表看看有没有单调性。</p>
+<p>至于栗题的话，如果提前告诉你这个题决策点是单调了从而决策单调性优化，那就没什么意义了，所以就不放啦<del>其实就是懒</del>。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dp/" rel="tag"># dp</a>
+              <a href="/tags/%E5%86%B3%E7%AD%96%E5%8D%95%E8%B0%83%E6%80%A7%E4%BC%98%E5%8C%96dp/" rel="tag"># 决策单调性优化dp</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/02/04/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E6%8F%92%E5%80%BC/" rel="prev" title="「学习笔记」拉格朗日插值">
+      <i class="fa fa-chevron-left"></i> 「学习笔记」拉格朗日插值
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/02/04/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%90%84%E7%B1%BB%E5%AE%B9%E6%96%A5%E5%8F%8D%E6%BC%94%E6%80%BB%E7%BB%93/" rel="next" title="「学习笔记」各类容斥反演总结">
+      「学习笔记」各类容斥反演总结 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E8%BE%B9%E5%BD%A2%E4%B8%8D%E7%AD%89%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">四边形不等式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1D1D-%E9%97%AE%E9%A2%98%E7%9A%84%E4%BC%98%E5%8C%96"><span class="nav-number">2.</span> <span class="nav-text">1D1D 问题的优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E8%B0%83%E9%98%9F%E5%88%97-%E4%BA%8C%E5%88%86"><span class="nav-number">2.1.</span> <span class="nav-text">单调队列 + 二分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E6%B2%BB"><span class="nav-number">2.2.</span> <span class="nav-text">分治</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%9C%E7%8E%87%E4%BC%98%E5%8C%96"><span class="nav-number">2.3.</span> <span class="nav-text">斜率优化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E7%82%B9%E6%80%BB%E7%BB%93"><span class="nav-number">3.</span> <span class="nav-text">一点总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="do-while-true"
+      src="/images/head.gif">
+  <p class="site-author-name" itemprop="name">do-while-true</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Friends
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/h-lka/" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;h-lka&#x2F;" rel="noopener" target="_blank">Refined_heart</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://shanlunjiajian.github.io/" title="https:&#x2F;&#x2F;shanlunjiajian.github.io&#x2F;" rel="noopener" target="_blank">华山抡剑</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/LFCode/" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;LFCode&#x2F;" rel="noopener" target="_blank">LFCode</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://forza-ferrari.github.io/" title="https:&#x2F;&#x2F;forza-ferrari.github.io&#x2F;" rel="noopener" target="_blank">绝顶我为峰</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/alan-zhao-2007/" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;alan-zhao-2007&#x2F;" rel="noopener" target="_blank">Alan_Zhao</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/suxxsfe/" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;suxxsfe&#x2F;" rel="noopener" target="_blank">suxxsfe</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">do-while-true</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
