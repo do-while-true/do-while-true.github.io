@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"do-while-true.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="各类根号算法。不太适合当作复习所用，就当写个教程了，可能因为这个东西不大需要复习（">
+<meta property="og:type" content="article">
+<meta property="og:title" content="「学习笔记」分块和莫队">
+<meta property="og:url" content="https://do-while-true.github.io/2022/02/12/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%88%86%E5%9D%97%E5%92%8C%E8%8E%AB%E9%98%9F/index.html">
+<meta property="og:site_name" content="do_while_true&#39;s blog">
+<meta property="og:description" content="各类根号算法。不太适合当作复习所用，就当写个教程了，可能因为这个东西不大需要复习（">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-02-11T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-02-14T12:05:59.842Z">
+<meta property="article:author" content="do-while-true">
+<meta property="article:tag" content="分块">
+<meta property="article:tag" content="莫队">
+<meta property="article:tag" content="根号重构">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://do-while-true.github.io/2022/02/12/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%88%86%E5%9D%97%E5%92%8C%E8%8E%AB%E9%98%9F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>「学习笔记」分块和莫队 | do_while_true's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">do_while_true's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">喵呜</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">15</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">2</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">10</span></a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://do-while-true.github.io/2022/02/12/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%88%86%E5%9D%97%E5%92%8C%E8%8E%AB%E9%98%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head.gif">
+      <meta itemprop="name" content="do-while-true">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="do_while_true's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          「学习笔记」分块和莫队
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-02-12 00:00:00" itemprop="dateCreated datePublished" datetime="2022-02-12T00:00:00+08:00">2022-02-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-02-14 20:05:59" itemprop="dateModified" datetime="2022-02-14T20:05:59+08:00">2022-02-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>各类根号算法。不太适合当作复习所用，就当写个教程了，可能因为这个东西不大需要复习（</p>
+<span id="more"></span>
+<p>还是尽可能地总结了一下重点？我觉得空心五角星比较好看，但是不好找，所以用了实心五角星，要是能像</p>
+<p>关于复杂度分析：在实践中还是不要套式子，应当直接分析。</p>
+<p>关于块长：在实践中还是不要套式子，应当直接调块长看怎样跑得快。</p>
+<h1 id="分块"><a href="#分块" class="headerlink" title="分块"></a>分块</h1><p>有时候不同操作的数量不同，比方说一般的普通莫队，会有 $\mathcal{O}(n\sqrt n)$ 次修改，但是只有 $\mathcal{O}(n)$ 次查询，这个时候若采用 $\mathcal{O}(1)$ 修改，$\mathcal{O}(\sqrt n)$ 查询，就会得到 $\mathcal{O}(n\sqrt n)$ 的优秀复杂度！</p>
+<p>常用来复杂度平衡的分块：</p>
+<p><strong>$\mathcal{O}(\sqrt n)$ 区间修改 $\mathcal{O}(1)$ 单点查询</strong></p>
+<p>序列分块，整块打标记，散块暴力修改。</p>
+<p><strong>$\mathcal{O}(1)$ 单点修改，$\mathcal{O}(\sqrt n)$ 区间求和</strong></p>
+<p>序列分块，维护整块总和，散块暴力查。</p>
+<p><strong>$\mathcal{O}(\sqrt n)$ 区间加，$\mathcal{O}(1)$ 区间求和</strong></p>
+<p>对于每个块维护块内前缀/后缀和，维护整块之间的前缀和。</p>
+<p>修改：对于块内前缀后缀和：整块打标记，散块暴力重构；整块之间的前缀和暴力修改。</p>
+<p>查询：整块为两个前缀和相减，散块查这个块里面的前缀后缀和。</p>
+<p><strong>$\mathcal{O}(1)$ 区间加，$\mathcal{O}(\sqrt n)$ 区间求和</strong></p>
+<p>类似上一个，对于每个块维护块内差分，维护整块之间的差分。</p>
+<p>更好写的做法：差分一下，$\mathcal{O}(1)$ 单点修改，区间求和变成两个前缀求和，那么就只需要求 $\mathcal{O}(\sqrt n)$ 求前缀 $(x+1-i)\times a_i$ 的值，维护 $\sum a_i$ 和 $\sum a_i\times i$ 即可。</p>
+<h1 id="莫队"><a href="#莫队" class="headerlink" title="莫队"></a>莫队</h1><p>我的理解：莫队是在高维上利用分块的一种扫描线。或者说，在高维上的若干点的最小生成树上 dfs。</p>
+<p>理想莫队信息：维护一个子集的信息，支持 $\mathcal{O}(a)$ 插入一个元素，$\mathcal{O}(b)$ 删除一个元素，无法比直接暴力插入更高效地合并。</p>
+<h2 id="普通莫队"><a href="#普通莫队" class="headerlink" title="普通莫队"></a>普通莫队</h2><p>设块长为 $B$，易分析得出端点移动次数为 $\frac{n^2}{B}+mB$，若 $n,m$ 同阶，取 $B=\sqrt n$ 最优。但实际上，根据数据生成的方式不同，不同的块长在效率上也有所不同，但我们这里暂且讨论复杂度上问题，不考虑数据不同带来的影响。</p>
+<p>莫队掌握的经典技巧是复杂度平衡。</p>
+<p>如果 $m&lt;n$，取块长 $\frac{n}{\sqrt m}$，移动次数和查询次数得到平衡，左右端点移动次数和查询次数均为 $\mathcal{O}(n\sqrt m)$，这一步是根据均值不等式来得出的。</p>
+<p>举个栗子，例如每次端点移动是区间修改，查询是单点查询，$n,m$ 同阶。这个时候如果用线段树或者树状数组，复杂度为 $\mathcal{O}(n\sqrt n\log n)$．但是注意到询问只有 $m$ 次，询问的复杂度比修改的复杂度还要低，尝试平衡修改和询问的复杂度，采用序列分块来做到 $\mathcal{O}(1)$ 修改 $\sqrt n$ 查询，这样总复杂度就是 $\mathcal{O}(n\sqrt n)$．</p>
+<p>还有诸如把 $\log$ 放进根号里面的技巧，当然这都是理论上的东西，在实践中，由于实现不同部分的常数差异，块长有时候取得更大或者更小是更优的。</p>
+<p>下面整理的几种莫队我认为都是更偏向于 trick 或者套路而并非模板。</p>
+<h2 id="带修莫队-amp-高维莫队"><a href="#带修莫队-amp-高维莫队" class="headerlink" title="带修莫队 &amp; 高维莫队"></a>带修莫队 &amp; 高维莫队</h2><p>啊这个玩意是不是在时间上多了一维的莫队！</p>
+<p>如果有修改，那么就加上一维时间，这里令 $n,m$ 同阶，故分析时所有 $m$ 均由 $n$ 替代。</p>
+<p>按照 $B$ 为块长分块，共有 $\frac{n}{B}$ 个块。排序的时候先按照左端点所在块排序，再按照右端点所在块排序，再按照时间排序。然后三个指针去扫。</p>
+<ul>
+<li>左右指针所在块编号不变时，块之内的时间指针移动次数是 $\mathcal{O}(n)$，块之间的时间指针移动次数也是 $\mathcal{O}(n)$；左右指针所在块编号的种数是 $\mathcal{O}((\frac{n}{B})^2)$，所以时间指针移动总复杂度是 $\mathcal{O}(\frac{n^2}{B})$．</li>
+</ul>
+<ul>
+<li><p>左指针所在块编号不变时，对于相邻两个询问，右指针在块之内移动次数是 $\mathcal{O}(B)$，在块之间移动次数是 $\mathcal{O}(B)$；左指针所在块编号改变时，右指针移动 $\mathcal{O}(n)$，左指针所在块编号改变 $\mathcal{O}(\frac{n}{B})$ 次。所以右指针移动的总复杂度为 $\mathcal{O}(nB+\frac{n^2}{B})$．</p>
+</li>
+<li><p>左指针移动次数易分析得 $\mathcal{O}(nB)$．</p>
+</li>
+</ul>
+<p>所以总时间复杂度为 $\mathcal{O}(nB+\frac{n^2}{B})$，根据均值不等式，取 $nB=\frac{n^2}{B}$ 时，即 $B=n^{\frac{2}{3}}$ 最优，总时间复杂度为 $\mathcal{O}(n^{\frac{5}{3}})$．</p>
+<h3 id="一般化：高维莫队"><a href="#一般化：高维莫队" class="headerlink" title="一般化：高维莫队"></a>一般化：高维莫队</h3><p>$★$ 方法：对前 $k-1$ 维分块，按照第 $i$ 关键字为第 $i$ 个维度的所在块编号排序，第 $k$ 维关键字为第 $k$ 维坐标。</p>
+<p>尝试用扫描线的角度来一般化在 $k$ 个维度上做莫队的过程，这里假设指针的移动是 $\mathcal{O}(1)$ 的，每一处指针移动次数都要和 $m$ 取 $\min$．</p>
+<p>考虑第 $k$ 维指针的总移动次数：块数乘上 $n$ 也就是 $\mathcal{O}(\frac{n^{k}}{B^{k-1}})$；</p>
+<p>对于第 $i$ 维，考虑前 $i-1$ 维在同一个块内，第 $i$ 维指针的移动次数：它每次移动 $\mathcal{O}(B)$ 次，一共移动 $\mathcal{O}(mB)$ 次。</p>
+<p>对于第 $i$ 维，考虑前 $i-1$ 维在不同块之间第 $i$ 维指针的移动次数：</p>
+<ul>
+<li><p>从一个块到下一个相邻的块，每次移动 $\mathcal{O}(B)$ 次，一共移动 $\mathcal{O}(mB)$ 次；</p>
+</li>
+<li><p>从最后一个块到第一个块，每次移动 $\mathcal{O}(n)$ 次，仅会在前面维度的块改变的时候才会移动，前面维度的块数为 $\mathcal{O}(\frac{n^{i-1}}{B^{i-1}})$，所以这部分移动次数是 $\mathcal{O}(\frac{n^i}{B^{i-1}})$，向上松一松就是 $\mathcal{O}(k\frac{n^k}{B^{k-1}})$，由于通常 $k$ 不是很大，那就视这个 $k$ 为常数。</p>
+</li>
+</ul>
+<p>综上所述，指针移动次数为 $\mathcal{O}(\frac{n^{k}}{B^{k-1}}+mB)$，同样根据均值不等式得到 $B=\frac{n}{m^{\frac{1}{k}}}$ 时最优，时间复杂度为 $\mathcal{}(nm^{\frac{k-1}{k}})$</p>
+<h2 id="树上莫队"><a href="#树上莫队" class="headerlink" title="树上莫队"></a>树上莫队</h2><p>查询的信息：</p>
+<ul>
+<li>链信息</li>
+<li>子树信息</li>
+</ul>
+<p>其中如果查询的子树信息是理想莫队信息，那么直接启发式合并即可。</p>
+<p>链上查询信息的方法：</p>
+<ul>
+<li>信息可以差分，一条链差分成四个点到根的路径（四维降成二维）</li>
+<li>对于连通块进行分块（树分块）</li>
+<li>对于括号序分块</li>
+</ul>
+<p>理想莫队信息，第一种方法就不行了，第三种方法相比于第二种代码难度和常数都更优。</p>
+<p>那么解决思路大概就是，把树的信息用括号序变成序列，然后在上面跑莫队。</p>
+<h3 id="括号序"><a href="#括号序" class="headerlink" title="括号序"></a>括号序</h3><p>假设点 $x$ 的入栈时间为 $in_x$，出栈时间为 $out_x$．</p>
+<p>对于括号序上的一段区间，如果它仅出现一次，那么就统计上它的信息。</p>
+<p>假设现在要询问树上路径 $u\to v$ 的信息。如果它们互为祖先关系，假设 $u$ 是 $v$ 的祖先，那么这条路径的信息就相当于括号序 $[in_u,in_v]$ 的信息。</p>
+<p>如果它们不互为祖先关系，假设 $out_u&lt;in_v$，那么这条路径的信息就相当于 $[out_u,in_v]$ 的信息。</p>
+<p>括号序还可以用来判断两点间是否存在祖先关系，判断 $u$ 是否是 $v$ 的祖先等价于判断 $[in_u,out_u]$ 是否完全包含 $[in_v,out_v]$．</p>
+<p>这样在括号序上跑莫队就可以维护信息了。</p>
+<h2 id="回滚莫队"><a href="#回滚莫队" class="headerlink" title="回滚莫队"></a>回滚莫队</h2><p>在正常的问题中，普通莫队是不断移动左右端点来维护答案。但有的问题，插入和删除复杂度是不一样的。有时候插入更快一些，有时候删除更快一些。采用只插入不删除，或者只删除不插入的莫队，称之为回滚莫队。</p>
+<p>仍是按照<strong>左端点所在的块</strong>为第一关键字，按照<strong>右端点</strong>为第二关键字排序。</p>
+<p>$★$ 只插入莫队：初始左端点为所在块右端点，右端点从小往大扫，每次处理询问的时候直接撤销左端点的影响，重新从块的右端点开始移动。</p>
+<p>$★$ 只删除莫队：类似地，初始左端点为所在块左端点，右端点从大往小扫，每次处理询问的时候直接撤销左端点的影响，重新从块的左端点开始移动。</p>
+<p>很多博客都是让左右端点在同一块内的暴力扫，对于只删除莫队，如果散块询问不好暴力扫得出，一并加入到最后扫莫队也是不影响的。</p>
+<h2 id="二次离线莫队"><a href="#二次离线莫队" class="headerlink" title="二次离线莫队"></a>二次离线莫队</h2><p>咋一看上去很高深，其实并不难，其实也是一种思想？</p>
+<p><strong>例题：多次询问区间逆序对，允许离线（洛谷 P5047）</strong></p>
+<p>很容易想到一个 莫队+树状数组 的做法。每次移动指针的时候用树状数组来计算答案的变化。一共有 $\mathcal{O}(n\sqrt m)$ 次单点修改，区间查询。</p>
+<p>注意到这个过程本质上还是在做数点，那把区间查询差分成前缀查询，然后把这些询问离线下来，做数点。这样就只有 $\mathcal{O}(n)$ 次单点修改，$\mathcal{O}(n\sqrt m)$ 次区间查询，用 $\mathcal{O}(\sqrt n)$ 单点修改，$\mathcal{O}(1)$ 区间查询，就可以做到 $\mathcal{O}(n(\sqrt n+\sqrt m))$ 的时间复杂度。</p>
+<p>但是卡空间，而空间复杂度为 $\mathcal{O}(n\sqrt m)$，优化空间的话，假设是右端点向右移动（其余移动情况同理），每次都是询问 $([1,r-1],r)$ 产生的逆序对，而这个可以预处理出来之后作前缀和来 $\mathcal{O}(1)$ 得到；还有询问 $([1,l-1],r)$ 的逆序对，注意到 $l-1$ 是固定的，那么把 $[r,qr]$ 两个区间端点挂在 $l-1$ 处即可。这样空间就是线性的了。</p>
+<p><strong>小结</strong></p>
+<p>前面提到莫队本质上是离线下来作扫描线，而<strong>把莫队指针移动的的过程中所做的修改和询问操作，再离线下来</strong>，通过扫描线等技巧优化复杂度处理，就是<strong>二次离线</strong>了！</p>
+<h1 id="根号重构"><a href="#根号重构" class="headerlink" title="根号重构"></a>根号重构</h1><blockquote>
+<p>本节整理自 lxl 的课件。</p>
+</blockquote>
+<p>本质上是对时间分块。</p>
+<p>基于这么一个套路：</p>
+<ul>
+<li>$\mathcal{O}(x)$ 重构整个序列；</li>
+<li>$\mathcal{O}(y)$ 计算一个修改操作对一次查询的影响；</li>
+<li>每隔 $t$ 个修改重构整个序列。</li>
+</ul>
+<p>对于查询，其总复杂度为 $\mathcal{O}(mty)$；对于重构，其总复杂度为 $\mathcal{O}(\frac{mx}{t})$．</p>
+<p><strong>经典问题</strong></p>
+<p>维护一棵树，支持断边，加边，链 kth。</p>
+<p>考虑根号重构，每 $\sqrt m$ 重构一次。</p>
+<p>这样询问就转化成查询 $\sqrt m$ 段树链总的 kth。</p>
+<p>用可持久化线段树维护，每次询问在这 $\sqrt m$ 个可持久化线段树上一块儿二分。</p>
+<p>查询复杂度 $\mathcal{O}(\sqrt m\log n)$，重构复杂度 $\mathcal{O}(n\log n)$，总复杂度 $\mathcal{O}((n+m)\sqrt m\log n)$．</p>
+<p><strong>小结</strong></p>
+<p>lxl 的话：</p>
+<blockquote>
+<p>在复杂的范围修改查询问题中，可以考虑根号重构。</p>
+<p>这里是一个统计规律。</p>
+<p>实际上我认为是对于复杂的范围修改查询问题，维之间是不对称的，时间维是结构最简单的，对其进行分块容易出好的效果。</p>
+</blockquote>
+<p>我暂且还没有那么深的理解，没有深刻理解到“维之间不对称”，对于“时间维结构较简单”稍微有那么一点感觉（？），还需要多做点题。</p>
+<p>我对后半句理解大概就是，时间维的结构是简单的，因此尝试在时间维上维护信息。类比序列上的线段树和树状数组，在时间维上维护信息的方法有线段树分治和根号重构。</p>
+<h1 id="Trick-和例题"><a href="#Trick-和例题" class="headerlink" title="Trick 和例题"></a>Trick 和例题</h1><p>$\sum a_i\leq n$，不同的 $a_i$ 只有 $\mathcal{O}(\sqrt n)$ 种。</p>
+<p>先咕着</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%88%86%E5%9D%97/" rel="tag"># 分块</a>
+              <a href="/tags/%E8%8E%AB%E9%98%9F/" rel="tag"># 莫队</a>
+              <a href="/tags/%E6%A0%B9%E5%8F%B7%E9%87%8D%E6%9E%84/" rel="tag"># 根号重构</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/02/04/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8DFFT%20x%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%B9%E9%85%8D/" rel="prev" title="「学习笔记」FFT x 字符串匹配">
+      <i class="fa fa-chevron-left"></i> 「学习笔记」FFT x 字符串匹配
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/02/14/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%8C%BA%E9%97%B4%E5%8D%8A%E7%BE%A4%E4%BF%A1%E6%81%AF%E6%9F%A5%E8%AF%A2/" rel="next" title="「学习笔记」区间半群信息查询">
+      「学习笔记」区间半群信息查询 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%86%E5%9D%97"><span class="nav-number">1.</span> <span class="nav-text">分块</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%8E%AB%E9%98%9F"><span class="nav-number">2.</span> <span class="nav-text">莫队</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%99%AE%E9%80%9A%E8%8E%AB%E9%98%9F"><span class="nav-number">2.1.</span> <span class="nav-text">普通莫队</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%A6%E4%BF%AE%E8%8E%AB%E9%98%9F-amp-%E9%AB%98%E7%BB%B4%E8%8E%AB%E9%98%9F"><span class="nav-number">2.2.</span> <span class="nav-text">带修莫队 &amp; 高维莫队</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E8%88%AC%E5%8C%96%EF%BC%9A%E9%AB%98%E7%BB%B4%E8%8E%AB%E9%98%9F"><span class="nav-number">2.2.1.</span> <span class="nav-text">一般化：高维莫队</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%91%E4%B8%8A%E8%8E%AB%E9%98%9F"><span class="nav-number">2.3.</span> <span class="nav-text">树上莫队</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8B%AC%E5%8F%B7%E5%BA%8F"><span class="nav-number">2.3.1.</span> <span class="nav-text">括号序</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9E%E6%BB%9A%E8%8E%AB%E9%98%9F"><span class="nav-number">2.4.</span> <span class="nav-text">回滚莫队</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E6%AC%A1%E7%A6%BB%E7%BA%BF%E8%8E%AB%E9%98%9F"><span class="nav-number">2.5.</span> <span class="nav-text">二次离线莫队</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%B9%E5%8F%B7%E9%87%8D%E6%9E%84"><span class="nav-number">3.</span> <span class="nav-text">根号重构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Trick-%E5%92%8C%E4%BE%8B%E9%A2%98"><span class="nav-number">4.</span> <span class="nav-text">Trick 和例题</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="do-while-true"
+      src="/images/head.gif">
+  <p class="site-author-name" itemprop="name">do-while-true</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Friends
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/h-lka/" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;h-lka&#x2F;" rel="noopener" target="_blank">Refined_heart</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://shanlunjiajian.github.io/" title="https:&#x2F;&#x2F;shanlunjiajian.github.io&#x2F;" rel="noopener" target="_blank">华山抡剑</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/LFCode/" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;LFCode&#x2F;" rel="noopener" target="_blank">LFCode</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://forza-ferrari.github.io/" title="https:&#x2F;&#x2F;forza-ferrari.github.io&#x2F;" rel="noopener" target="_blank">绝顶我为峰</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/alan-zhao-2007/" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;alan-zhao-2007&#x2F;" rel="noopener" target="_blank">Alan_Zhao</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/suxxsfe/" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;suxxsfe&#x2F;" rel="noopener" target="_blank">suxxsfe</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://lampese.com/" title="https:&#x2F;&#x2F;lampese.com&#x2F;" rel="noopener" target="_blank">Lampese</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">do-while-true</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

@@ -20,20 +20,22 @@
     var CONFIG = {"hostname":"do-while-true.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="原来联赛是考数论的……好像很多的结论没有给证明。">
+  <meta name="description" content="对 qwaszx 博客 的抄写。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="「学习笔记」联赛数论再学习">
-<meta property="og:url" content="https://do-while-true.github.io/2022/02/04/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E8%81%94%E8%B5%9B%E6%95%B0%E8%AE%BA%E5%86%8D%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:title" content="「学习笔记」区间半群信息查询">
+<meta property="og:url" content="https://do-while-true.github.io/2022/02/14/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%8C%BA%E9%97%B4%E5%8D%8A%E7%BE%A4%E4%BF%A1%E6%81%AF%E6%9F%A5%E8%AF%A2/index.html">
 <meta property="og:site_name" content="do_while_true&#39;s blog">
-<meta property="og:description" content="原来联赛是考数论的……好像很多的结论没有给证明。">
+<meta property="og:description" content="对 qwaszx 博客 的抄写。">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2022-02-03T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-02-04T07:51:08.416Z">
+<meta property="article:published_time" content="2022-02-13T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-02-14T12:07:21.875Z">
 <meta property="article:author" content="do-while-true">
-<meta property="article:tag" content="数论">
+<meta property="article:tag" content="数据结构">
+<meta property="article:tag" content="猫树">
+<meta property="article:tag" content="Sqrt Tree">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://do-while-true.github.io/2022/02/04/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E8%81%94%E8%B5%9B%E6%95%B0%E8%AE%BA%E5%86%8D%E5%AD%A6%E4%B9%A0/">
+<link rel="canonical" href="https://do-while-true.github.io/2022/02/14/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%8C%BA%E9%97%B4%E5%8D%8A%E7%BE%A4%E4%BF%A1%E6%81%AF%E6%9F%A5%E8%AF%A2/">
 
 
 <script id="page-configurations">
@@ -46,7 +48,7 @@
   };
 </script>
 
-  <title>「学习笔记」联赛数论再学习 | do_while_true's blog</title>
+  <title>「学习笔记」区间半群信息查询 | do_while_true's blog</title>
   
 
 
@@ -166,7 +168,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://do-while-true.github.io/2022/02/04/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E8%81%94%E8%B5%9B%E6%95%B0%E8%AE%BA%E5%86%8D%E5%AD%A6%E4%B9%A0/">
+    <link itemprop="mainEntityOfPage" href="https://do-while-true.github.io/2022/02/14/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%8C%BA%E9%97%B4%E5%8D%8A%E7%BE%A4%E4%BF%A1%E6%81%AF%E6%9F%A5%E8%AF%A2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/head.gif">
@@ -179,7 +181,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          「学习笔记」联赛数论再学习
+          「学习笔记」区间半群信息查询
         </h1>
 
         <div class="post-meta">
@@ -190,7 +192,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-02-04 00:00:00 / Modified: 15:51:08" itemprop="dateCreated datePublished" datetime="2022-02-04T00:00:00+08:00">2022-02-04</time>
+              <time title="Created: 2022-02-14 00:00:00 / Modified: 20:07:21" itemprop="dateCreated datePublished" datetime="2022-02-14T00:00:00+08:00">2022-02-14</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -213,51 +215,29 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>原来联赛是考数论的……好像很多的结论没有给证明。</p>
+        <p>对 <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/blog/qwaszx/jing-tai-ou-jian-jie-ge-lv-xin-xi-zha-xun">qwaszx 博客</a> 的抄写。</p>
 <span id="more"></span>
-<h1 id="一些定义和结论"><a href="#一些定义和结论" class="headerlink" title="一些定义和结论"></a>一些定义和结论</h1><p><strong>剩余类</strong>：记模 $m$ 为 $r$（$r\in [0,m)$）的自然数组成的集合为 $k_r$，则 $k_r$ 为模 $m$ 的一个剩余类，任意 $a\bmod m=r$，称 $a$ 为 $k_r$ 的一个代表元。</p>
-<p><strong>完系</strong>：在每个 $k_r$ 中任取一个代表元为模 $m$ 的一个完系。</p>
-<p><strong>缩系/简化剩余系</strong>：对于每一个与 $m$ 互质的 $r$，在 $k_r$ 中任取一个代表元为模 $m$ 的一个缩系。若 $x\perp m$，则将 $m$ 的一个缩系中每个数都乘 $x$ 后，仍然为 $m$ 的一个缩系。</p>
-<p><strong>裴蜀定理</strong>：$ax+by=c,x\in \mathbb{Z}^{*},y\in \mathbb{Z}^{*}$ 有整数解的充要条件是 $\gcd (a,b)|c$</p>
-<p><strong>费马小定理</strong>：若 $\gcd(a,m)=1$，则 $a^{m-1}\equiv 1\pmod m$</p>
-<p><strong>欧拉定理</strong>：若 $\gcd(a,m)=1$，则 $a^{\varphi(m)}\equiv 1\pmod m$</p>
-<p><strong>扩展欧拉定理</strong>：$a^{b}\equiv a^{b \bmod \varphi(m)+\varphi(m)}\pmod m$</p>
-<p><strong>Lucas 定理</strong>：</p>
-<script type="math/tex; mode=display">
-\binom{n}{m}=\binom{\left \lfloor n/p \right \rfloor }{\left \lfloor m/p \right \rfloor }\binom{n\bmod p}{m\bmod p}\pmod p</script><p><strong>欧几里得算法（辗转相除法）</strong>：</p>
-<script type="math/tex; mode=display">
-\gcd(a,b)=\gcd(b,a\bmod b)\ \ \ (b\neq 0)
-\\
-\gcd(a,0)=a</script><p><strong>Stein算法</strong>：</p>
-<p>当 $a,b$ 均为偶数时：$\gcd(a,b)=2\gcd(a/2,b/2)$；</p>
-<p>当 $a$ 为偶数，$b$ 为奇数时：$\gcd(a,b)=\gcd(a/2,b)$；</p>
-<p>当 $a$ 为奇数，$b$ 为奇数时：$\gcd(a,b)=\gcd(a-b,b)$．（$a&gt;b$）</p>
-<h1 id="扩展欧几里得算法（exgcd）"><a href="#扩展欧几里得算法（exgcd）" class="headerlink" title="扩展欧几里得算法（exgcd）"></a>扩展欧几里得算法（exgcd）</h1><p>求解下面这个不定方程:</p>
-<script type="math/tex; mode=display">
-ax+by=c</script><p>利用裴蜀定理判断有无解，若有解必有 $\gcd(a,b)|c$．</p>
-<p>先求解 $ax+by=\gcd(a,b)$</p>
-<p>把后面的 $\gcd(a,b)$ 辗转相除一下再写成类似的形式（这里的 $x’,y’$ 是对应 $\gcd(b,a\bmod b)$ 的 $x,y$，和上面的 $x,y$ 没有关系）：</p>
-<script type="math/tex; mode=display">
-ax+by=\gcd(a,b)=\gcd(b,a\bmod b)=bx'+(a-\left\lfloor\frac{a}{b}\right\rfloor b)y'</script><p>因为要求解 $x,y$，所以假设我们已经求解了 $x’,y’$，则要按 $a,b$ 把两个方程分开。</p>
-<script type="math/tex; mode=display">
-ax+by=ay'+b(x'-\left\lfloor \frac{a}{b}\right\rfloor
- y')</script><p>递归求解得到 $x’,y’$ 后，对比系数可得 $x=y’,y=(x’-\left\lfloor \frac{a}{b}\right\rfloor<br> y’)$。</p>
-<p>这样递归就能求出 $ax+by=\gcd(a,b)$ 一组特解了，最后当 $b=0$ 的时候递归终止，此时 $ax+by=\gcd(a,b)$ 的解是 $x=1,y=0$．</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">exgcd</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b, <span class="keyword">int</span> &amp;x, <span class="keyword">int</span> &amp;y)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(!b) &#123; x = <span class="number">1</span>, y = <span class="number">0</span>; <span class="keyword">return</span> ; &#125;</span><br><span class="line">	<span class="built_in">exgcd</span>(b, a % b, x, y);</span><br><span class="line">	<span class="keyword">int</span> nx = y, ny = x - (a / b) * y;</span><br><span class="line">	x = nx, y = ny;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>令 $d=\gcd(a,b)$．</p>
-<p>求出 $ax+by=d$ 的一组特解 $ax_0+by_0=d$，则有 $a\frac{x_0c}{d}+b\frac{y_0c}{d}=c$，记作 $ax_1+by_1=c$．</p>
-<p>其通解为 $a(x_1+k\frac{b}{\gcd(a,b)})+b(y_1-k\frac{a}{\gcd(a,b)})$．</p>
-<p>充要性证明与下面证明扩展中国剩余定理的充要性大致相同，（考虑在数轴上从位于 $d$ 的位置跳）。</p>
-<h1 id="扩展中国剩余定理"><a href="#扩展中国剩余定理" class="headerlink" title="扩展中国剩余定理"></a>扩展中国剩余定理</h1><p>合并两个一元线性同余方程：</p>
-<script type="math/tex; mode=display">
-\left\{\begin{matrix}
-x\equiv a_1\pmod {m_1}
- \\
-x\equiv a_2\pmod{m_2}
-\end{matrix}\right.</script><p>先考虑求出一个特解：有 $a_1+k_1m_1=a_2+k_2m_2$，整理得 $k_1m_1-k_2m_2=a_2-a_1$，用裴蜀定理判断有无解，否则 exgcd 求出一组解 $(p,q)$，则求出同时满足原先两个同余方程的特解 $x_0=pm_1+a_1$ .</p>
-<p>然后考虑利用这个特解找到通解的规律：考虑所有满足第一个方程的 $x$，它在与 $x_0$ 的距离是 $m_1$ 的倍数，所有满足第二个方程的 $x$，它与 $x_0$ 的距离是 $m_2$ 的倍数。那么所有同时满足两个方程的 $x$，它与 $x_0$ 的距离既是 $m_1$ 的倍数也是 $m_2$ 的倍数，那么显然满足条件的 $x$ 是与 $x_0$ 距离是 $\mathrm{lcm}(m_1,m_2)$ 的倍数、</p>
-<p>即求出与所给两个方程等价的方程：$x\equiv x_0 \pmod {\mathrm{lcm}(m_1,m_2)}$．</p>
-<p>为了防止爆精度，exgcd 求解同余方程时使用最小非负整数解。</p>
+<p>半群信息可以简单理解为有结合律的信息。比方说 $\gcd,\min,\max,+,\times$ 之类的。</p>
+<p>这一部分的东西在 OI 中没什么用，就当学个乐吧（）</p>
+<p>猫树 和 Sqrt Tree 可能有些用。</p>
+<h2 id="朴素做法"><a href="#朴素做法" class="headerlink" title="朴素做法"></a>朴素做法</h2><p>$\Theta(n^2)$ 预处理所有区间的答案，然后可以 $\Theta(1)$ 询问。</p>
+<h2 id="线段树-树状数组-ST-表"><a href="#线段树-树状数组-ST-表" class="headerlink" title="线段树 树状数组 ST 表"></a>线段树 树状数组 ST 表</h2><p>只要是半群信息都可以用线段树维护。而树状数组则要求信息可以差分，ST 表要求是幂等半群信息（$x\circ x=x$）。</p>
+<h2 id="猫树"><a href="#猫树" class="headerlink" title="猫树"></a>猫树</h2><p>考虑线段树上分治，对于每个端点代表的区间 $[l,r]$ 及其中点 $m$，预处理区间内所有以 $m$ 为结尾的后缀信息和以 $m+1$ 为起点的前缀信息。那么每次查询 $[l,r]$ 的区间信息的时候，只需要定位到 $[l,r]$ 第一次分裂的节点，也就是 $l,r$ 节点的 LCA，那么就可以 $\Theta(1)$ 查询了。</p>
+<p>如果存在幺元的话，那就可以把序列补成 $2$ 的次幂，这样 LCA 就相当于定位到 $l,r$ 的二进制下的 lcp，可以 $\Theta(1)$ 求得。</p>
+<p>不存在的幺元的话，那就用 $\Theta(n\log n)-\Theta(1)$ 的 LCA 就可以了。</p>
+<p>预处理时间复杂度 $\Theta(n\log n)$，单次询问 $\Theta(1)$．</p>
+<h2 id="Sqrt-Tree"><a href="#Sqrt-Tree" class="headerlink" title="Sqrt Tree"></a>Sqrt Tree</h2><p>把序列按照 $\sqrt n$ 分块，对于整块之间的答案，可以用上文的朴素做法 $\Theta(n)$ 预处理，散块也可以 $\Theta(n)$ 预处理块内前缀信息和后缀信息。这样跨块的询问都能 $\Theta(1)$ 询问，块之内的递归下去处理即可。</p>
+<p>递归层数是 $T(n)=T(\sqrt n)+\Theta(1)=\Theta(\log \log n)$ （每次递归指数 $/2$），询问的话和上节一样，定位需要用到 LCA，合并是预处理的三个信息进行合并。</p>
+<p>时间复杂度 $\Theta(n\log \log n)-\Theta(1)$．</p>
+<p>Sqrt Tree 还能 $\mathcal{O}(\sqrt n)$ 单点修改，这个先咕着，也有可能单独再写个文章专门写 Sqrt Tree。</p>
+<h2 id="？"><a href="#？" class="headerlink" title="？"></a>？</h2><p>在 Sqrt Tree 中块间的预处理中，使用朴素做法并进行复杂度平衡，得到了 Sqrt Tree。类似地，块间可以使用猫树维护，为了复杂度平衡，采用 $\log n$ 为块长。这样每次递归下去问题规模变为 $\Theta(\log n)$，树高为 $\Theta(\log^{\ast}n)$，时间复杂度就是 $\Theta(n\log^{\ast}n)-\Theta(1)$．</p>
+<h2 id="Extend"><a href="#Extend" class="headerlink" title="Extend"></a>Extend</h2><blockquote>
+<p>没有更好的理解，只能进行抄写。</p>
+</blockquote>
+<p>在上节中，用猫树维护 Sqrt Tree 得到了一个树高为 $\Theta(\log^{\ast}n)$ 的数据结构。那么可以继续对上述过程进行迭代：假设上一层数据结构深度为 $T(m-1,n)$，那么以 $T(m-1,n)$ 分块，块间用上一层数据结构进行维护，块内递归处理。这一层数据结构的深度就是不断令 $n\gets T(m-1,n)$ 直到 $n=\Theta(1)$ 的次数。</p>
+<p>为了找到最优的复杂度，考虑找到最小的 $m$ 使得 $T(m,n)=\Theta(1)$，通过查表（不知道 qwaszx 咋查的）发现 $m$ 就是反阿克曼函数 $\alpha(n)$．</p>
+<p>考虑每次询问以 $\Theta(1)$ 的复杂度进入上一层数据结构，则询问复杂度为 $\Theta(\alpha(n))$；预处理的时候，在第 $m$ 层的数据结构需要花费 $\mathcal{O}(nT(m,n))$ 的时空复杂度进入到规模（也就是分块的块数）为 $\mathcal{O}(nT(m,n)/T(m-1,n))$ 的下一层数据结构，因此预处理的时空复杂度为 $\mathcal{O}(n\alpha (n))$（这里 qwaszx 说是查表查出来的），总时间复杂度为 $\mathcal{O}((n+q)\alpha(n))$．</p>
+<p>qwaszx 说这个是下界，但我并不知道原论文是啥（）</p>
 
     </div>
 
@@ -267,7 +247,9 @@ x\equiv a_2\pmod{m_2}
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E6%95%B0%E8%AE%BA/" rel="tag"># 数论</a>
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag"># 数据结构</a>
+              <a href="/tags/%E7%8C%AB%E6%A0%91/" rel="tag"># 猫树</a>
+              <a href="/tags/Sqrt-Tree/" rel="tag"># Sqrt Tree</a>
           </div>
 
         
@@ -276,13 +258,10 @@ x\equiv a_2\pmod{m_2}
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/01/30/hello-world/" rel="prev" title="Hello World!">
-      <i class="fa fa-chevron-left"></i> Hello World!
+    <a href="/2022/02/12/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%88%86%E5%9D%97%E5%92%8C%E8%8E%AB%E9%98%9F/" rel="prev" title="「学习笔记」分块和莫队">
+      <i class="fa fa-chevron-left"></i> 「学习笔记」分块和莫队
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2022/02/04/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%9B%9B%E8%BE%B9%E5%BD%A2%E4%B8%8D%E7%AD%89%E5%BC%8F%E4%BC%98%E5%8C%96%20%20%E5%86%B3%E7%AD%96%E5%8D%95%E8%B0%83%E6%80%A7%E4%BC%98%E5%8C%96%20dp/" rel="next" title="「学习笔记」四边形不等式优化 / 决策单调性优化 dp">
-      「学习笔记」四边形不等式优化 / 决策单调性优化 dp <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -341,7 +320,7 @@ x\equiv a_2\pmod{m_2}
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E5%AE%9A%E4%B9%89%E5%92%8C%E7%BB%93%E8%AE%BA"><span class="nav-number">1.</span> <span class="nav-text">一些定义和结论</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%89%A9%E5%B1%95%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97%E7%AE%97%E6%B3%95%EF%BC%88exgcd%EF%BC%89"><span class="nav-number">2.</span> <span class="nav-text">扩展欧几里得算法（exgcd）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%89%A9%E5%B1%95%E4%B8%AD%E5%9B%BD%E5%89%A9%E4%BD%99%E5%AE%9A%E7%90%86"><span class="nav-number">3.</span> <span class="nav-text">扩展中国剩余定理</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%B4%E7%B4%A0%E5%81%9A%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">朴素做法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E6%AE%B5%E6%A0%91-%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84-ST-%E8%A1%A8"><span class="nav-number">2.</span> <span class="nav-text">线段树 树状数组 ST 表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8C%AB%E6%A0%91"><span class="nav-number">3.</span> <span class="nav-text">猫树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sqrt-Tree"><span class="nav-number">4.</span> <span class="nav-text">Sqrt Tree</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%EF%BC%9F"><span class="nav-number">5.</span> <span class="nav-text">？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Extend"><span class="nav-number">6.</span> <span class="nav-text">Extend</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
