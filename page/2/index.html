@@ -99,7 +99,7 @@
       <h1 class="site-title">do_while_true's blog</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
-      <p class="site-subtitle" itemprop="description">喵呜</p>
+      <p class="site-subtitle" itemprop="description">晚风中闪过 几帧从前啊</p>
   </div>
 
   <div class="site-nav-right">
@@ -160,7 +160,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://do-while-true.github.io/2022/01/30/test/">
+    <link itemprop="mainEntityOfPage" href="https://do-while-true.github.io/2022/01/30/hello-world/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/head.gif">
@@ -174,7 +174,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/01/30/test/" class="post-title-link" itemprop="url">测试</a>
+            <a href="/2022/01/30/hello-world/" class="post-title-link" itemprop="url">Hello World!</a>
         </h2>
 
         <div class="post-meta">
@@ -191,7 +191,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-02-04 14:51:11" itemprop="dateModified" datetime="2022-02-04T14:51:11+08:00">2022-02-04</time>
+                <time title="Modified: 2022-02-04 14:40:25" itemprop="dateModified" datetime="2022-02-04T14:40:25+08:00">2022-02-04</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -214,10 +214,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>测试 $\LaTeX$ 及 Markdown 是否正常运作。</p>
+          <p>Hello World!</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/01/30/test/#more" rel="contents">
+              <a class="btn" href="/2022/01/30/hello-world/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -435,59 +435,6 @@
   
 
   
-      
-
-<script>
-  if (typeof MathJax === 'undefined') {
-    window.MathJax = {
-      loader: {
-        source: {
-          '[tex]/amsCd': '[tex]/amscd',
-          '[tex]/AMScd': '[tex]/amscd'
-        }
-      },
-      tex: {
-        inlineMath: {'[+]': [['$', '$']]},
-        tags: 'ams'
-      },
-      options: {
-        renderActions: {
-          findScript: [10, doc => {
-            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
-              const display = !!node.type.match(/; *mode=display/);
-              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
-              const text = document.createTextNode('');
-              node.parentNode.replaceChild(text, node);
-              math.start = {node: text, delim: '', n: 0};
-              math.end = {node: text, delim: '', n: 0};
-              doc.math.push(math);
-            });
-          }, '', false],
-          insertedScript: [200, () => {
-            document.querySelectorAll('mjx-container').forEach(node => {
-              let target = node.parentNode;
-              if (target.nodeName.toLowerCase() === 'li') {
-                target.parentNode.classList.add('has-jax');
-              }
-            });
-          }, '', false]
-        }
-      }
-    };
-    (function () {
-      var script = document.createElement('script');
-      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
-      script.defer = true;
-      document.head.appendChild(script);
-    })();
-  } else {
-    MathJax.startup.document.state(0);
-    MathJax.texReset();
-    MathJax.typeset();
-  }
-</script>
-
-    
 
   
 
