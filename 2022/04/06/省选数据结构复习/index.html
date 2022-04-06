@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"do-while-true.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="突然发现自己很多数据结构长时间不做题导致连几乎是模板题都不会，于是写一篇复习笔记，以后复习的时候可以直接看看笔记。感觉自己忘不了的就没写说明，也有可能是我还不会。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="省选数据结构复习">
+<meta property="og:url" content="https://do-while-true.github.io/2022/04/06/%E7%9C%81%E9%80%89%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%A4%8D%E4%B9%A0/index.html">
+<meta property="og:site_name" content="do_while_true&#39;s blog">
+<meta property="og:description" content="突然发现自己很多数据结构长时间不做题导致连几乎是模板题都不会，于是写一篇复习笔记，以后复习的时候可以直接看看笔记。感觉自己忘不了的就没写说明，也有可能是我还不会。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-04-05T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-04-06T15:18:41.186Z">
+<meta property="article:author" content="do-while-true">
+<meta property="article:tag" content="数据结构">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://do-while-true.github.io/2022/04/06/%E7%9C%81%E9%80%89%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%A4%8D%E4%B9%A0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>省选数据结构复习 | do_while_true's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">do_while_true's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">晚风中闪过 几帧从前啊</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">16</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">2</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">12</span></a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://do-while-true.github.io/2022/04/06/%E7%9C%81%E9%80%89%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%A4%8D%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head.gif">
+      <meta itemprop="name" content="do-while-true">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="do_while_true's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          省选数据结构复习
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-04-06 00:00:00 / Modified: 23:18:41" itemprop="dateCreated datePublished" datetime="2022-04-06T00:00:00+08:00">2022-04-06</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>突然发现自己很多数据结构长时间不做题导致连几乎是模板题都不会，于是写一篇复习笔记，以后复习的时候可以直接看看笔记。感觉自己忘不了的就没写说明，也有可能是我还不会。</p>
+<span id="more"></span>
+<p>待学：</p>
+<ul>
+<li>KD-Tree</li>
+<li>LCT</li>
+</ul>
+<p>还需要多写代码加强理解：</p>
+<ul>
+<li>平衡树</li>
+<li>树套树</li>
+</ul>
+<h1 id="非旋-treap"><a href="#非旋-treap" class="headerlink" title="非旋 treap"></a>非旋 treap</h1><p>码量小，好写，常数小。</p>
+<p>基础：采用宏定义左右儿子来减少码量。$c$ 为随机的权值。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">mt19937 <span class="title">rnd</span><span class="params">(time(<span class="literal">NULL</span>)^(ull)(<span class="keyword">new</span> <span class="keyword">char</span>))</span></span>;</span><br><span class="line"><span class="keyword">int</span> trnt,rt;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ls(x) ch[x][0]</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> rs(x) ch[x][1]</span></span><br><span class="line"><span class="keyword">int</span> siz[N],c[N],v[N],ch[N][<span class="number">2</span>];</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">pushup</span><span class="params">(<span class="keyword">int</span> x)</span></span>&#123;siz[x]=siz[<span class="built_in">ls</span>(x)]+siz[<span class="built_in">rs</span>(x)]+<span class="number">1</span>;&#125;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">newnode</span><span class="params">(<span class="keyword">int</span> va)</span></span>&#123;<span class="keyword">int</span> x=++trnt;siz[x]=<span class="number">1</span>;ch[x][<span class="number">0</span>]=ch[x][<span class="number">1</span>]=<span class="number">0</span>;c[x]=<span class="built_in">rnd</span>();v[x]=va;<span class="keyword">return</span> x;&#125;</span><br></pre></td></tr></table></figure>
+<p><code>split(u,k,&amp;x,&amp;y)</code>，将以 $u$ 为根的节点分裂，$\leq k$ 的节点给 $x$，$&gt;k$ 的给 $y$，根据 $v[u]$ 来判断当前节点是给 $x$ 还是 $y$，然后递归分裂下去。</p>
+<p>由于分裂之后当前节点的子树信息发生了变化（有一部分分裂出去了），所以要 <code>pushup</code> 一下。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">split</span><span class="params">(<span class="keyword">int</span> u,<span class="keyword">int</span> k,<span class="keyword">int</span> &amp;x,<span class="keyword">int</span> &amp;y)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(!u)&#123;x=y=<span class="number">0</span>;<span class="keyword">return</span> ;&#125;</span><br><span class="line">	<span class="keyword">if</span>(v[u]&lt;=k)x=u,<span class="built_in">split</span>(<span class="built_in">rs</span>(u),k,<span class="built_in">rs</span>(x),y);</span><br><span class="line">	<span class="keyword">else</span> y=u,<span class="built_in">split</span>(<span class="built_in">ls</span>(u),k,x,<span class="built_in">ls</span>(y));</span><br><span class="line">	<span class="built_in">pushup</span>(u);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>merge(x,y)</code>，将 $x$ 和 $y$ 为根节点的平衡树合并，用随机的权值 $c$ 来判断谁当根，然后递归下去合并。同理，树的结构会发生改变，要 <code>pushup</code> 一下。</p>
+<p>采用三目运算符减少码量。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">merge</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(!x||!y)<span class="keyword">return</span> x|y;</span><br><span class="line">	<span class="keyword">int</span> k=c[x]&lt;c[y],u=k?x:y;</span><br><span class="line">	ch[u][k]=<span class="built_in">merge</span>(k?<span class="built_in">rs</span>(x):x,k?y:<span class="built_in">ls</span>(y));</span><br><span class="line">	<span class="built_in">pushup</span>(u);<span class="keyword">return</span> u;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>kth(x,k)</code>，在以 $x$ 为根的平衡树里找到排名为 $k$ 的节点，用递归可以减少码量。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">kth</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> k)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(k&lt;=siz[<span class="built_in">ls</span>(x)])<span class="keyword">return</span> <span class="built_in">kth</span>(<span class="built_in">ls</span>(x),k);</span><br><span class="line">	<span class="keyword">if</span>(k==siz[<span class="built_in">ls</span>(x)]+<span class="number">1</span>)<span class="keyword">return</span> x;</span><br><span class="line">	<span class="keyword">return</span> <span class="built_in">kth</span>(<span class="built_in">rs</span>(x),k-siz[<span class="built_in">ls</span>(x)]<span class="number">-1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>基于这三个基本操作，能够完成大部分的平衡树基础操作，注意 <code>split</code> 完要 <code>merge</code>，而且不要忘了把最后 <code>merge</code> 的根赋给 <code>rt</code>。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> fhq_treap&#123;</span><br><span class="line">	<span class="function">mt19937 <span class="title">rnd</span><span class="params">(time(<span class="literal">NULL</span>)^(ull)(<span class="keyword">new</span> <span class="keyword">char</span>))</span></span>;</span><br><span class="line">	<span class="keyword">int</span> trnt,rt;</span><br><span class="line">	<span class="meta">#<span class="meta-keyword">define</span> ls(x) ch[x][0]</span></span><br><span class="line">	<span class="meta">#<span class="meta-keyword">define</span> rs(x) ch[x][1]</span></span><br><span class="line">	<span class="keyword">int</span> siz[N],c[N],v[N],ch[N][<span class="number">2</span>];</span><br><span class="line">	<span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">pushup</span><span class="params">(<span class="keyword">int</span> x)</span></span>&#123;siz[x]=siz[<span class="built_in">ls</span>(x)]+siz[<span class="built_in">rs</span>(x)]+<span class="number">1</span>;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">newnode</span><span class="params">(<span class="keyword">int</span> va)</span></span>&#123;<span class="keyword">int</span> x=++trnt;siz[x]=<span class="number">1</span>;ch[x][<span class="number">0</span>]=ch[x][<span class="number">1</span>]=<span class="number">0</span>;c[x]=<span class="built_in">rnd</span>();v[x]=va;<span class="keyword">return</span> x;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">split</span><span class="params">(<span class="keyword">int</span> u,<span class="keyword">int</span> k,<span class="keyword">int</span> &amp;x,<span class="keyword">int</span> &amp;y)</span></span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(!u)&#123;x=y=<span class="number">0</span>;<span class="keyword">return</span> ;&#125;</span><br><span class="line">		<span class="keyword">if</span>(v[u]&lt;=k)x=u,<span class="built_in">split</span>(<span class="built_in">rs</span>(u),k,<span class="built_in">rs</span>(x),y);</span><br><span class="line">		<span class="keyword">else</span> y=u,<span class="built_in">split</span>(<span class="built_in">ls</span>(u),k,x,<span class="built_in">ls</span>(y));</span><br><span class="line">		<span class="built_in">pushup</span>(u);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">merge</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y)</span></span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(!x||!y)<span class="keyword">return</span> x|y;</span><br><span class="line">		<span class="keyword">int</span> k=c[x]&lt;c[y],u=k?x:y;</span><br><span class="line">		ch[u][k]=<span class="built_in">merge</span>(k?<span class="built_in">rs</span>(x):x,k?y:<span class="built_in">ls</span>(y));</span><br><span class="line">		<span class="built_in">pushup</span>(u);<span class="keyword">return</span> u;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">kth</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> k)</span></span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(k&lt;=siz[<span class="built_in">ls</span>(x)])<span class="keyword">return</span> <span class="built_in">kth</span>(<span class="built_in">ls</span>(x),k);</span><br><span class="line">		<span class="keyword">if</span>(k==siz[<span class="built_in">ls</span>(x)]+<span class="number">1</span>)<span class="keyword">return</span> x;</span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">kth</span>(<span class="built_in">rs</span>(x),k-siz[<span class="built_in">ls</span>(x)]<span class="number">-1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">int</span> _a,_b,_c;</span><br><span class="line">	<span class="meta">#<span class="meta-keyword">define</span> a _a</span></span><br><span class="line">	<span class="meta">#<span class="meta-keyword">define</span> b _b</span></span><br><span class="line">	<span class="meta">#<span class="meta-keyword">define</span> c _c</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">ins</span><span class="params">(<span class="keyword">int</span> x)</span></span>&#123;<span class="built_in">split</span>(rt,x,a,b);rt=<span class="built_in">merge</span>(<span class="built_in">merge</span>(a,<span class="built_in">newnode</span>(x)),b);&#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">del</span><span class="params">(<span class="keyword">int</span> x)</span></span>&#123;<span class="built_in">split</span>(rt,x,a,c);<span class="built_in">split</span>(a,x<span class="number">-1</span>,a,b);rt=<span class="built_in">merge</span>(a,<span class="built_in">merge</span>(<span class="built_in">merge</span>(<span class="built_in">ls</span>(b),<span class="built_in">rs</span>(b)),c));&#125;</span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">findrk</span><span class="params">(<span class="keyword">int</span> x)</span></span>&#123;<span class="built_in">split</span>(rt,x<span class="number">-1</span>,a,b);<span class="keyword">int</span> s=siz[a]+<span class="number">1</span>;rt=<span class="built_in">merge</span>(a,b);<span class="keyword">return</span> s;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">findval</span><span class="params">(<span class="keyword">int</span> x)</span></span>&#123;<span class="keyword">return</span> v[<span class="built_in">kth</span>(rt,x)];&#125;</span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">lst</span><span class="params">(<span class="keyword">int</span> x)</span></span>&#123;<span class="built_in">split</span>(rt,x<span class="number">-1</span>,a,b);<span class="keyword">int</span> s=v[<span class="built_in">kth</span>(a,siz[a])];rt=<span class="built_in">merge</span>(a,b);<span class="keyword">return</span> s;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">nxt</span><span class="params">(<span class="keyword">int</span> x)</span></span>&#123;<span class="built_in">split</span>(rt,x,a,b);<span class="keyword">int</span> s=v[<span class="built_in">kth</span>(b,<span class="number">1</span>)];rt=<span class="built_in">merge</span>(a,b);<span class="keyword">return</span> s;&#125;</span><br><span class="line">	<span class="meta">#<span class="meta-keyword">undef</span> a</span></span><br><span class="line">	<span class="meta">#<span class="meta-keyword">undef</span> b</span></span><br><span class="line">	<span class="meta">#<span class="meta-keyword">undef</span> c</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>fhq_treap 维护区间也是简单的。例如要把 $[l,r]$ 区间操作，即可先把 $[l,r]$ 内的节点分裂出一个平衡树，在根上打个标记，然后再合并回去即可。每次递归往下走的时候记着要下放标记。</p>
+<h1 id="Splay"><a href="#Splay" class="headerlink" title="Splay"></a>Splay</h1><p>基于旋转（rotate）及其实现的伸展（splay）操作的平衡树。</p>
+<p>太难写了于是鸽掉了！</p>
+<h1 id="线段树合并-分裂"><a href="#线段树合并-分裂" class="headerlink" title="线段树合并/分裂"></a>线段树合并/分裂</h1><p>假如要合并以 $x$ 为根和以 $y$ 为根的线段树：</p>
+<ul>
+<li>$x$ 或 $y$ 为空，返回 $x+y$；</li>
+<li>当为叶子时，直接更新节点信息并返回；</li>
+<li>递归将 $ls(x)$ 和 $ls(x)$ 合并成新节点（或者仍为 $x$，因题而异）的 $ls$，右儿子同理。</li>
+</ul>
+<p>复杂度分析：<strong>每次合并的复杂度为两棵线段树重合的点数，同时也是一次合并后删去的点数</strong>，由于初始 $n$ 个单点产生的线段树节点个数为 $\mathcal{O}(n\log n)$，所以总复杂度为 $\mathcal{O}(n\log n)$。</p>
+<p>分裂：<code>split(x,&amp;y,k)</code> 将 $x$ 为根的线段树维护的前 $k$ 个划分给 $k$，其余的给 $y$．像线段树上二分走然后每次走的给 $y$ 新建节点即可，注意如果 $x$ 的整棵子树都要给 $y$，那么直接将 $x$ 指向这棵子树的边断掉，让 $y$ 连上即可。</p>
+<p>这样<strong>分裂的时候每一层只会遍历到一个节点</strong>，所以分类操作总新建点数是 $\mathcal{O}(n\log n)$ 级别了，这同时也保证了合并操作与分裂操作同时存在时合并操作复杂度的正确。</p>
+<h1 id="笛卡尔树"><a href="#笛卡尔树" class="headerlink" title="笛卡尔树"></a>笛卡尔树</h1><p>每个节点都是一个二元组 $(k,w)$，其中 $k$ 满足二叉搜索树限制，$w$ 满足小根堆限制。常见应用是将序列 $a$ 刻画为 $(i,a_i)$，同时也等价于最值分治的结构。（类似于线段树是中点分治的结构）</p>
+<p>构建方法：</p>
+<ul>
+<li>维护一条 $w$ 递增的右链，按照 $k$ 为关键字排序之后一个个插入。</li>
+<li>每次插入节点 $i=(k’,w’)$ 的时候在这条右链上找到从底向上第一个 $w&lt;w’$ 的节点 $x$，那么将 $i$ 挂到 $x$ 的父亲上，$x$ 挂到 $i$ 上即可。</li>
+</ul>
+<p>常见的应用是笛卡尔树上 dp，也可以理解为最值分治。</p>
+<h1 id="虚树"><a href="#虚树" class="headerlink" title="虚树"></a>虚树</h1><p>就是只包含原树中关键点以及它们之间两两 LCA，将原树中不重要的链压缩成一条边。</p>
+<p>构建方法：</p>
+<ul>
+<li>由于多加点并不会影响答案，先将根节点加进去。用栈维护一条从根节点出发的链，栈顶是深度最深的节点。</li>
+<li>按照 dfs 序从小到大依次插入，设当前插入节点 $x$ 于栈顶 $st[top]$ 的 LCA 为 $t$：</li>
+<li>若 $dep_t&lt; dep_{st[top-1]}$：说明 $t$ 在 $st[top-1]$ 之前，$add(st[top-1],st[top])$ 并弹出栈顶，继续判断；</li>
+<li>若 $dep_{st[top-1]}\leq dep_t&lt;dep_{st[top]}$：说明 $t$ 介于 $st[top-1]$ 和 $st[top]$ 之间。将 $add(t,st[top])$ 并弹出 $st[top]$，若 $t$ 和 $st[top-1]$ 不同则还需要将 $t$ 入栈，然后将 $x$ 入栈，此轮插入结束；</li>
+<li>若 $t=st[top]$，说明 $st[top]$ 就是 $x$ 的祖先，直接将 $x$ 入栈即可，此轮插入结束。</li>
+<li>最后栈中还有剩余的元素，再把他们连起来就行。</li>
+</ul>
+<p>基于此，在 $\mathcal{O}(k\log k)$ 的时间复杂度内建出了虚树（$k$ 为关键点数量），同时也说明了虚树的点数是 $\mathcal{O}(k)$ 的（每轮插入最多会插入 $1$ 个非关键点）。</p>
+<p>有的时候不一定给的点就是要建虚树的关键点，也有可能包含其他重要的点。总之就是保留哪些不会影响答案就保留哪些。</p>
+<p><a target="_blank" rel="noopener" href="https://codeforces.com/contest/613/problem/D">例题 Codeforces 613 D</a></p>
+<h1 id="长链剖分"><a href="#长链剖分" class="headerlink" title="长链剖分"></a>长链剖分</h1><p>重链剖分是基于子树大小进行链剖，而长链剖分则是根据<strong>子树内最深深度</strong>作为优先级来划分轻重儿子。</p>
+<p>重链剖分和长链剖分共同的性质：</p>
+<ul>
+<li>重（长）链个数等于叶子节点个数。因为链的终点只能是叶子（非叶节点一定有重儿子）。</li>
+</ul>
+<p>长链剖分性质：</p>
+<ul>
+<li>一个点祖先中轻儿子个数是 $\mathcal{O}(\sqrt n)$ 级别的，也就是其到根节点路径上长链个数是 $\mathcal{O}(\sqrt n)$ 的。考虑每次进入一个新的长链时，新的长链至少是当前长链节点个数 $+1$，那么最劣情况下经过的长链长度为 $1,2,3,\cdots$  最多 $\mathcal{O}(\sqrt n)$ 个长链。</li>
+</ul>
+<p>长链剖分经典应用是树上 k 级祖先和维护深度有关信息。</p>
+<p><strong><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P5903">树上 k 级祖先</a></strong></p>
+<p>长链剖分，并且预处理出每个节点 $2^i$ 级祖先。对于每个长度为 $len$ 的长链，还有预处理出链顶向（长链方向）下 $len$ 个儿子和向上 $len$ 个祖先。</p>
+<p>每次询问 $x$ 的 $k$ 级祖先：</p>
+<ul>
+<li>对于 $k$ 的最高位 $2^r$，首先有 $2^r\leq k&lt; 2^{r+1}$，将 $x$ 跳到其 $2^r$ 级祖先 $x’$ 处；</li>
+<li>即求 $x’$ 的 $k’\gets k-2^r$ 级祖先，则有 $0\leq k’&lt;2^r$；</li>
+<li>由于 $x’$ 所在长链长度 $\geq 2^r$，所以 $x’$ 的 $k$ 级祖先一定是链顶 $t$ 已经预处理过的儿子或者父亲，直接算出来即可。</li>
+</ul>
+<p>复杂度 $\mathcal{O}(n\log n)-\mathcal{O}(1)$，只是理论复杂度，由于常数原因可能打不过重剖或者倍增。</p>
+<p><strong>维护深度有关信息</strong></p>
+<p>另一个常见的应用是维护深度有关的信息，比方说长链剖分优化 dp，这个需要用指针来分配内存达到 $\mathcal{O}(n)$ 空间消耗，首先先给每个长链的链顶都分配链长度的内存，非链顶和其父亲共用一处内存，要偏移一位，即 $f_v=f_x+1$．合并的时候由于重儿子和自己共用一处内存可以直接继承，轻儿子暴力合并上来，时空复杂度均为 $\mathcal{O}(n)$．注意在合并后重儿子的信息被破坏了，所以这是一个离线的做法。</p>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF1009F">模板题 CF1009F</a></p>
+<p>核心代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> buf[N],*f[N],*p=buf;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dfs1</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> fa)</span></span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">auto</span> v:eg[x])<span class="keyword">if</span>(v!=fa)&#123;</span><br><span class="line">		<span class="built_in">dfs1</span>(v,x);</span><br><span class="line">		<span class="keyword">if</span>(mxd[v]&gt;mxd[son[x]])son[x]=v;</span><br><span class="line">	&#125;</span><br><span class="line">	mxd[x]=mxd[son[x]]+<span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dfs2</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> fa)</span></span>&#123;</span><br><span class="line">	f[x][<span class="number">0</span>]=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">if</span>(son[x])&#123;</span><br><span class="line">		f[son[x]]=f[x]+<span class="number">1</span>;</span><br><span class="line">		<span class="built_in">dfs2</span>(son[x],x);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">auto</span> v:eg[x])<span class="keyword">if</span>(v!=son[x]&amp;&amp;v!=fa)&#123;</span><br><span class="line">		f[v]=p;p+=mxd[v];</span><br><span class="line">		<span class="built_in">dfs2</span>(v,x);</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;mxd[v];i++)f[x][i+<span class="number">1</span>]+=f[v][i];</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="李超树"><a href="#李超树" class="headerlink" title="李超树"></a>李超树</h1><p>插入直线/线段，支持查询单点极值。</p>
+<p>就是线段树对于每个区间维护在 $m=\frac{l+r}{2}$ 处取值最大的直线的信息。</p>
+<p>现在我们需要插入一条线段 $f$，在这条线段完整覆盖的区间中，某些区间的最优线段可能发生改变。</p>
+<p>考虑某个被新线段 $f$ 完整覆盖的区间，若该区间无最优线段，则该线段可以直接成为最优线段。</p>
+<p>否则，设该区间的中点为 $m$，我们拿新线段 $f$ 在中点处的值与原最优线段 $g$ 在中点处的值作比较。</p>
+<p>如果新线段 $f$ 更优，则将 $f$ 和 $g$ 交换。那么现在考虑在中点处 $f$ 不如 $g$ 优的情况：</p>
+<ol>
+<li>若在左端点处 $f$ 更优，那么 $f$ 和 $g$ 必然在左半区间中产生了交点，递归到左儿子中进行插入；</li>
+<li>若在右端点处 $f$ 更优，那么 $f$ 和 $g$ 必然在右半区间中产生了交点，递归到右儿子中进行插入。</li>
+</ol>
+<p>由于仅有一个交点，所以两边最多会递归一个。复杂度 $\mathcal{O}(\log n)$．</p>
+<blockquote>
+<p>这种写法比 oi-wiki 上的写法好写到不知道哪里去了！</p>
+</blockquote>
+<p>查询 $x=k$ 答案时，从根走到 $[x,x]$ 节点记录的所有最优直线在 $x=k$ 时取值的答案极值即为所求。这里是运用了<strong>标记永久化</strong>的思想。</p>
+<p><strong>Extension：</strong></p>
+<ul>
+<li>如果是<strong>插入线段</strong>，需要定位到线段横坐标区间在李超树上的拆分出的区间，然后一个个递归修改下去，复杂度是 $\mathcal{O}(\log^2n)$ 的。</li>
+<li>李超树不能删除直线，所以想李超树这样<strong>不支持删除的数据结构</strong>遇到删除的问题要<strong>线段树分治</strong>。</li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/blog/dqa2020/cf932f-escape-through-leaf-ti-xie">李超树合并</a>，势能分析一下是 $\mathcal{O}(n\log n)$ 的。</li>
+</ul>
+<p>李超树的经典应用是斜率优化，<a target="_blank" rel="noopener" href="https://www.cnblogs.com/do-while-true/p/15404389.html">关于此我之前写过的总结</a>：</p>
+<p>化柿子的时候化成一次函数的形式更直观一些（对我来说）。</p>
+<p>如果是单调栈上二分 / 单调队列，这一类的，通常都是斜率或者某些东西具有单调性，这个东西不需要也尽量不要对每一种情况都整理下来应该怎么优化，是死板的。斜率优化是<strong>把一类 dp 问题变成数据结构问题</strong>，让数据结构维护这个凸包（或者说维护凸包上两点连线的斜率），应该<strong>具体情况具体分析</strong>。</p>
+<p>如果加的决策点没有单调性，通常是 <strong>平衡树 / CDQ 分治</strong> 来解决，平衡树的话就是直接维护这个凸包，CDQ 分治则是通过分治来转成静态问题，然后用单调栈等数据结构解决。</p>
+<p>有一种更普遍的做法，跳出维护凸包给我们思维上的限制，<strong>用李超树来维护一次函数（直线）</strong>，也是一个 $\log$ 的，而且码力要求和常数上肯定都优于平衡树，但常数还有可能比较大（相比 CDQ 分治来说？），但不需要动脑子（也就是前文说的具体情况具体分析，分析哪些变量是单调的，这个凸包的形状是怎样的，依次加进去的决策点坐标的单调性，截凸包的直线斜率的单调性…），论性价比李超树也是一个很好的选择。</p>
+<h1 id="树套树"><a href="#树套树" class="headerlink" title="树套树"></a>树套树</h1><p>到底有没有用啊/fn</p>
+<p>线段树套线段树（二维线段树？），注意到外层的线段树<strong>信息无法合并</strong>，因为信息合并的话相当于内层线段树进行线段树合并。所以要不然<strong>标记永久化</strong>，要不然就只能做到单点修改。</p>
+<p>比方说矩形加矩形求和：假设对 $[L_1,R_1],[L_2,R_2]$ 的矩形加 $v$，首先在外层线段树上定位 $[L_1,R_1]$，如果当前节点区间 $[l,r]$ 被 $[L_1,R_1]$ 完全包含，直接打个标记；否则将内层线段树的 $[L_2,R_2]$ 区间加上 $v$ 乘上 $[l,r]$ 和 $[L_1,R_1]$ 交集大小的修改量。</p>
+<p>BIT 套线段树，严格不强于上一个，但是码量相对较小，不过其实线段树套线段树充其量也就是写两编线段树？</p>
+<h1 id="线段树分治"><a href="#线段树分治" class="headerlink" title="线段树分治"></a>线段树分治</h1><p>对此的记忆刻画不是很深刻，虽然不是数据结构但通常在数据结构题中出现。</p>
+<p><strong>离线算法</strong>，假如要维护的数据结构仅支持插入，可能不支持删除，但要<strong>支持撤销</strong>，即删除最近一次修改。</p>
+<p>在时间上建线段树，对于一个加入操作，假设它在时间轴上的持续区间为 $[l,r]$，那么在线段树上 $[l,r]$ 拆分出的每个区间都加入这个操作。最后在线段树上 dfs，走进一个点的时候加入里面的操作，走出一个点时候撤销里面的操作。那么 <strong>时刻 $t$ 的线段树就是从根节点走到 $[t,t]$ 节点时的线段树</strong>。</p>
+<p>当然，也可以不在时间轴上分治，在其他维度上分治，一个例题是 [CTSC2016]时空旅行。</p>
+<h1 id="题目口胡"><a href="#题目口胡" class="headerlink" title="题目口胡"></a>题目口胡</h1><p>因为没时间一个个写了。</p>
+<h2 id="洛谷-P2056-ZJOI2007-捉迷藏-SPOJ-QTREE4"><a href="#洛谷-P2056-ZJOI2007-捉迷藏-SPOJ-QTREE4" class="headerlink" title="洛谷 P2056 [ZJOI2007]捉迷藏 / SPOJ QTREE4"></a>洛谷 P2056 [ZJOI2007]捉迷藏 / SPOJ QTREE4</h2><p>树，维护点集，插入/删除/询问点集直径。</p>
+<p>又有插入又有删除的，上一发线段树分治这样只有插入和撤销。撤销通常情况下是简单的，现在问题变成每次将一个点染成黑色，询问黑点中里面两两距离最大值。</p>
+<p>那就考虑每次加入的时候询问这个点和点集里面距离的最大值，建一发点分树，对于每个分治重心 $x$ 维护一个 $mx_1$ 和 $mx_2$，$mx_1$ 代表 $x$ 在点分治的连通块里面距离 $x$ 最远的黑点，$mx_2$ 是与 $mx_1$ 不在 $x$ 同一子树内的最远的黑点。</p>
+<p>这样每次询问的时候，对于 $x$ 在点分树上的一个父亲 $f$，如果 $x$ 和 $mx_1$ 不在同一子树内就用 $mx_1$ 更新答案，否则就用 $mx_2$ 更新答案。那么插入和撤销也是简单的。</p>
+<p>这样复杂度就是 $\mathcal{O}(m\log n\log m)$ 的了。</p>
+<p>有更简单的做法/fn</p>
+<p>重新看一下问题，插入删除询问点集直径。经典结论是两个点集并起来的直径端点一定在两个点集分别的直径端点这四个点中。那么在编号维上用线段树维护这个东西，每次是一个单点修改，合并的时候用 ST 表 $\mathcal{O}(1)$ 查 LCA 就能做到优秀的 $\mathcal{O}(n\log n+m\log n)$！</p>
+<h2 id="洛谷-P5327-ZJOI2019-语言"><a href="#洛谷-P5327-ZJOI2019-语言" class="headerlink" title="洛谷 P5327 [ZJOI2019]语言"></a>洛谷 P5327 [ZJOI2019]语言</h2><p>编了一个弱智做法是树剖然后变成在 $dfn\times dfn$ 平面上 $\log^2$ 个矩形覆盖，查询非零位置个数，扫描线一下是 $\mathcal{O}(n\log^3n)$ 目测常数还很大。但是在洛谷上卡过去了。</p>
+<p>正解是考虑，如果对每个点单独计算它能到达的点的话，那就是经过这个点所有路径并的大小，也就是所有路径端点构成的虚树大小，这个长度等于<a target="_blank" rel="noopener" href="https://blog.csdn.net/bjfu170203101/article/details/106804284">所有点按照 dfn 排序相邻两两距离之和 $\div 2$（包括头尾）</a>。由于是静态路径加入两个点，树上差分一下，这样一个节点的虚树点集实际上是其和所有儿子虚树点集的并，用线段树合并来维护即可。</p>
+<h2 id="洛谷-P3206-HNOI2010-城市建设"><a href="#洛谷-P3206-HNOI2010-城市建设" class="headerlink" title="洛谷 P3206 [HNOI2010]城市建设"></a>洛谷 P3206 [HNOI2010]城市建设</h2><p>一眼看出了线段树分治 + LCT 的 $\mathcal{O}(q\log n\log q)$ 做法，但是不会写 LCT 哈哈。</p>
+<p>没有用到 LCT 的做法非常智慧，怎么想出来的？？：</p>
+<p>这里不是线段树分治，而是单纯的在时间维上分治。考虑分治过程中缩小图的规模：</p>
+<ul>
+<li>$[L,R]$ 内会进行修改的边边权都改成 $-\infty$，跑 mst，此时在 mst 上的非 $-\infty$ 边是必须要选的，可以直接把点缩起来；</li>
+<li>$[L,R]$ 内会进行修改的边边权都改成 $\infty$，跑 mst，此时不在 mst 上的边一定是必须不选的，直接删掉。</li>
+</ul>
+<p>在第一个操作之后，最多会留 $R-L$ 个点（最劣情况下是所有 $-\infty$ 边都在 mst 中），而第二个操作后会保证边数和点数同阶。</p>
+<p>这样复杂度就是 $T(n)=2(\frac{T}{2})+\mathcal{O}(q\log q)=\mathcal{O}(q\log^2q)$．</p>
+<h2 id="洛谷-P6623-省选联考-2020-A-卷-树"><a href="#洛谷-P6623-省选联考-2020-A-卷-树" class="headerlink" title="洛谷 P6623 [省选联考 2020 A 卷] 树"></a>洛谷 P6623 [省选联考 2020 A 卷] 树</h2><p>从低位到高位建 Trie，这样就能支持全局加 1 就是 $\log$ 个节点和其兄弟 swap，然后搞个 Trie 合并，要维护个子树权值和以及子树 size，复杂度是 $\mathcal{O}(n\log n)$，有时间写写看看会不会被卡常。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/alex-wei/p/segment_tree_yyds.html">Alex_Wei 线段树的高级用法 </a></p>
+<p><a target="_blank" rel="noopener" href="https://oi-wiki.org/">oi-wiki</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/blog/Troverld/Data-Structure-Improved">xtx1092515503 的博客</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag"># 数据结构</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/02/15/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%8D%9A%E5%BC%88%E8%AE%BA/" rel="prev" title="「学习笔记」博弈论">
+      <i class="fa fa-chevron-left"></i> 「学习笔记」博弈论
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9D%9E%E6%97%8B-treap"><span class="nav-number">1.</span> <span class="nav-text">非旋 treap</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Splay"><span class="nav-number">2.</span> <span class="nav-text">Splay</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BA%BF%E6%AE%B5%E6%A0%91%E5%90%88%E5%B9%B6-%E5%88%86%E8%A3%82"><span class="nav-number">3.</span> <span class="nav-text">线段树合并&#x2F;分裂</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%9B%E5%8D%A1%E5%B0%94%E6%A0%91"><span class="nav-number">4.</span> <span class="nav-text">笛卡尔树</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%99%9A%E6%A0%91"><span class="nav-number">5.</span> <span class="nav-text">虚树</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%95%BF%E9%93%BE%E5%89%96%E5%88%86"><span class="nav-number">6.</span> <span class="nav-text">长链剖分</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9D%8E%E8%B6%85%E6%A0%91"><span class="nav-number">7.</span> <span class="nav-text">李超树</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%91%E5%A5%97%E6%A0%91"><span class="nav-number">8.</span> <span class="nav-text">树套树</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BA%BF%E6%AE%B5%E6%A0%91%E5%88%86%E6%B2%BB"><span class="nav-number">9.</span> <span class="nav-text">线段树分治</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E5%8F%A3%E8%83%A1"><span class="nav-number">10.</span> <span class="nav-text">题目口胡</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B4%9B%E8%B0%B7-P2056-ZJOI2007-%E6%8D%89%E8%BF%B7%E8%97%8F-SPOJ-QTREE4"><span class="nav-number">10.1.</span> <span class="nav-text">洛谷 P2056 [ZJOI2007]捉迷藏 &#x2F; SPOJ QTREE4</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B4%9B%E8%B0%B7-P5327-ZJOI2019-%E8%AF%AD%E8%A8%80"><span class="nav-number">10.2.</span> <span class="nav-text">洛谷 P5327 [ZJOI2019]语言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B4%9B%E8%B0%B7-P3206-HNOI2010-%E5%9F%8E%E5%B8%82%E5%BB%BA%E8%AE%BE"><span class="nav-number">10.3.</span> <span class="nav-text">洛谷 P3206 [HNOI2010]城市建设</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B4%9B%E8%B0%B7-P6623-%E7%9C%81%E9%80%89%E8%81%94%E8%80%83-2020-A-%E5%8D%B7-%E6%A0%91"><span class="nav-number">10.4.</span> <span class="nav-text">洛谷 P6623 [省选联考 2020 A 卷] 树</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">11.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="do-while-true"
+      src="/images/head.gif">
+  <p class="site-author-name" itemprop="name">do-while-true</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Friends
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/h-lka/" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;h-lka&#x2F;" rel="noopener" target="_blank">Refined_heart</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://shanlunjiajian.github.io/" title="https:&#x2F;&#x2F;shanlunjiajian.github.io&#x2F;" rel="noopener" target="_blank">华山抡剑</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/LFCode/" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;LFCode&#x2F;" rel="noopener" target="_blank">LFCode</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://forza-ferrari.github.io/" title="https:&#x2F;&#x2F;forza-ferrari.github.io&#x2F;" rel="noopener" target="_blank">绝顶我为峰</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/alan-zhao-2007/" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;alan-zhao-2007&#x2F;" rel="noopener" target="_blank">Alan_Zhao</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/suxxsfe/" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;suxxsfe&#x2F;" rel="noopener" target="_blank">suxxsfe</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://lampese.com/" title="https:&#x2F;&#x2F;lampese.com&#x2F;" rel="noopener" target="_blank">Lampese</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">do-while-true</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
