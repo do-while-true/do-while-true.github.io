@@ -28,7 +28,7 @@
 <meta property="og:description" content="一点乱记，用于个人理解和巩固，亦可作为一篇学习顺序参考的文章。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-02-03T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-02-14T12:12:46.180Z">
+<meta property="article:modified_time" content="2022-06-21T15:12:51.223Z">
 <meta property="article:author" content="do-while-true">
 <meta property="article:tag" content="容斥">
 <meta name="twitter:card" content="summary">
@@ -196,7 +196,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-02-14 20:12:46" itemprop="dateModified" datetime="2022-02-14T20:12:46+08:00">2022-02-14</time>
+                <time title="Modified: 2022-06-21 23:12:51" itemprop="dateModified" datetime="2022-06-21T23:12:51+08:00">2022-06-21</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -226,7 +226,7 @@
 <p>$k\binom{n}{k}=n\binom{n-1}{k-1},k\neq 0$，吸收恒等式。</p>
 <p>$\binom{n}{m}\binom{m}{k}=\binom{n}{k}\binom{n-k}{m-k}$，组合意义易证。</p>
 <p>$\sum_k \binom{r}{m+k}\binom{s}{n-k}=\binom{r+s}{n+m}$，范德蒙德卷积，组合意义易证。</p>
-<p>求一列的前缀和：$\sum\limits_{i=m}^n\binom{i}{m}=\binom{n+1}{m+1}$，放在杨辉三角上易解释。</p>
+<p>求一列的前缀和：$\sum_i\binom{i}{m}=\binom{n+1}{m+1}$，放在杨辉三角上易解释。</p>
 <p>更多的可以去看具体数学（？）</p>
 <h3 id="例题一-ARC016F-Card-Game-for-Three"><a href="#例题一-ARC016F-Card-Game-for-Three" class="headerlink" title="例题一 ARC016F Card Game for Three"></a>例题一 ARC016F Card Game for Three</h3><blockquote>
 <p>小 A，小 B，小 C 在玩游戏。他们每个人分别有 $n,m,k$ 张牌，每张牌上面写着 $a,b,c$ 三个字母中的其中一个，每个回合有一个人出牌，如果出牌为 $a$ 则小 A 下一个回合出牌，如果出牌为 $b$ 则小 B 下一个回合出牌，小 C 同理。若轮到某位玩家出牌时，其手中无牌，则该位玩家获胜。</p>
@@ -253,13 +253,13 @@ S(t)=&\sum_{i=t-k}^{m}\binom{t}{i}
 <p> <a target="_blank" rel="noopener" href="https://atcoder.jp/contests/arc061/submissions/25189343">Code</a></p>
 <h2 id="二项式反演-1"><a href="#二项式反演-1" class="headerlink" title="二项式反演"></a>二项式反演</h2><p>形式一：</p>
 <script type="math/tex; mode=display">
-f(n)=\sum_{k=0}^n(-1)^k\binom{n}{k}g(k)\Longleftrightarrow g(n)=\sum_{k=0}^n(-1)^k\binom{n}{k}f(k)</script><p>形式二（至多和恰好的转换）：</p>
+f(n)=\sum_k(-1)^k\binom{n}{k}g(k)\Longleftrightarrow g(n)=\sum_k(-1)^k\binom{n}{k}f(k)</script><p>形式二（至多和恰好的转换）：</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
-f(n)=\sum_{k=0}^{n} \binom{n}{k}g(k)\Longleftrightarrow g(n)=\sum_{k=0}^{n}(-1)^{n-k}\binom{n}{k} f(k)
+f(n)=\sum_k \binom{n}{k}g(k)\Longleftrightarrow g(n)=\sum_k(-1)^{n-k}\binom{n}{k} f(k)
 \end{aligned}</script><p>形式三（至少和恰好的转换）：</p>
 <script type="math/tex; mode=display">
-f(n)=\sum_{k=n}^m\binom{k}{n}g(k)\Longleftrightarrow g(n)=\sum_{k=n}^m (-1)^{k-n}\binom{k}{n}f(k)</script><p>三种形式的证明类似，可以看 <a target="_blank" rel="noopener" href="https://vfleaking.blog.uoj.ac/blog/87">vfk 的PPT</a>。</p>
+f(n)=\sum_k\binom{k}{n}g(k)\Longleftrightarrow g(n)=\sum_k (-1)^{k-n}\binom{k}{n}f(k)</script><p>三种形式的证明类似，可以看 <a target="_blank" rel="noopener" href="https://vfleaking.blog.uoj.ac/blog/87">vfk 的PPT</a>。</p>
 <p>要区分这里的“至多,至少”和前缀和/后缀和对应的“至多至少”，二项式反演的“至多,至少”实际上是钦点一部分满足条件，其余部分随意，而前缀和/后缀和的“至多,至少”是钦点一部分满足条件之后，其他的必须不满足，所以前者是带一个二项式系数的。</p>
 <h3 id="例题二-BZOJ-3622-已经没有什么好害怕的了"><a href="#例题二-BZOJ-3622-已经没有什么好害怕的了" class="headerlink" title="例题二 BZOJ 3622  已经没有什么好害怕的了"></a>例题二 BZOJ 3622  已经没有什么好害怕的了</h3><p>先各自排下序，$k\gets \frac{n+k}{2}$，其含义为要<strong>恰好</strong>有 $k$ 对满足 $a&gt;b$．</p>
 <p>直接 dp 不太好做，因为如果状态设置为”前 $i$ 个 $a$ 匹配了 $j$ 对 $a&gt;b$” 的话，我们要考虑 $b$ 中小于 $a_i$ 的个数 $l_i$ 中有多少个数被之前选过了，然而只从 $j$ 这一维无法体现这个信息。</p>
@@ -270,10 +270,10 @@ f(n)=\sum_{k=n}^m\binom{k}{n}g(k)\Longleftrightarrow g(n)=\sum_{k=n}^m (-1)^{k-n
 F(k)=f_{n,k}(n-k)!</script><p>其中 $f_{i,j}=f_{i-1,j}+f_{i-1,j-1}(l_i-j+1)$，分别表示 $a_i$ 进行匹配而是鸽到最后再匹配 和 $a_i$ 找一个比它小的 $b$ 匹配。</p>
 <p>考虑到：</p>
 <script type="math/tex; mode=display">
-F(k)=\sum_{i=k}^n\binom{i}{k}G(i)</script><p>很好理解，就是考虑这个“至少”的方案实际上有多少对 $a&gt;b$．</p>
+F(k)=\sum_i\binom{i}{k}G(i)</script><p>很好理解，就是考虑这个“至少”的方案实际上有多少对 $a&gt;b$．</p>
 <p>二项式反演得：</p>
 <script type="math/tex; mode=display">
-G(k)=\sum_{i=k}^n(-1)^{i-k}\binom{i}{k}F(i)</script><p>问题解决。</p>
+G(k)=\sum_i(-1)^{i-k}\binom{i}{k}F(i)</script><p>问题解决。</p>
 <h1 id="莫比乌斯反演"><a href="#莫比乌斯反演" class="headerlink" title="莫比乌斯反演"></a>莫比乌斯反演</h1><h2 id="欧拉函数"><a href="#欧拉函数" class="headerlink" title="欧拉函数"></a>欧拉函数</h2><ul>
 <li>$\varphi(p^k)=(p-1)p^{k-1}$</li>
 <li>$\varphi(n)=n\prod (1-\frac{1}{p})$，既可以从容斥原理角度考虑，也可以考虑直接利用 $\varphi$ 为积性函数拆开对于每个素因子单独计算。</li>
