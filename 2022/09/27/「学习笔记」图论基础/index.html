@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"do-while-true.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="有些东西可能不说原理，或者干脆没有提到，有可能是太简单了没必要，也有可能是我还不会。 根据我做题的经验，图论的很多结论都是要 “猜”，证明的话大部分思路是考虑反证，最终由定义或者引理导出矛盾。 基本上是总结类型的，如果想要看教程的话直接看 “参考资料” 里的内容（）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="「学习笔记」图论基础">
+<meta property="og:url" content="https://do-while-true.github.io/2022/09/27/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%9B%BE%E8%AE%BA%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="do_while_true&#39;s blog">
+<meta property="og:description" content="有些东西可能不说原理，或者干脆没有提到，有可能是太简单了没必要，也有可能是我还不会。 根据我做题的经验，图论的很多结论都是要 “猜”，证明的话大部分思路是考虑反证，最终由定义或者引理导出矛盾。 基本上是总结类型的，如果想要看教程的话直接看 “参考资料” 里的内容（）">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://img2022.cnblogs.com/blog/1927324/202207/1927324-20220729200738642-753306926.png">
+<meta property="article:published_time" content="2022-09-26T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-09-27T15:07:58.793Z">
+<meta property="article:author" content="do-while-true">
+<meta property="article:tag" content="图论">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img2022.cnblogs.com/blog/1927324/202207/1927324-20220729200738642-753306926.png">
+
+<link rel="canonical" href="https://do-while-true.github.io/2022/09/27/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%9B%BE%E8%AE%BA%E5%9F%BA%E7%A1%80/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>「学习笔记」图论基础 | do_while_true's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">do_while_true's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">晚风中闪过 几帧从前啊</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">17</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">3</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">15</span></a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://do-while-true.github.io/2022/09/27/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%9B%BE%E8%AE%BA%E5%9F%BA%E7%A1%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head.gif">
+      <meta itemprop="name" content="do-while-true">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="do_while_true's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          「学习笔记」图论基础
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-09-27 00:00:00 / Modified: 23:07:58" itemprop="dateCreated datePublished" datetime="2022-09-27T00:00:00+08:00">2022-09-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>有些东西可能不说原理，或者干脆没有提到，有可能是太简单了没必要，也有可能是我还不会。</p>
+<p>根据我做题的经验，图论的很多结论都是要 “猜”，证明的话大部分思路是考虑反证，最终由定义或者引理导出矛盾。</p>
+<p>基本上是总结类型的，如果想要看教程的话直接看 “参考资料” 里的内容（）</p>
+<span id="more"></span>
+<p>参考资料：</p>
+<p><a target="_blank" rel="noopener" href="https://oi-wiki.org/graph/">OI Wiki 图论板块相关资料</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/alex-wei/p/basic_graph_theory.html">初级图论 from Alex_Wei</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/alex-wei/p/high_level_graph_theory.html">高级图论 from Alex_Wei</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/PinkRabbit/p/Introduction-to-Block-Forest.html">【算法学习】圆方树 小粉兔</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/292283275/answer/484871888">如何看待 SPFA 算法已死这种说法？ - fstqwq的回答 - 知乎</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/blog/221955/zui-duan-lu-shu-hu-zui-duan-lu-dag">最短路树和最短路 DAG panyf</a></p>
+<p>《算法竞赛进阶指南》李煜东</p>
+<hr>
+<h1 id="约定与定义"><a href="#约定与定义" class="headerlink" title="约定与定义"></a>约定与定义</h1><h2 id="约定"><a href="#约定" class="headerlink" title="约定"></a>约定</h2><p>$G=(V,E)$ 表示点集为 $V$，边集为 $E$ 的图，如无特殊说明，则记 $n=|V|,m=|E|$，也就是点数和边数。</p>
+<p>无向图中连接点 $x$ 和点 $y$ 的边记作 $(x,y)$，$x$ 到 $y$ 的路径记作 $x\rightsquigarrow y$；</p>
+<p>有向图中连接点 $x$ 和点 $y$ 的边记作 $(x,y)$，有时为了突出边的指向记作 $x\to y$，路径记作 $x\rightsquigarrow y$，有时意义为 $x$ 可到达 $y$，具体何种含义视语境而定。</p>
+<p>若连接点 $x$ 和点 $y$ 的边有权值 $v$，则记作 $(x,y,v)$．</p>
+<p>如无特殊说明，则 $n$ 代指图/树的点数，$m$ 为边数。</p>
+<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p><strong>点导出子图</strong> / 导出子图 / 诱导子图：原图中若干个点以及端点均在这个点集中的所有边组成的图。</p>
+<p><strong>边导出子图</strong> / 生成子图 / 支撑子图：原图中若干条边以及这些边连接的所有点组成的图。</p>
+<p>常用于网络流题目中的：</p>
+<p><strong>闭合子图</strong>：在有向图上，点集 $V’$ 导出的闭合子图是所有 $V$ 可达的点的点导出子图。也就是对于 $\forall x\in V’$，$x$ 所有出边以及出点均在子图内，这等价于每个点能到达的所有点都在子图中。</p>
+<p><strong>$k$ 正则图</strong>：若一个无向图每个点度数都为 ，则称其为 $k$ 正则图。</p>
+<p><strong>注意：图论问题中可能图不是连通图，不是简单图，注意看清楚题面有无具体说明。</strong></p>
+<h1 id="DFS-树"><a href="#DFS-树" class="headerlink" title="DFS 树"></a>DFS 树</h1><p>最基础的，大家都会！</p>
+<p>注意无向图 dfs  树中只有树边和返祖边，而有向图中的 dfs 树还会有横叉边和前向边。</p>
+<p><strong>dfs 序</strong>：每个节点入栈时将其记录到 dfs 序中，提供了一个将子树映射到序列区间的方法。</p>
+<p><strong>欧拉序</strong>：以 dfs 的顺序遍历整棵树（回溯也视作遍历），按照顺序把遇到的点写下来，即为欧拉序。常见应用是 $\mathcal{O}(n\log n)-\mathcal{O}(1)$ LCA，$u$ 和 $v$ 的 LCA 就是以它们在树上第一次出现的位置作为左右端点的区间中深度最小的点。</p>
+<p><strong>括号序</strong>：每个节点入栈或出栈时将其记录到 dfs 序中，常见应用是判断祖孙关系，以及<a href="https://do-while-true.github.io/2022/02/14/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%88%86%E5%9D%97%E5%92%8C%E8%8E%AB%E9%98%9F/">树上莫队</a>。判断 $u$ 是否 $b$ 的祖先等价于判断 $[in_u,out_u]$ 是否完全包含 $[in_v,out_v]$．</p>
+<p>（有的地方把括号序也称为欧拉序，不过我没有找到较为权威的定义）</p>
+<p>DFS 树也经常运用于图论相关的构造题中，可以看看 jiangly 的论文。</p>
+<h1 id="最短路"><a href="#最短路" class="headerlink" title="最短路"></a>最短路</h1><h2 id="SPFA"><a href="#SPFA" class="headerlink" title="SPFA"></a>SPFA</h2><p>大家都会！</p>
+<h3 id="SPFA-常见优化方式"><a href="#SPFA-常见优化方式" class="headerlink" title="SPFA 常见优化方式"></a>SPFA 常见优化方式</h3><p><strong>SLF 优化</strong>：每次将入队结点的 $dis$ 和队首的比较，如果更大则插入至队尾，否则从队头插入。<strong>带容错</strong>：比队首大过一定值才插入队尾。<strong>交换</strong>：每当队列改变时，如果队首距离大于队尾，则交换首尾。</p>
+<p><strong>LLL 优化</strong>：每次将入队结点距离和队内距离平均值比较，如果更大则插入至队尾，否则从队头插入。</p>
+<p><strong>mcfx 优化</strong>：在第 $[L,R]$ 次访问一个节点时，将其放入队首，否则放入队尾。通常取 $L=1,R=\sqrt n$，和 SLF 带容错结合有很好的效果。</p>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/record/78331128">mcfx 优化和 SLF 带容错结合的 SPFA 实现</a>，虽然仍然可以被卡，但是在一些可以差分约束的题中用这种优化来得到更多的分数。</p>
+<h3 id="SPFA-判负环"><a href="#SPFA-判负环" class="headerlink" title="SPFA 判负环"></a>SPFA 判负环</h3><p>SPFA 判负环的方式有两种，一个点<strong>进入队列次数</strong>（不是被松弛次数），或者<strong>到某个点最短路的边数</strong>大于 $n-1$，则说明整张图存在负环。后者会快一些，只需要在用 $u$ 松弛 $v$ 的时候令最短路边数 $l_v\gets l_u$ 即可。</p>
+<p><strong>注意：很多 SPFA 优化方式并不能很快地判出负环。</strong></p>
+<h2 id="Johnson"><a href="#Johnson" class="headerlink" title="Johnson"></a>Johnson</h2><p>求解具有负权边的全源最短路径。</p>
+<p>考虑对边 $(u,v)$ 的费用 $w(u,v)$ 重新赋予新的值 $w’(u,v)$，使得新图中满足 $w’\geq 0$（边权非负使得其能跑 Dijkstra），并且可以通过新图中的最短路求出原图中的最短路。</p>
+<p>考虑对每个点 $i$ 赋予一个势能 $h_i$，并将 $w’(u,v)\gets w(u,v)+h_u-h_v$，不难发现新图中一条路径 $s\to v_1\to \cdots \to v_k\to t$ 的总权值即为 $w(s\to t)+h_s-h_t$，只于 $s,t$ 有关，所以求出新图上的最短路即可通过减去 $h_s-h_t$ 来得到原图中的最短路。</p>
+<p>怎样赋予这样的势能 $h$ 使得 $w’(u,v)=w(u,v)+h_u-h_v\geq 0$？将其移项得到 $w(u,v)+h_u\geq h_v$，得到了一个三角形不等式，也就是最短路中松弛的条件，于是新建一个超级源点 $S$，向每一个点 $i$ 连一条权为 $0$ 的边，用 SPFA 把超级源点到每个点的最短路跑出来（顺便判一下是否有负环），$S$ 到每个点的最短路即为所需要的 $h$．</p>
+<p>跑出 $h$ 得到新图后，对每个 $i$ 作为起点跑 Dijkstra 算法即可。时间复杂度为 $\mathcal{O}(nm\log m)$．</p>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/record/78344004">P5905 模板题代码</a></p>
+<h2 id="Floyd-与传递闭包"><a href="#Floyd-与传递闭包" class="headerlink" title="Floyd 与传递闭包"></a>Floyd 与传递闭包</h2><p>Floyd 大家都会！图的传递闭包说的是，如果原图中 $x$ 有到 $y$ 的路径，那么在传递闭包的关系图上具有 $x$ 到 $y$ 的边。通俗地讲，就是得到两点直接是否可达。</p>
+<p>使用 Floyd 暴力实现传递闭包是 $\mathcal{O}(n^3)$，使用 <code>bitset</code> 优化则为 $\mathcal{O}(\frac{n^3}{w})$．</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">bitset&lt;N&gt;f[N];</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> k=<span class="number">1</span>;k&lt;=n;k++)</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)</span><br><span class="line">    	<span class="keyword">if</span>(f[i][k])</span><br><span class="line">    		f[i]|=f[k];</span><br></pre></td></tr></table></figure>
+<h2 id="差分约束"><a href="#差分约束" class="headerlink" title="差分约束"></a>差分约束</h2><p>差分约束系统提供了通过图论建图以最长路/最短路的形式刻画变量之间的不等关系。常见的应用是判断不等关系是否有合法解。</p>
+<p>对于最短路，我们将 $x_v\leq x_u+w$  描述为 $dis_v\leq dis_u+w$，感性理解一下，在这里描述的是 $x_v$ 的上界，而且通过跑最短路找到了 $x_v$ 的上界。虽然跑的是“最短路”，但在不等式组的意义下 $x_v$ 可能会更小，所以这里是在满足不等式组的条件下让 $x_v$ 取到了它的上界。</p>
+<p>类似地，如果想要用最长路来跑差分约束，得到的是每个变量的下界。</p>
+<p>总结：最短路跑出来的是每个变量最大可能的值，最长路跑出来的是每个变量最小可能的值。</p>
+<h2 id="同余最短路"><a href="#同余最短路" class="headerlink" title="同余最短路"></a>同余最短路</h2><p>求解一类问题：给定一些数 $a_i$，求在一个范围内的数有多少数可以被给定的数的系数非负的线性组合表示出。也就是多少个数可以被完全背包得到。</p>
+<p>如果 $r$ 可以被表示出，那么 $r+xa_i,x&gt;0$ 也能被表示出，所以固定一个 $a_t$ 作为模数，按照余数对每个数划分等价类，对于每个等价类求出最小的能被表示出的是多少即可。</p>
+<p>不难建出一张图，对于每个余数 $r$，对于每个 $i$ 连边 $(r,(r+a_i)\bmod a_t,a_i)$，然后跑最短路即可。</p>
+<p>直接跑 Dijkstra 或 SPFA 固然可行，但是这个图看上去很强的性质，能不能利用起来？</p>
+<p>考虑固定最大的 $a_t$ 作为模数，对于一个余数 $r$，其最小能表示的数为 $r+k\times a_t$，令这个 $k$ 为最短路。不难发现，当一个 $r$ 进行松弛的时候，若 $r+a_i\geq a_t$，由于 $r&lt;a_t,a_i\leq a_t$，那么其会拓展到 $r+a_i-a_t+(k+1)\times a_t$，也就是 $dis_{r+a_i-a_t}\gets dis_{r}+1$；若 $r+a_i&lt;a_t$，则为 $dis_{r+a_i}\gets dis_r+1$．</p>
+<p>也就是这张图的边权变为了 0/1，跑 01 bfs 即可。时间复杂度是 $\mathcal{O}(na)$．</p>
+<p>当然，如果 $\min a$ 很小的话跑 SPFA 会有更好的效果（在这里图比较特殊， SPFA 不容易跑满）。</p>
+<h2 id="最短路树-图"><a href="#最短路树-图" class="headerlink" title="最短路树/图"></a>最短路树/图</h2><h3 id="最短路树"><a href="#最短路树" class="headerlink" title="最短路树"></a>最短路树</h3><p>最短路树是原图一个生成树。对于起点 $s$ 求出到每个点最短路径，如果 $v$ 节点的最短路是由边 $(u,v)$ 松弛得到，则在生成树中保留 $(u,v)$．由于每个点都只会通过自身的最短路链接自己的前驱，而不断追溯前驱即可找到起点 $s$，所以是一棵树。</p>
+<p>根据定义，其具有性质：树上 $s$ 到 $x$ 的路径长度是 $s$ 到 $x$ 的最短路。</p>
+<p>大部分题目或者证明是围绕这个性质展开分类讨论之类的。</p>
+<h3 id="最短路图"><a href="#最短路图" class="headerlink" title="最短路图"></a>最短路图</h3><p>虽然是“最短路图”，但实际上是个 DAG。</p>
+<p>有一个起点 $s$，对于每个点 $x$ 保留原图上所有 $s$ 到 $x$ 的最短路，即为最短路图。</p>
+<p>性质：</p>
+<ul>
+<li>如果将每一条边根据哪一端点离起点更近来定向（更近的连向更远的），那么连出来是一个 DAG，因为最短路径不会有环出现（除非图中出现了负环，此时不存在最短路图）。</li>
+<li>最短路图的所有生成树都是最短路树，每一个最短路树都是最短路图的一棵生成树。</li>
+</ul>
+<p>求出这个图的方法：跑 $s$ 为起点到每个点的最短路，如果对于一条边 $(u,v,w)$ 满足 $dis_u+w=dis_v$，则连边 $u\to v$．</p>
+<p>如果仅想要保留某个终点 $t$ 来说，所有 $s$ 到 $t$ 的最短路，那么就判断一条边 $(u,v,w)$  是否满足 $dis(s,u)+w+dis(v,t)=dis(s,t)$，是则连边。</p>
+<p>性质一的证明思路能够类似地证明很多结论，比方洛谷 P2149 的结论。</p>
+<p>最短路树和最短路图不难板子的例题：<a target="_blank" rel="noopener" href="https://hydro.ac/d/bzoj/p/3694">BZOJ 3694</a>，<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2149">[SDOI2009] Elaxia的路线</a>，<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF1163F">CF1163F</a>。</p>
+<h1 id="最小生成树"><a href="#最小生成树" class="headerlink" title="最小生成树"></a>最小生成树</h1><h2 id="Kruskal"><a href="#Kruskal" class="headerlink" title="Kruskal"></a>Kruskal</h2><p>将边从小到大排序并遍历，如果边的两个端点还没有连通，则将这条边加入最小生成树，时间复杂度 $\mathcal{O}(m\log m)$．</p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/340628568">证明</a>。</p>
+<h2 id="Prim"><a href="#Prim" class="headerlink" title="Prim"></a>Prim</h2><p>维护当前已经在最小生成树中的点集 $V$，每次选择距离 $V$ 最近的点加入最小生成树，然后松弛剩下的点到 $V$ 的距离。</p>
+<p>暴力实现是 $\mathcal{O}(n^2)$，与 Dijkstra 同样可以使用堆优化，使用优先队列优化的时间复杂度为 $\mathcal{O}(m\log m)$．</p>
+<h2 id="Boruvka"><a href="#Boruvka" class="headerlink" title="Borůvka"></a>Borůvka</h2><p>别乳卡/jy</p>
+<p>每一轮操作，对于每个点来说，让它和 “与他相邻的最近的还未连通的点” 相连。假设连通块个数为 $k$，每一轮每个连通块都至少连出去一条边，而至多会去除 $\frac{k}{2}$ 条重边，每成功连一次边连通块个数都会 $-1$，所以一轮后连通块个数至少减半。</p>
+<p>时间复杂度为 $\mathcal{O}(m\log m)$．</p>
+<p>Borůvka 通常运用在一类特殊的最小生成树问题，如无法显示地将图建出来，但是能快速计算两点之间边的距离的一类问题。</p>
+<h2 id="最大生成树"><a href="#最大生成树" class="headerlink" title="最大生成树"></a>最大生成树</h2><p>将边权取反跑最小生成树，即得到最大生成树。实现上，可以直接改变偏序关系的判断，例如 Kruskal 变为从大到小排序。</p>
+<h2 id="瓶颈生成树"><a href="#瓶颈生成树" class="headerlink" title="瓶颈生成树"></a>瓶颈生成树</h2><p>一张图的最大边权最小的生成树是瓶颈生成树。</p>
+<p>可以简单地用反证法证明，瓶颈生成树包含最小生成树，或者说<strong>最小生成树是瓶颈生成树的充分不必要条件</strong>。</p>
+<p>最小生成树一定是瓶颈生成树：若不是的话，瓶颈生成树中任意一条边都小于最小生成树的最大边，那么将最小生成树的最大边删去，用瓶颈生成树中的任意一条可以连接删剩下的两棵子树的边，来连接删剩下的两棵子树，即可得到边权和比最小生成树更小的生成树，产生矛盾。</p>
+<p>瓶颈生成树不一定是最小生成树：考虑任意一棵最小生成树，只需要固定其最大边必须选，小于最大边的任意选，连接出的一棵生成树即为瓶颈生成树，但这不一定是最小生成树，根据 Kruskal 最小生成树一定是尽量选权较小的边。</p>
+<p>类似地，可以询问任意 $x,y$ 两点之间简单路径中最大边权最小是多少，只需要找出任意一棵最小生成树上 $x$ 到 $y$ 的最大边权即可，正确性证明同理。</p>
+<h2 id="Kruskal-重构树"><a href="#Kruskal-重构树" class="headerlink" title="Kruskal 重构树"></a>Kruskal 重构树</h2><p>Kruskal 的过程中，维护每个已经连通的集合一个代表元（初始时单个节点本身的集合代表元就是它自己），连边 $(u,v)$ 时需要将 $u$ 所在集合 $U$ 和 $v$ 所在集合 $V$ 合并成新的集合 $T$，给新的集合一个新的代表元，然后连边 $(U,T),(V,T)$．</p>
+<p>重构树的点数为 $2n-1$，注意要开<strong>两倍空间</strong>的数组。</p>
+<p>根据建重构树的过程，以及前面对 Kruskal 以及瓶颈生成树相关性质的剖析，不难得到重构树具有以下性质：</p>
+<ul>
+<li>重构树是一棵二叉树；</li>
+<li>原图中的节点对应重构树中的叶子；</li>
+<li>忽略叶子的权值（或者将其权值视作 $0$ 或 $+\infty$）重构树上的<strong>点权满足堆的性质</strong>，即父亲节点权值 $\geq$（如果是从大到小加边则为 $\leq$）儿子节点权值；</li>
+<li>对于原图中 $u,v$ 两点，它们之间所有路径的 <strong>经过边权最大值</strong> 的<strong>最小值</strong> 是 $u,v$ 在重构树上 LCA 的权值；</li>
+<li>对于原图中 $u$ 点，其<strong>只经过 $\leq w$ 的边能走到点</strong>，为 $u$ 在重构树上最浅的满足权值 $\leq w$ 的祖先 $a$ 子树中的叶子，如果从大到小加边就是 “$\leq$”，找到这个点可以使用倍增。</li>
+</ul>
+<p>围绕这些性质，有关 <strong>“仅能走权值小于等于（或者大于等于）某个值的边”</strong> 的<strong>连通性问题</strong>，要想到 Kruskal 重构树。</p>
+<h3 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h3><p>套路：</p>
+<p>经过点权有上下界，点权转边权，<strong>点权重构树</strong>：仅能走点权 $w\leq $ 某个值 $c$ 的点，转成边权，那么对于边 $(u,v)$ 来说能经过必须要 $u$ 和 $v$ 同时满足 $w\leq c$，于是记录其边权为 $\max(w_u,w_v)$，问题变成只能走 $\leq c$ 的边。</p>
+<p>经过边权有上下界，<strong>上下界重构树</strong>：仅能走边权 $\geq L$ 且 $\leq R$ 的边。考虑从小到大和从大到小建两棵重构树，这样 $u$ 能到达的点就是在两棵重构树中 $u$ 根据上/下界倍增调到的节点的子树的交。数个数的话可以直接利用 dfs 序转化成二维数点。</p>
+<p>经过点权有上下界，<strong>多叉重构树</strong>：Kruskal 重构树提供了一个边权转点权并保留了某些性质，点权重构树中将点权转为边权再转成点权，能不能直接点权到点权转化呢？假如说限制的是仅能走点权 $\leq c$ 的点，那么按照点权从小到大排序尝试加入重构树中，每次对于一个 $u$，遍历其出边 $v$，若 $w_u&gt;w_v$，说明 $v$ 已经被加到重构树中，并且 $\max(w_u,w_v)$ 此时取的值为 $w_u$，那么将 $w_u$ 作为 $v$ 所在连通块的代表元的父亲即可。不难发现这个过程与按照 $\max(w_u,w_v)$ 作为边权排序等价。由于不需要重新赋边权及建虚点之类的。常数更小。</p>
+<p>例题：</p>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF1416D">CF1416D</a>：板子多了一个线段树，<a target="_blank" rel="noopener" href="https://codeforc.es/contest/1416/submission/165757421">Code</a>。</p>
+<p><a target="_blank" rel="noopener" href="https://ac.nowcoder.com/acm/contest/5205/E?&amp;headNav=acm">牛客练习赛 62 E 水灾</a>：比板子多了一个小结论，<a target="_blank" rel="noopener" href="https://ac.nowcoder.com/acm/contest/view-submission?submissionId=52909738">Code</a>。</p>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4899">[IOI2018] werewolf 狼人</a>：可以用上面的提到的套路，<a target="_blank" rel="noopener" href="https://loj.ac/s/1529947">Code</a>。</p>
+<h1 id="欧拉图"><a href="#欧拉图" class="headerlink" title="欧拉图"></a>欧拉图</h1><h2 id="定义-1"><a href="#定义-1" class="headerlink" title="定义"></a>定义</h2><p>有孤立点到底算不算？我暂且存疑。不过在实际题目中并不需要拘泥于这个定义。</p>
+<p>欧拉路径/回路：通过图中所有边恰好一次的路径/回路。</p>
+<p>欧拉图：具有欧拉回路的无向图（或有向图）。</p>
+<p>半欧拉图：具有欧拉路径，但不具有欧拉回路的无向图（或有向图）。</p>
+<h2 id="判定"><a href="#判定" class="headerlink" title="判定"></a>判定</h2><p><strong>无向图为欧拉图</strong>当且仅当<strong>图连通</strong>且<strong>每个点度数都是偶数</strong>。</p>
+<p>必要性：对于回路中每个点，进这个点一次就一定会出这个点一次。</p>
+<p>充分性：先任意找一个环，去掉这个环之后图上会形成若干个连通块，由于图连通所以这些连通块都一定和这个环有交点，对这些连通块递归下去构造出欧拉回路，再拼到这个环上。</p>
+<p>类似地，可以得出结论：</p>
+<p><strong>无向图为半欧拉图</strong>当且仅当<strong>仅有两个点度数为奇数</strong>，这两个奇度点就是欧拉路径的两个端点。</p>
+<p><strong>有向图为欧拉图</strong>当且仅当<strong>图弱连通</strong>（将所有边替换为无向边后连通），且<strong>所有点入度等于出度</strong>。</p>
+<p><strong>有向图为半欧拉图</strong>当且仅当<strong>图弱连通</strong>，且仅存在一个点出度比入度大 $1$，仅存在一个点出度比入度大 $1$，这两个点就是欧拉路径的起点和终点。</p>
+<h2 id="求欧拉回路"><a href="#求欧拉回路" class="headerlink" title="求欧拉回路"></a>求欧拉回路</h2><p>Hierholzer 算法：如果有欧拉回路的话，对图进行 dfs，经过一个点的时候把从这个点出发的环拼到整个大环上。实现上，每次 dfs 完 $u$ 之后将 $u$ 加入到路径中，即得到欧拉回路。如果是求欧拉路径的话，得到的就是反过来的欧拉路径。</p>
+<p>每次 dfs 到一个点的时候要不断走第一条没有遍历过的边，需要使用类似 dinic 中的当前弧优化技巧。</p>
+<p>字典序最小的欧拉回路/路径？将每条出边按照字典序从小到大排序再求即可。</p>
+<h3 id="混合图欧拉回路"><a href="#混合图欧拉回路" class="headerlink" title="混合图欧拉回路"></a>混合图欧拉回路</h3><p>混合图就是图中既有有向边也有无向边，无向边两种方向都能经过，但是只能经过一次。</p>
+<p>考虑到最终的欧拉回路，相当于给每个无向边都定了一个向。</p>
+<p>那么先给每条无向边都任意钦定一个方向，算出来每个点的 $d$ 值为出度 $-$ 入度，如果有奇数就无解了。</p>
+<p>那么现在想办法调整若干条无向边的方向，来让 $d$ 都为 $0$，这个看上去很像流量平衡，于是考虑网络流做法。</p>
+<p>对于每条无向边 $(u,v)$ 定向为 $u\to v$，连一条 $u\to v$，流量为 $1$ 的有向边，表示如果将其反向，则 $d_u$ 减少一个 $2$，$d_v$ 增加一个 $2$．</p>
+<p>对于每个点 $d_x&gt;0$，从源点 $S$ 连向 $x$ 流量为 $\frac{d_x}{2}$，表示从 $x$ 要流出去 $\frac{d_x}{2}$ 个 $2$；</p>
+<p>$d_x&lt;0$，从 $x$ 流向 $T$ 流量为 $-\frac{d_x}{2}$，表示要流入 $x$ $-\frac{d_x}{2}$ 个 $2$．</p>
+<p>跑最大流，如果不满流则无解，否则有流量的边就是要反向的边。</p>
+<h1 id="连通性相关"><a href="#连通性相关" class="headerlink" title="连通性相关"></a>连通性相关</h1><h2 id="有向图连通性"><a href="#有向图连通性" class="headerlink" title="有向图连通性"></a>有向图连通性</h2><h3 id="定义-2"><a href="#定义-2" class="headerlink" title="定义"></a>定义</h3><p>以下定义均在有向图中。</p>
+<p>对于两个点 $u,v$，若它们能互相到达，则这两个点强连通，具有强连通性。</p>
+<p>若图 $G$ 中任意两个点都是强连通的，则 $G$ 为一个强连通图。</p>
+<p>极大的强连通子图，称为强连通分量（SCC）。</p>
+<p>对一张图进行 SCC 缩点后得到的是一个 DAG。</p>
+<h3 id="Tarjan"><a href="#Tarjan" class="headerlink" title="Tarjan"></a>Tarjan</h3><p>dfs 的时候用栈存下当前遍历到的节点，如果一个点 $x$ 满足 $dfn_x=low_x$，则这个 $x$ 是其所在 SCC 的最浅的节点，有结论是栈中 $x$ 及以上所有点是这个 SCC，那么不断弹出记录一下即可。</p>
+<p>注意此时图是有向图，可能会出现横叉边与前向边，不能用来更新 $low$（$low$ 是只能走返祖边），前向边对 $low$ 没有影响，而横叉边就判断一下当前走非树边走到的 $v$ 有没有已经在某个 SCC 中，如果有的话那么这条边是反向边，否则就可以拿来更新 $low$．</p>
+<h3 id="Kosaraju"><a href="#Kosaraju" class="headerlink" title="Kosaraju"></a>Kosaraju</h3><p>先求出 dfs 树，然后按照出栈序倒序在反图上 dfs，每次 dfs 所有能走到的点都构成了一个强连通分量，然后将它们在图上删去。</p>
+<p>时间复杂度 $\mathcal{O}(|V|+|E|)$．</p>
+<p>正确性的话，感性理解一下：</p>
+<p>考虑缩点后的 DAG，对于一个 SCC，显然能找到它的所有节点，证明其不会走到其它 SCC 的节点即可：</p>
+<ul>
+<li><p>它不会走到它的前驱 SCC 以外的 SCC：因为反图上没有到达其的边；</p>
+</li>
+<li><p>它不会走到它的前驱 SCC：因为它的前驱 SCC 出栈序比它大，已经被标记过了。</p>
+</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="http://172.22.21.47/problem/76">例题 Claris’ Contest # 4 Day 2 A. 友好城市（只有在机房才能看）</a></p>
+<h2 id="无向图连通性"><a href="#无向图连通性" class="headerlink" title="无向图连通性"></a>无向图连通性</h2><p>部分内容可能比较“显然”，因为严谨的说明太烦琐了。</p>
+<h3 id="定义-3"><a href="#定义-3" class="headerlink" title="定义"></a>定义</h3><p>以下定义均在无向图中。</p>
+<p><strong>割点</strong>：删去后使得连通分量个数增加的点。</p>
+<p><strong>割边 / 桥</strong>：删去后使得连通分量个数增加的边。</p>
+<p>在通常语境下是无向连通图下的定义，不连通的割点/割边定义为其所有连通分量割点/割边的并。</p>
+<p>值得注意的是，孤立点，以及链的两个端点，均不是割点。</p>
+<p><strong>点双连通性</strong>：对于一对点来说，删掉除了这两个点以外的任意一个<strong>点</strong>之后这两个点依然连通，则这两个点具有点双连通性。（注：点双连通性最原始的定义应为任意两点之间至少有两条点不重复的路径，由于并不常用，便定义为这个几乎等价的定义）</p>
+<p><strong>边双连通性</strong>：对于一对点来说，删掉任意一条边之后这两个点依然连通，则这两个点具有边双连通性。</p>
+<p><strong>点双 / 点双连通分量</strong>：不存在割点的无向连通图 / 子图。</p>
+<p><strong>边双 / 边双连通分量</strong>：不存在割边的无向连通图 / 子图。</p>
+<p>在点之间点双连通性<strong>不具有</strong>传递性，而边双连通性<strong>具有</strong>传递性。</p>
+<p>更具体地，在点之间仅有边双连通性具有传递性，如果我们类似地定义边的点边双连通性，则在边之间仅有点双连通性具有传递性。</p>
+<p>几乎等价的性质是，<strong>点双</strong>缩点之后<strong>一条边仅属于一个点双</strong>，<strong>边双</strong>缩点后<strong>一个点仅属于一个边双</strong>，这同时也说明边双缩点之后是通过割边作为树边的树。</p>
+<p>考虑 $x$ 和 $y$ 边双连通，$y$ 和 $z$ 也边双连通，这意味着无论删掉哪条边，都一定依然满足 $x$ 和 $y$ 连通，$y$ 和 $z$ 连通，则 $x$ 和 $z$ 一定也连通，即 $x$ 和 $z$ 具有边双连通性。</p>
+<p>考虑 $x$ 和 $y$ 点双连通，$y$ 和 $z$ 也点双连通，这意味着无论哪个删掉除了 $x,y,z$ 以外的点，$x$ 和 $y$ 和 $z$ 都一定连通，但是这不意味着 $x$ 和 $z$ 具有点双连通性，因为可能删掉 $y$ 之后 $x$ 和 $z$ 不连通。例子是一个 8 字形，$x,y,z$ 分别是顶上，中间的割点，以及底部的点，也就是 $x\leftrightarrow y\leftrightarrow z$。</p>
+<h3 id="割点"><a href="#割点" class="headerlink" title="割点"></a>割点</h3><p>定义 $dfn_x$ 为 $x$ 的 dfs 序，$low_x$ 为 $x$ 最多经过<strong>一条返祖边</strong>能走到的 dfs 序最小的节点的 dfs 序为多少。</p>
+<p>在 dfs 树上，如果一个点不是根，那么其为割点等价于删掉它之后子树内的点不经过 $x$ 可达的点均在子树内部，也就是<strong>存在一个儿子 $v$ 满足 $low_v\geq dfn_x$</strong>（$low$ 不能定义为经过多条非树边，$v$ 子树内可以通过 $x$ 向上的返祖边走到子树外会影响判断）。</p>
+<p>如果这个点是根，那么其为割点的充要条件是<strong>儿子个数 $&gt;2$</strong>（这样删掉根之后子树之间会互相不可达）。</p>
+<h3 id="割边"><a href="#割边" class="headerlink" title="割边"></a>割边</h3><p>返祖边一定不会是割边，与割点类似，对于一条边 $e(u,v)$ 来说，$u$ 为祖先，那么 $e$ 是割边的充要条件是 <strong>$e$ 是树边并且 $low_v&gt;dfn_u$</strong>．</p>
+<p>由于图可能不是简单图，所以需要通过记录边的编号来判断一条边是不是从父亲来的边，因为这样的边会影响 $low$ 的记录。</p>
+<p>另一种方法：对于非树边 $(u,v)$，标记树上 $u$ 到 $v$ 路径上的树边不是返祖边，一条树边数割边充要条件就是其没有被标记，可以用<strong>树上差分</strong>来实现。</p>
+<h3 id="边双缩点"><a href="#边双缩点" class="headerlink" title="边双缩点"></a>边双缩点</h3><p>找出割边之后，所有不包含割边的极大子图就是极大边双。</p>
+<p>每个点最多在一个边双中，可以在 dfs 的过程中将遍历到的节点压入到一个栈中，当判断出从 $u$ 走到 $v$ 的边 $(u,v)$ 是割边时，有结论是栈中 $v$ 及以上的所有点在一个极大边双中，将它们不断弹出并记录即可。</p>
+<p>感性理解一下正确性，就是在 dfs 的过程中，每次找到一个 $v$，其子树内并不含割边，并且它和它父亲所连的边 $(u,v)$ 是割边，然后把 $v$ 的子树标记为一个边双连通分量，再将其从图中删去。</p>
+<p>例题：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF555E">CF555E</a>。</p>
+<p>连通性相关问题要想到割点割边，点双边双这一套理论，而具体和点相关还是和边相关再考虑利用哪个解决问题。</p>
+<h3 id="点双缩点"><a href="#点双缩点" class="headerlink" title="点双缩点"></a>点双缩点</h3><p>见后文圆方树。</p>
+<h2 id="2-Sat"><a href="#2-Sat" class="headerlink" title="2-Sat"></a>2-Sat</h2><h3 id="定义-4"><a href="#定义-4" class="headerlink" title="定义"></a>定义</h3><ul>
+<li>命题变元：取值为真或假的变量。</li>
+<li>逻辑合取：合取 / 逻辑与 $\vee$；析取 / 逻辑或 $\wedge$；否定 $\neg$；蕴含 $P\to Q$ 如果 $P$ 成立则 $Q$ 成立；将命题变元用这些关系来描述得到命题公式。</li>
+<li>文字：命题变元及其否定。</li>
+<li>简单析取式：若干个文字的析取，如 $P=x_1\wedge x_2\wedge \cdots \wedge x_k$，其中 $x_i$ 是一个文字，也就是命题 $p_i$ 或其否定 $\neg p_i$．</li>
+<li>合取范式：若干个简单析取式的合取，如 $Q=P_1\vee P_2\vee\cdots \vee P_k$，其中 $P_i$ 是一个简单析取式。</li>
+</ul>
+<p>布尔可满足性问题（SAT）是检查一个命题公式是否存在一组合法的解，是一个 NPC 问题。</p>
+<p>而 SAT 的简单版本，命题公式为合取范式，其中每个简单析取式都由至多 $k$ 个文字组成，这样的问题称作 k-SAT .</p>
+<p>$k\geq 3$  时 k-SAT 时 NPC 问题，$k=2$ 时及 2-SAT 存在多项式解法。</p>
+<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><p>称每个简单析取式为条件，那么每个条件一定固定的几种情况：$a,\neg a,a\wedge b,a\wedge \neg b,\neg a\wedge b,\neg a\wedge \neg b$．</p>
+<p>由于每个条件至多与两个文字有关，所以可以从图论的角度思考，对每个文字建立一个点，用有向边 $x\to y$ 来表示蕴含关系，即“若 $x$ 成立，则 $y$ 成立”（值得注意的是，蕴含具有传递性，这同样提示我们可以将蕴含对应到图上的可达性），那么将每种可能的简单析取式都放在图上就是：</p>
+<ul>
+<li>$a$：$\neg a\to a$，由于 $a$ 和 $\neg a$ 不能都成立，而想要表达 $a$ 一定为真，即可用这种边来表示 $\neg a$ 一定不成立；</li>
+<li>$\neg a$：$a\to \neg a$，同理；</li>
+<li>$a\wedge b$：$\neg a\to b,\neg b\to a$，即其中一个文字不成立时，另一个文字一定成立；</li>
+<li>$\neg a\wedge b$：$a\to \neg b,\neg b\to a$；</li>
+<li>$\neg a\wedge \neg b$：$a\to \neg b,\to b\neg a$．</li>
+</ul>
+<p>后三种关系中，具有<strong>对称性</strong>，因为一个命题成立则其逆否命题也成立，这是十分重要的一点性质，它保证了我们后面 2-SAT 算法的正确性。</p>
+<p>一个解在图中是什么样的形态呢？对于一组解中为真的 $n$ 个代表不同命题变元的<strong>文字</strong>，它们在图中导出的闭合子图，若包含了其它文字，则说明一定出现了一个值为真的文字 $p$，其否定也成立，这是不合法的。这说明了这个闭合子图等同于这些点的点导出子图。这等价于不存在一个假的文字被一个真的文字所蕴含。</p>
+<p>首先，若对于一个命题变元 $p$ 来说，$p$ 和 $\neg p$ 若在一个强连通分量内，即为“若 $p$ 则 $\neg p$，若 $\neg p$ 则 $p$”，这说明此问题无解；</p>
+<p>否则的话，尝试构造出一组解。</p>
+<p>注意到如果 $\neg p$ 能到达 $p$，那么 $p$ 一定为真。而如果 $\neg p$ 能到达 $p$ 说明 $\neg p$ 拓扑序大于 $p$（注意反之并不成立），这启发我们通过判断 $p$ 和 $\neg p$ 的拓扑序大小来判断 $p$ 的真假。</p>
+<p>即为，若 $\neg p$ 的拓扑序大于 $p$ 的拓扑序，则 $p$ 为真，否则 $p$ 为假。</p>
+<p>这样的解一定合法吗？尝试反证。</p>
+<p>记文字 $x$ 的拓扑序为 $d_x$．对于任意两个文字 $a,b$，它们的拓扑序一定各自大于其否定的拓扑序，即 $d_a&gt;d_{\neg a},d_b&gt;d_{\neg b}$，若 $a$ 能到达 $\neg b$，则有 $d_{\neg b}&gt;d_a$，由对称性可知 $b$ 能到达 $\neg a$，则有 $d_{\neg a}&gt;d_b$，整理可得 $d_a&gt;d_{\neg a}&gt;d_b&gt;d_{\neg b}&gt;d_a$ 即 $d_a&gt;d_a$，导出矛盾，故不存在一个值为真的文字可到达一个值为假的文字。</p>
+<p>在实现上，由于 Tarjan 时已经得到了缩点后 DAG 的反向拓扑序，直接判断所在强连通分量编号即可比较拓扑序。</p>
+<p>时间复杂度 $\mathcal{O}(n+m)$，$n$ 为命题变元个数，$m$ 为简单析取式的数量。</p>
+<h1 id="圆方树"><a href="#圆方树" class="headerlink" title="圆方树"></a>圆方树</h1><blockquote>
+<p>圆方树上圆方果，</p>
+<p>圆方树下你和我，</p>
+<p>圆方树前建虚树，</p>
+<p>欢乐多又多。</p>
+<p>—— big_news</p>
+</blockquote>
+<p>十年前流行的东西？因为以前没学过就多做了一点题，但实际上还是没有把遇见的题都写完了因为看起来好难写啊。</p>
+<h2 id="定义-5"><a href="#定义-5" class="headerlink" title="定义"></a>定义</h2><p><strong>仙人掌</strong>：每条边只在不超过 $1$ 个简单环中的无向连通图。</p>
+<p><strong>子仙人掌</strong>：以 $r$ 为根的仙人掌上的点 $p$ 的子仙人掌是从仙人掌中去掉 $p$ 到 $r$ 的简单路径上的所有边之后，$p$ 所在的连通块。</p>
+<p><strong>点双 / 点双连通分量</strong>：不存在割点的无向连通图 / 子图。</p>
+<p><strong>点双</strong>缩点之后<strong>一条边仅属于一个点双，一个点可能出现在多个点双中</strong>。</p>
+<p>对于每个点双，建立一个代表这个点双的新的点，称之为<strong>方点</strong>，对于每个点双，将其的方点向这个点双里的每个点在新树里连边，这样每个点双形成了一个菊花，多个点双之间再通过割点相连，这样建出来的新树即为圆方树，注意其点数 $&lt;2n$，记得要开<strong>两倍空间</strong>的数组。</p>
+<p><img src="https://img2022.cnblogs.com/blog/1927324/202207/1927324-20220729200738642-753306926.png" alt=""></p>
+<p>似乎把一般图上的圆方树称为广义圆方树，仙人掌上的圆方树称为圆方树，就不细分了。</p>
+<h2 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h2><p>圆方树构建方式相对于找割点而言，类似于边双缩点相对于找割边：</p>
+<ul>
+<li><p>在 dfs 过程中从儿子 $v$ 回溯到 $u$ 时，如果 $low_v\geq dfn_u$，说明 $u$ 是一个割点；$v$ 目前还没有被割掉的子树，也就是栈中 $v$ 及其以上到栈顶的部分，与 $u$ 构成了一个新的点双，并且<strong>栈中的顺序即为在环上的顺序</strong>。</p>
+</li>
+<li><p>新建方点与它们连边即可，然后将 $v$ 及以上的点弹出（也就是删掉 $v$ 子树），<strong>注意不要判成“直到到 $u$ 弹出”，但要连上 $u$</strong>。</p>
+</li>
+</ul>
+<p>Alex_Wei 言：<strong>圆方树完整地保留了原图的必经性</strong>。围绕此言的若干性质与推论，<a target="_blank" rel="noopener" href="https://www.cnblogs.com/alex-wei/p/high_level_graph_theory.html">可以看这里 3.2 部分</a>。</p>
+<h2 id="例题-1"><a href="#例题-1" class="headerlink" title="例题"></a>例题</h2><p>有些题不一定必须要把圆方树显式地建出来（其实这些题就是缩点双），在遇到仙人掌题 / 点与点之间连通性问题 要想到圆方树。</p>
+<h3 id="仙人掌题"><a href="#仙人掌题" class="headerlink" title="仙人掌题"></a>仙人掌题</h3><p>套路是把树上的做法搬到仙人掌上，然后单独考虑环上怎么做（和基环树好像啊），大多都是定义 $f_x$ 为 $x$ 的子仙人掌内的 dp 值（类比树形 dp 中”子树内的 dp 值”）。</p>
+<p>随机生成一棵仙人掌的方法：随机生成一棵树，然后对树进行随机链剖分，随机几个点向链顶连边（划分出的一条链最多加一条边），或者每次随机一条链，链底连向链顶亦可。可能需要判一下重边和自环。</p>
+<p>仙人掌上 dp：</p>
+<p><a target="_blank" rel="noopener" href="https://hydro.ac/d/bzoj/p/4316">BZOJ4316</a>：仙人掌上最大独立集，<a target="_blank" rel="noopener" href="https://hydro.ac/d/bzoj/record/62dce4f089531d052a207376">Code</a>。</p>
+<p><a target="_blank" rel="noopener" href="https://hydro.ac/d/bzoj/p/1023">BZOJ1023</a>：仙人掌的直径（任意两点最短路的最大值），<a target="_blank" rel="noopener" href="https://hydro.ac/d/bzoj/record/62dcef5a25d42d05161efec5">Code</a>。</p>
+<p>利用圆方树解决仙人掌问题：</p>
+<p><a target="_blank" rel="noopener" href="https://hydro.ac/d/bzoj/p/2125">BZOJ2125</a>：多次询问仙人掌上两点最短路，<a target="_blank" rel="noopener" href="https://hydro.ac/d/bzoj/record/62dd065d25d42d05161f1545">Code</a>。</p>
+<p>虚仙人掌：</p>
+<p><a target="_blank" rel="noopener" href="https://uoj.ac/problem/87">UOJ 87 mx的仙人掌</a>：虚仙人掌 + BZOJ2125 + BZOJ1023 大融合？</p>
+<p><a target="_blank" rel="noopener" href="https://uoj.ac/problem/189">UOJ 189</a>：代码实现太难了&gt;&lt;</p>
+<h3 id="广义圆方树题"><a href="#广义圆方树题" class="headerlink" title="广义圆方树题"></a>广义圆方树题</h3><p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P5058">[ZJOI2004]嗅探器</a>：板子题，用来巩固对定义及基本性质的理解，<a target="_blank" rel="noopener" href="https://loj.ac/s/1528421">Code</a>。</p>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3225">[HNOI2012]矿场搭建</a>：板子题，讨论一下下即可，<a target="_blank" rel="noopener" href="https://loj.ac/s/1528544">Code</a>。</p>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4630">[APIO2018] 铁人两项</a>：性质题，需要想一想合法点在圆方树上满足什么条件，<a target="_blank" rel="noopener" href="https://loj.ac/s/1528407">Code</a>。</p>
+<p>圆方树上建虚树，欢乐多又多：</p>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4606">[SDOI2018]战略游戏</a>：虚仙人掌板子。</p>
+<p>圆方树上树剖：</p>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF487E">CF487E</a>：性质还是铁人两项那道题的性质，转成一个树剖问题，然后还有一个单独维护父亲，批量维护儿子的 trick。</p>
+<h1 id="支配树"><a href="#支配树" class="headerlink" title="支配树"></a>支配树</h1><p>鸽了！</p>
+<h2 id="DAG-必经点-边"><a href="#DAG-必经点-边" class="headerlink" title="DAG 必经点/边"></a>DAG 必经点/边</h2><p>判断 DAG 上一个点 / 边是否是 $s$ 到 $t$ 的必经点/边，换而言之，判断去掉这个点/边之后，$s$ 是否由存在到 $t$ 的路径变为不存在到 $t$ 的路径。</p>
+<p>拓扑排序求出 $fs_x$ 表示从起点 $s$ 到 $x$ 的路径个数；</p>
+<p>记忆化搜索，或者在反图拓扑排序求出 $ft_x$ 表示从 $x$ 到 $t$ 的路径个数。</p>
+<p>由于是在 DAG 上，不会出现有环的路径。所以 $fs_x\times ft_x$ 就是经过 $x$ 的 $s$ 到 $t$ 的路径个数，对边也类似。</p>
+<p>那么就有：</p>
+<ul>
+<li>若 $x$ 满足 $fs_x\times ft_x=fs_t$，那么 $x$ 就是 $s$ 到 $t$ 的必经点；</li>
+<li>若边 $(u,v)$ 满足 $fs_u\times ft_v=fs_t$，那么这条边就是 $s$ 到 $t$ 的必经边。</li>
+</ul>
+<p>由于 $fs,ft$ 可能是指数级别的数，所以选取一个大质数，在模意义下计算即可。为了让出错的概率更低可以选取更多的模数进行计算。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%9B%BE%E8%AE%BA/" rel="tag"># 图论</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/08/29/-NOI2022/" rel="prev" title="NOI 2022 游记">
+      <i class="fa fa-chevron-left"></i> NOI 2022 游记
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BA%A6%E5%AE%9A%E4%B8%8E%E5%AE%9A%E4%B9%89"><span class="nav-number">1.</span> <span class="nav-text">约定与定义</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%A6%E5%AE%9A"><span class="nav-number">1.1.</span> <span class="nav-text">约定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-number">1.2.</span> <span class="nav-text">定义</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DFS-%E6%A0%91"><span class="nav-number">2.</span> <span class="nav-text">DFS 树</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%80%E7%9F%AD%E8%B7%AF"><span class="nav-number">3.</span> <span class="nav-text">最短路</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#SPFA"><span class="nav-number">3.1.</span> <span class="nav-text">SPFA</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SPFA-%E5%B8%B8%E8%A7%81%E4%BC%98%E5%8C%96%E6%96%B9%E5%BC%8F"><span class="nav-number">3.1.1.</span> <span class="nav-text">SPFA 常见优化方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SPFA-%E5%88%A4%E8%B4%9F%E7%8E%AF"><span class="nav-number">3.1.2.</span> <span class="nav-text">SPFA 判负环</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Johnson"><span class="nav-number">3.2.</span> <span class="nav-text">Johnson</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Floyd-%E4%B8%8E%E4%BC%A0%E9%80%92%E9%97%AD%E5%8C%85"><span class="nav-number">3.3.</span> <span class="nav-text">Floyd 与传递闭包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%AE%E5%88%86%E7%BA%A6%E6%9D%9F"><span class="nav-number">3.4.</span> <span class="nav-text">差分约束</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8C%E4%BD%99%E6%9C%80%E7%9F%AD%E8%B7%AF"><span class="nav-number">3.5.</span> <span class="nav-text">同余最短路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E7%9F%AD%E8%B7%AF%E6%A0%91-%E5%9B%BE"><span class="nav-number">3.6.</span> <span class="nav-text">最短路树&#x2F;图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E7%9F%AD%E8%B7%AF%E6%A0%91"><span class="nav-number">3.6.1.</span> <span class="nav-text">最短路树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%9B%BE"><span class="nav-number">3.6.2.</span> <span class="nav-text">最短路图</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91"><span class="nav-number">4.</span> <span class="nav-text">最小生成树</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Kruskal"><span class="nav-number">4.1.</span> <span class="nav-text">Kruskal</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Prim"><span class="nav-number">4.2.</span> <span class="nav-text">Prim</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Boruvka"><span class="nav-number">4.3.</span> <span class="nav-text">Borůvka</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E5%A4%A7%E7%94%9F%E6%88%90%E6%A0%91"><span class="nav-number">4.4.</span> <span class="nav-text">最大生成树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%93%B6%E9%A2%88%E7%94%9F%E6%88%90%E6%A0%91"><span class="nav-number">4.5.</span> <span class="nav-text">瓶颈生成树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Kruskal-%E9%87%8D%E6%9E%84%E6%A0%91"><span class="nav-number">4.6.</span> <span class="nav-text">Kruskal 重构树</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98"><span class="nav-number">4.6.1.</span> <span class="nav-text">例题</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%AC%A7%E6%8B%89%E5%9B%BE"><span class="nav-number">5.</span> <span class="nav-text">欧拉图</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89-1"><span class="nav-number">5.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A4%E5%AE%9A"><span class="nav-number">5.2.</span> <span class="nav-text">判定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B1%82%E6%AC%A7%E6%8B%89%E5%9B%9E%E8%B7%AF"><span class="nav-number">5.3.</span> <span class="nav-text">求欧拉回路</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%B7%E5%90%88%E5%9B%BE%E6%AC%A7%E6%8B%89%E5%9B%9E%E8%B7%AF"><span class="nav-number">5.3.1.</span> <span class="nav-text">混合图欧拉回路</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%9E%E9%80%9A%E6%80%A7%E7%9B%B8%E5%85%B3"><span class="nav-number">6.</span> <span class="nav-text">连通性相关</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%89%E5%90%91%E5%9B%BE%E8%BF%9E%E9%80%9A%E6%80%A7"><span class="nav-number">6.1.</span> <span class="nav-text">有向图连通性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89-2"><span class="nav-number">6.1.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tarjan"><span class="nav-number">6.1.2.</span> <span class="nav-text">Tarjan</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Kosaraju"><span class="nav-number">6.1.3.</span> <span class="nav-text">Kosaraju</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A0%E5%90%91%E5%9B%BE%E8%BF%9E%E9%80%9A%E6%80%A7"><span class="nav-number">6.2.</span> <span class="nav-text">无向图连通性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89-3"><span class="nav-number">6.2.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%B2%E7%82%B9"><span class="nav-number">6.2.2.</span> <span class="nav-text">割点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%B2%E8%BE%B9"><span class="nav-number">6.2.3.</span> <span class="nav-text">割边</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BE%B9%E5%8F%8C%E7%BC%A9%E7%82%B9"><span class="nav-number">6.2.4.</span> <span class="nav-text">边双缩点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%82%B9%E5%8F%8C%E7%BC%A9%E7%82%B9"><span class="nav-number">6.2.5.</span> <span class="nav-text">点双缩点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Sat"><span class="nav-number">6.3.</span> <span class="nav-text">2-Sat</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89-4"><span class="nav-number">6.3.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E6%B3%95"><span class="nav-number">6.3.2.</span> <span class="nav-text">解法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9C%86%E6%96%B9%E6%A0%91"><span class="nav-number">7.</span> <span class="nav-text">圆方树</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89-5"><span class="nav-number">7.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA"><span class="nav-number">7.2.</span> <span class="nav-text">构建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98-1"><span class="nav-number">7.3.</span> <span class="nav-text">例题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%99%E4%BA%BA%E6%8E%8C%E9%A2%98"><span class="nav-number">7.3.1.</span> <span class="nav-text">仙人掌题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B9%BF%E4%B9%89%E5%9C%86%E6%96%B9%E6%A0%91%E9%A2%98"><span class="nav-number">7.3.2.</span> <span class="nav-text">广义圆方树题</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%94%AF%E9%85%8D%E6%A0%91"><span class="nav-number">8.</span> <span class="nav-text">支配树</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#DAG-%E5%BF%85%E7%BB%8F%E7%82%B9-%E8%BE%B9"><span class="nav-number">8.1.</span> <span class="nav-text">DAG 必经点&#x2F;边</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="do-while-true"
+      src="/images/head.gif">
+  <p class="site-author-name" itemprop="name">do-while-true</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Friends
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/h-lka/" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;h-lka&#x2F;" rel="noopener" target="_blank">Refined_heart</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://shanlunjiajian.github.io/" title="https:&#x2F;&#x2F;shanlunjiajian.github.io&#x2F;" rel="noopener" target="_blank">华山抡剑</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/LFCode/" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;LFCode&#x2F;" rel="noopener" target="_blank">LFCode</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://forza-ferrari.github.io/" title="https:&#x2F;&#x2F;forza-ferrari.github.io&#x2F;" rel="noopener" target="_blank">绝顶我为峰</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/alan-zhao-2007/" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;alan-zhao-2007&#x2F;" rel="noopener" target="_blank">Alan_Zhao</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/suxxsfe/" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;suxxsfe&#x2F;" rel="noopener" target="_blank">suxxsfe</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://lampese.com/" title="https:&#x2F;&#x2F;lampese.com&#x2F;" rel="noopener" target="_blank">Lampese</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">do-while-true</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
