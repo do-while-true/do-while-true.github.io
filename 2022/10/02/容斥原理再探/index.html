@@ -20,21 +20,20 @@
     var CONFIG = {"hostname":"do-while-true.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="使用 FFT 解决一系列字符串匹配问题。">
+  <meta name="description" content="前传">
 <meta property="og:type" content="article">
-<meta property="og:title" content="「学习笔记」FFT x 字符串匹配">
-<meta property="og:url" content="https://do-while-true.github.io/2022/02/04/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8DFFT%20x%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%B9%E9%85%8D/index.html">
+<meta property="og:title" content="容斥原理再探">
+<meta property="og:url" content="https://do-while-true.github.io/2022/10/02/%E5%AE%B9%E6%96%A5%E5%8E%9F%E7%90%86%E5%86%8D%E6%8E%A2/index.html">
 <meta property="og:site_name" content="do_while_true&#39;s blog">
-<meta property="og:description" content="使用 FFT 解决一系列字符串匹配问题。">
+<meta property="og:description" content="前传">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2022-02-03T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-02-04T07:48:02.855Z">
+<meta property="article:published_time" content="2022-10-01T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-10-02T03:40:47.633Z">
 <meta property="article:author" content="do-while-true">
-<meta property="article:tag" content="FFT&#x2F;NTT">
-<meta property="article:tag" content="字符串">
+<meta property="article:tag" content="容斥">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://do-while-true.github.io/2022/02/04/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8DFFT%20x%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%B9%E9%85%8D/">
+<link rel="canonical" href="https://do-while-true.github.io/2022/10/02/%E5%AE%B9%E6%96%A5%E5%8E%9F%E7%90%86%E5%86%8D%E6%8E%A2/">
 
 
 <script id="page-configurations">
@@ -47,7 +46,7 @@
   };
 </script>
 
-  <title>「学习笔记」FFT x 字符串匹配 | do_while_true's blog</title>
+  <title>容斥原理再探 | do_while_true's blog</title>
   
 
 
@@ -167,7 +166,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://do-while-true.github.io/2022/02/04/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8DFFT%20x%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%B9%E9%85%8D/">
+    <link itemprop="mainEntityOfPage" href="https://do-while-true.github.io/2022/10/02/%E5%AE%B9%E6%96%A5%E5%8E%9F%E7%90%86%E5%86%8D%E6%8E%A2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/head.gif">
@@ -180,7 +179,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          「学习笔记」FFT x 字符串匹配
+          容斥原理再探
         </h1>
 
         <div class="post-meta">
@@ -191,7 +190,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-02-04 00:00:00 / Modified: 15:48:02" itemprop="dateCreated datePublished" datetime="2022-02-04T00:00:00+08:00">2022-02-04</time>
+              <time title="Created: 2022-10-02 00:00:00 / Modified: 11:40:47" itemprop="dateCreated datePublished" datetime="2022-10-02T00:00:00+08:00">2022-10-02</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -214,68 +213,69 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>使用 FFT 解决一系列字符串匹配问题。</p>
+        <p><a href="https://do-while-true.github.io/2022/02/04/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%90%84%E7%B1%BB%E5%AE%B9%E6%96%A5%E5%8F%8D%E6%BC%94%E6%80%BB%E7%BB%93/">前传</a></p>
 <span id="more"></span>
-<p>设匹配函数 $C(x,y)$ 为字符 $x$ 和字符 $y$ 匹配的值，是我们自己定义的值。</p>
-<p>两个字符串匹配的值就是对应位置上的字符匹配的值的和。</p>
-<p>对于文本串 $S$ 和模式串 $T$，现在要求出 $T$ 在 $S$ 中所有匹配的位置。</p>
-<p>为了化成卷积的形式，把 $T$ 反转。</p>
-<p>这样 $T$ 和 $S$ 以 $i$ 为结尾的子串的匹配值为：</p>
-<script type="math/tex; mode=display">
-\sum_{j=0}^{|T|-1}C(S_{i-j},T_j)</script><p>为了能够区分不同位置的匹配值，定义生成函数：$P(x)$，$[x^i]$ 代表 $T$ 与 $S$ 以 $i$ 结尾的子串的匹配值。</p>
-<p>那么：</p>
-<script type="math/tex; mode=display">
-P(x)=\sum_{i=|T|-1}^{|S|}x^i\sum_{j=0}^{|T|-1}C(S_{i-j},T_j)</script><p>为了能通过观察匹配值来确定两个字符串，构造匹配函数 $C(x,y)=(x-y)^2$（字符的权值需满足两两不同，可以使用 ASCII 码来作为权值），则两个字符串匹配当且仅当匹配值为 $0$．</p>
-<p>那么：</p>
+<p>全集 $U$ 种有若干元素，每个元素 $x_i$ 都有若干个不同的属性 $p_j$．令 $A_i$ 为满足第 $i$ 个属性的集合。现有 $n$ 个元素，$m$ 个属性，欲求 $|\bigcap_j^m A_j|$．</p>
+<p>艾弗森记号是有力的工具。</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
-P(x)&=\sum_{i=|T|-1}^{|S|}x^i\sum_{j=0}^{|T|-1}(S_{i-j}-T_j)^2
+|\bigcap_j^m A_j|&=\sum_i^n\prod_j^m[x_i\in A_j]
 \\
-&=\sum_{i=|T|-1}^{|S|}x^i\sum_{j=0}^{|T|-1}{S_{i-j}}^2+{T_j}^2+S_{i-j}T_j
+&=\sum_i^n\prod_j^m(1-[x_i\notin A_j])
 \\
-&=\sum_{i=|T|-1}^{|S|}x^i\sum_{j=0}^{|T|-1}{S_{i-j}}^2+\sum_{i=|T|-1}^{|S|}x^i\sum_{j=0}^{|T|-1}{T_j}^2+\sum_{i=|T|-1}^{|S|}\sum_{j=0}^{|T|-1}S_{i-j}x^{i-j}T_jx^j
-\end{aligned}</script><p>另外，为了使得边界满足卷积的形式，对于”溢出”的部分定义其权值为 $0$，也就是我们需要计算：</p>
-<script type="math/tex; mode=display">
-\sum_{i=|T|-1}^{|S|}x^i\sum_{j=0}^{|T|-1}{S_{i-j}}^2+\sum_{i=|T|-1}^{|S|}x^i\sum_{j=0}^{|T|-1}{T_j}^2+\sum_{i=|T|-1}^{|S|}\sum_{j=0}^{i}S_{i-j}x^{i-j}T_jx^j</script><p>前两个柿子可以预处理前缀和来做到线性求出，后面是个卷积的形式，可以通过 FFT $\mathcal{O}(n\log n)$ 求出。</p>
-<p>所以就可以 $\mathcal{O}(n\log n)$ 做到字符串匹配了。</p>
-<h3 id="栗题一-luoguP4173"><a href="#栗题一-luoguP4173" class="headerlink" title="栗题一 luoguP4173"></a>栗题一 luoguP4173</h3><p>带通配符的字符串匹配。</p>
-<p>尝试构造匹配函数 $C(x,y)$ 满足：</p>
-<ul>
-<li><p>$x$ 或 $y$ 为通配符时值为 $0$；</p>
-</li>
-<li><p>$x$ 和 $y$ 都不为通配符，且相同时值为 $0$；</p>
-</li>
-<li><p>$x$ 和 $y$ 都不为通配符，且不相同时值 $&gt;0$．</p>
-</li>
-</ul>
-<p>设通配符的权值为 $0$，$C(x,y)=(x-y)^2xy$．</p>
+&=\sum_i^n\sum_{T\subseteq \{1,2,\cdots,m\}}\left((-1)^{|T|}\prod_{j\in T}[x_i\notin A_j]\right)
+\\
+&=\sum_{T\subseteq \{1,2,\cdots,m\}}(-1)^{|T|}\left|\bigcap_{j\in T}\complement _U A_j\right|
+\end{aligned}</script><p>这就得到了计数问题中容斥原理的常见形式，考虑其组合意义：</p>
+<p>计数问题中，全集即为所有方案构成的集合。</p>
+<p>$|\bigcap_j^m A_j|$ 意思是，这 $m$ 种限制全部满足的方案数是多少。</p>
+<p>$\left|\bigcap_{j\in T}\complement _U A_j\right|$ 的意思是，枚举了一个集合 $T$，强行钦定这些限制是不满足的，一共有多少方案。将其乘上其容斥系数 $(-1)^{|T|}$ 再求和即为所求方案数。</p>
+<p>而在一类通过容斥和 dp 解决的问题中，会选择直接带着容斥系数 dp 方案数。且看例题：</p>
+<h3 id="「CSP-S-2019」Emiya-家今天的饭"><a href="#「CSP-S-2019」Emiya-家今天的饭" class="headerlink" title="「CSP-S 2019」Emiya 家今天的饭"></a>「CSP-S 2019」Emiya 家今天的饭</h3><p><del>就这也叫容斥？</del></p>
+<p>第三个限制很愤怒，先不管它，算出所有的方案，再容斥掉不合法的，然后就会发现，只需要一层容斥就可以了。</p>
+<p>具体地，枚举哪个主要食材是超了的，在这上面做个 dp，以 $f_{i,j,k}$ 表示考虑了前 $i$ 个烹饪方法，一共烹饪了 $j$ 个菜，而且已经用食材 $x$ 烹饪了 $k$ 个菜，方案数是多少。为了能够转移 $f$，还需要预处理出每一行的 $a$ 之和。这样时间复杂度是 $\mathcal{O}(n^3m)$．</p>
+<p>但是注意到最终统计答案的时候只关心 $k$ 是否大于等于 $(j-k)$，所以令 $f_{i,j}$ 为考虑前 $i$ 个烹饪方法，用食材 $x$ 烹饪的菜的个数，减去不用食材 $x$ 的菜的个数为 $j$，方案数是多少。这样复杂度就降到了 $\mathcal{O}(n^2m)$．<a target="_blank" rel="noopener" href="https://loj.ac/s/1579861">Code</a>．</p>
+<h3 id="ARC096E-Everything-on-It"><a href="#ARC096E-Everything-on-It" class="headerlink" title="ARC096E Everything on It"></a>ARC096E Everything on It</h3><p>考虑将第二个容斥掉，枚举有 $1\sim i$ 出现次数 $\leq 1$ 次，剩余的无限制，假设其方案为 $f(i)$．</p>
+<p>那么答案就是 $\sum f(i)(-1)^i\binom{n}{i}$．</p>
+<p>考虑 $f(x)$ 怎么算，令 $y=n-x$，首先考虑不包含 $1\sim x$ 的子集一共有 $2^{2^y}$ 个，然后再考虑包含 $1\sim x$ 的子集，相当于将 $1\sim x$ 分成若干个不同的集合，每个集合从 $2^y$ 个集合中找一个集合，与其的并集构成一个新的集合。</p>
+<p>令 $s_{i,j}$ 为将 $1\sim i$ 分成若 $j$ 个不同的集合的方案数（第二类斯特林数），枚举有 $1\sim x$ 中出现了的有 $i$ 个，一共分成 $j$ 个集合，那么就有：</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
-P(x)&=\sum_{i=|T|-1}^{|S|}x^i\sum_{j=0}^{|T|-1}(S_{i-j}-T_j)^2S_{i-j}T_j
+f(x)&=\sum_i\sum_j s_{i,j}({2^y})^j2^{2^y}\binom{x}{i}
 \\
-&=S^3*T-2\times S^2*T^2+S*T^3
-\end{aligned}</script><p>（这里的次方是点乘，$*$ 为卷积）</p>
-<p>三次卷积，时间复杂度 $\mathcal{O}(n\log n)$．</p>
-<h3 id="栗题二-Codeforces-528-D"><a href="#栗题二-Codeforces-528-D" class="headerlink" title="栗题二 Codeforces 528 D"></a>栗题二 Codeforces 528 D</h3><p>分别仅考虑 $A,C,G,T$，把匹配成功的位置取个交集就可以。</p>
-<p>现在仅考虑 $A$，把 $S$ 中不会和 $A$ 匹配上的位置上的字符设为 $o$，把 $T$ 中不是 $A$ 的字符设为 <code>#</code>，则匹配函数 $C(x,y)$ （其中 $x$ 来自 $S$，$y$ 来自 $T$）要满足：</p>
+&=2^{2^y}\sum_j (2^y)^j\sum_i \binom{x}{i}s_{i,j}
+\end{aligned}</script><p>考虑后面那个求和号的组合意义，就是从 $x$ 个元素中选出 $i$ 个元素，再将这 $i$ 个元素划分成 $j$ 个集合。如果把没有选出的元素也看成一个集合，那么其就是 $x$ 个元素划分成 $(j+1)$ 个集合，其中有一个集合有标号且可空。所以：</p>
+<script type="math/tex; mode=display">
+f(x)=2^{2^y}\sum_j (2^y)^j((j+1)s_{x,j+1}+s_{x,j})</script><p>要注意 $2^{2^y}$ 计算时要将指数模 $M-1$．</p>
+<p><a target="_blank" rel="noopener" href="https://atcoder.jp/contests/arc096/submissions/34911294">Code</a>．</p>
+<h3 id="「ZJOI2016」小星星"><a href="#「ZJOI2016」小星星" class="headerlink" title="「ZJOI2016」小星星"></a>「ZJOI2016」小星星</h3><blockquote>
+<p>现在有大小均为 $n$ 的图 $A=(V,E_A)$ 和树 $B=(V,E_B)$，求符合条件的排列 $p$ 的个数，满足若 $(i,j)\in E_B$，则 $(p_i,p_j)\in E_A$．</p>
+</blockquote>
+<p>比较容易理解的容斥，但并不是很容易想到要用容斥，要将什么条件容斥掉。</p>
+<p>考虑一个暴力 dp，$f_{i,j,S}$ 考虑了 $B$ 中考虑 $i$ 的子树，点 $i$ 映射到了图中的点 $j$，已经被映射到的点集是 $S$．</p>
+<p>暴力 dp 是 $\mathcal{O}(n^33^n)$，考虑到它的第三维是个子集卷积，难以优化，需要想办法规避掉子集卷积。</p>
+<p>回想一下为什么要记录 $S$，在 dp 过程中可以枚举当前点映射到了哪个点，这样已经满足 $B$ 中每个点映射到了 $A$ 中的一个点，为了要满足映射到的点两两不同，即 $A$ 中的点都被映射到，所以需要记录 $S$．</p>
+<p>那么就将这个容斥掉，枚举 $A$ 中一个集合 $S$，钦定这个 $S$ 中的点没有被映射到，方案数乘上容斥系数 $(-1)^{|S|}$ 求和即为答案。</p>
+<p>枚举 $S$ 后，没有了“映射到的点两两不同”这个限制，于是乎可以直接 $f_{i,j}$ 为考虑子树 $i$，且点 $i$ 映射到了 $j$ 的方案数，容易做到总时间复杂度 $\mathcal{O}(n^3)$ dp．总的复杂度就是 $\mathcal{O}(2^nn^3)$． </p>
+<p>虽然最终答案不会爆 <code>long long</code>，但是中间的 dp 可能会爆 <code>long long</code>，可以用 <code>unsigned long long</code> 直接自然溢出啥事没有，用 <code>long long</code> 的溢出似乎也能过，但是其实是 UB．<a target="_blank" rel="noopener" href="https://loj.ac/s/1579756">Code</a>．</p>
+<h3 id="「2021-山东三轮集训-Day2」体育测试"><a href="#「2021-山东三轮集训-Day2」体育测试" class="headerlink" title="「2021 山东三轮集训 Day2」体育测试"></a>「2021 山东三轮集训 Day2」体育测试</h3><blockquote>
+<p>给定序列 $a$，求合法排列 $p$ 的方案数使得：</p>
 <ul>
-<li>$=0,x=A,y=A$；</li>
-<li>$=0,x=A,y=$ <code>#</code>；</li>
-<li>$&gt;0,x=o,y=A$；</li>
-<li>$=0,x=o,y=$ <code>#</code>．</li>
+<li>$a_i&gt;0$，则满足 $i$ 在 $p$ 中出现位置 $\leq a_i$；</li>
+<li>$a_i&lt;0$，则满足 $i$ 在 $p$ 中出现位置 $\geq |a_i|$．</li>
 </ul>
-<p>这样的 $C$ 才能满足匹配成功值为 $0$，否则大于 $0$．</p>
-<p>设：</p>
-<ul>
-<li><p>$S$ 中的 $A$ 值为 $0$，$o$ 值为 $1$；</p>
-</li>
-<li><p>$T$ 中的 $A$ 值为 $1$，<code>#</code> 值为 $0$；</p>
-</li>
-<li><p>$C(x,y)=xy$．</p>
-</li>
-</ul>
-<p>对于每个字符只需要一次 FFT 就可以了。</p>
-<p><a target="_blank" rel="noopener" href="https://codeforces.com/contest/528/submission/129667632">Code</a></p>
+<p>$n\leq 5000$，模 $10^9+7$．</p>
+</blockquote>
+<p>首先考虑如果只有 $\leq$，将 $a$ 从小到大排序，那么方案数就是 $\prod (a_i-i+1)$．</p>
+<p>但是现在有 $[\geq |a_i|]$，考虑将其容斥为 $(1-[\leq |a_i|-1])$．</p>
+<p>具体地，枚举一个集合 $S$ 表示钦定这个集合内的 $\geq$ 强制钦定为不满足剩余的无限制，其容斥系数为 $(-1)^{|S|}$，将钦定不满足的 $\geq |a_i|$ 变为 $\leq |a_i|-1$，和其他的 $\leq$ 放在一起排序，求个 $\prod$，最后无限制的就是一个排列数。</p>
+<p>根据这个容斥列 dp，设 $f_{i,j}$ 为考虑完了前 $i$ 个 $a$，钦定了 $j$ 个 $\geq$ 是不合法的，其带容斥系数的方案数是多少。$\leq$ 的正常转移，$\geq$ 转移的时候多带一个 $-1$ 的容斥系数。最后统计答案的时候将 $f_{n,i}(n-i)!$ 求和即为答案。<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/record/59689583">Code</a> ．</p>
+<h3 id="「HEOI2013」SAO"><a href="#「HEOI2013」SAO" class="headerlink" title="「HEOI2013」SAO"></a>「HEOI2013」SAO</h3><p>回忆一个外向树的拓扑序计数是如何解决的。对于所有的 $n!$ 种方案，必须要满足根在所有子孙的拓扑序之前，那么方案书就是 $\frac{n!}{\frac{n!}{(n-1)!}}=\frac{n!}{n}$，然后就可以剥去根不考虑根的印象。之后每次再考虑剩余若干子树的一个根 $x$，要满足 $x$ 出现在它所有子孙之前，那么方案数就会除掉 $siz_x$，之后 $x$ 就对总方案数没有了影响，可以剥除。所以外向树的拓扑序个数是 $\frac{n!}{\prod siz_x}$．</p>
+<p>现在有了内向边，同时有内向边和外向边不是很好做，我们现在只会做只有外向边。</p>
+<p>考虑容斥，选出 $i$ 条内向边，钦定它们是一定不满足的，剩余的内向边满足与否都无所谓。那么这种情况的方案数就是把选出的内向边看成外向边，其余的当作不存在（也就是这条边的限制满足与否都无所谓），然后对连通块分别求出拓扑序，再利用组合数乘起来（此时连通块之间不存在影响了），容斥系数就是 $(-1)^i$．</p>
+<p>基于这个容斥，列出 dp，令 $g_{i,j}$ 表示考虑 $i$ 以内的子树，一共钦定了 $j$ 条内向边是不满足的。但是发现由于需要对拓扑序计数，还要记一个当前 $i$ 所在连通块的总和为 $k$，这样状态数就达到了 $\mathcal{O}(n^3)$，不能接受。</p>
+<p>考虑我们最终只是想要求 $\sum g_{i,j,k}(-1)^j$，那么就可以令 $f_{i,k}=\sum g_{i,j,k}(-1)^j$，换而言之，令 $f_{i,k}$ 为考虑 $i$ 子树内，所有钦定方案的，带容斥系数的拓扑序数之和。转移即为一个树形背包，在钦定一条内向边一定不满足的时候，乘上一个 $-1$ 的容斥系数来转移即可。</p>
+<p>时间复杂度 $\mathcal{O}(Tn^2)$．<a target="_blank" rel="noopener" href="https://loj.ac/s/1578807">Code</a>．</p>
 
     </div>
 
@@ -285,8 +285,7 @@ P(x)&=\sum_{i=|T|-1}^{|S|}x^i\sum_{j=0}^{|T|-1}(S_{i-j}-T_j)^2S_{i-j}T_j
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/FFT-NTT/" rel="tag"># FFT/NTT</a>
-              <a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/" rel="tag"># 字符串</a>
+              <a href="/tags/%E5%AE%B9%E6%96%A5/" rel="tag"># 容斥</a>
           </div>
 
         
@@ -295,13 +294,10 @@ P(x)&=\sum_{i=|T|-1}^{|S|}x^i\sum_{j=0}^{|T|-1}(S_{i-j}-T_j)^2S_{i-j}T_j
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/02/04/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%9B%9B%E8%BE%B9%E5%BD%A2%E4%B8%8D%E7%AD%89%E5%BC%8F%E4%BC%98%E5%8C%96%20%20%E5%86%B3%E7%AD%96%E5%8D%95%E8%B0%83%E6%80%A7%E4%BC%98%E5%8C%96%20dp/" rel="prev" title="「学习笔记」四边形不等式优化 / 决策单调性优化 dp">
-      <i class="fa fa-chevron-left"></i> 「学习笔记」四边形不等式优化 / 决策单调性优化 dp
+    <a href="/2022/09/27/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%9B%BE%E8%AE%BA%E5%9F%BA%E7%A1%80/" rel="prev" title="「学习笔记」图论基础">
+      <i class="fa fa-chevron-left"></i> 「学习笔记」图论基础
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2022/02/04/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E4%BA%8C%E5%88%86%E5%9B%BE%E5%92%8C%E7%BD%91%E7%BB%9C%E6%B5%81/" rel="next" title="「学习笔记」二分图和网络流">
-      「学习笔记」二分图和网络流 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -360,7 +356,7 @@ P(x)&=\sum_{i=|T|-1}^{|S|}x^i\sum_{j=0}^{|T|-1}(S_{i-j}-T_j)^2S_{i-j}T_j
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%97%E9%A2%98%E4%B8%80-luoguP4173"><span class="nav-number">1.</span> <span class="nav-text">栗题一 luoguP4173</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%97%E9%A2%98%E4%BA%8C-Codeforces-528-D"><span class="nav-number">2.</span> <span class="nav-text">栗题二 Codeforces 528 D</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%80%8CCSP-S-2019%E3%80%8DEmiya-%E5%AE%B6%E4%BB%8A%E5%A4%A9%E7%9A%84%E9%A5%AD"><span class="nav-number">1.</span> <span class="nav-text">「CSP-S 2019」Emiya 家今天的饭</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ARC096E-Everything-on-It"><span class="nav-number">2.</span> <span class="nav-text">ARC096E Everything on It</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%80%8CZJOI2016%E3%80%8D%E5%B0%8F%E6%98%9F%E6%98%9F"><span class="nav-number">3.</span> <span class="nav-text">「ZJOI2016」小星星</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%80%8C2021-%E5%B1%B1%E4%B8%9C%E4%B8%89%E8%BD%AE%E9%9B%86%E8%AE%AD-Day2%E3%80%8D%E4%BD%93%E8%82%B2%E6%B5%8B%E8%AF%95"><span class="nav-number">4.</span> <span class="nav-text">「2021 山东三轮集训 Day2」体育测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%80%8CHEOI2013%E3%80%8DSAO"><span class="nav-number">5.</span> <span class="nav-text">「HEOI2013」SAO</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
