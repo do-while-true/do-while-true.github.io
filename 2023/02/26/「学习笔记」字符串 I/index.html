@@ -20,28 +20,33 @@
     var CONFIG = {"hostname":"do-while-true.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="do_while_true&#39;s blog">
-<meta property="og:url" content="https://do-while-true.github.io/index.html">
+  <meta name="description" content="约定1-index． $|s|$ 为字符串 $s$ 的长度，如果讨论中仅有一个字符串也称之为 $n$． $s[l,r]$ 表示字符串 $s$ 的 $[l,r]$ 子串。 $pre(s,r)&#x3D;s[:r]&#x3D;s[1,r]$，前缀． $suf(s,l)&#x3D;s[l:]&#x3D;s[l,|s|]$，后缀． $a_i$ 第 $i$ 个 $a$，有时产生嵌套时为易于观看记作 $a[i]$． 自动机那部分，suffix li">
+<meta property="og:type" content="article">
+<meta property="og:title" content="「学习笔记」字符串 I">
+<meta property="og:url" content="https://do-while-true.github.io/2023/02/26/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%AD%97%E7%AC%A6%E4%B8%B2%20I/index.html">
 <meta property="og:site_name" content="do_while_true&#39;s blog">
+<meta property="og:description" content="约定1-index． $|s|$ 为字符串 $s$ 的长度，如果讨论中仅有一个字符串也称之为 $n$． $s[l,r]$ 表示字符串 $s$ 的 $[l,r]$ 子串。 $pre(s,r)&#x3D;s[:r]&#x3D;s[1,r]$，前缀． $suf(s,l)&#x3D;s[l:]&#x3D;s[l,|s|]$，后缀． $a_i$ 第 $i$ 个 $a$，有时产生嵌套时为易于观看记作 $a[i]$． 自动机那部分，suffix li">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-02-25T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-02-26T04:37:56.132Z">
 <meta property="article:author" content="do-while-true">
+<meta property="article:tag" content="字符串">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://do-while-true.github.io/">
+<link rel="canonical" href="https://do-while-true.github.io/2023/02/26/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%AD%97%E7%AC%A6%E4%B8%B2%20I/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'en'
   };
 </script>
 
-  <title>do_while_true's blog</title>
+  <title>「学习笔记」字符串 I | do_while_true's blog</title>
   
 
 
@@ -154,190 +159,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://do-while-true.github.io/2023/02/26/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%AD%97%E7%AC%A6%E4%B8%B2%20II/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/head.gif">
-      <meta itemprop="name" content="do-while-true">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="do_while_true's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/02/26/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%AD%97%E7%AC%A6%E4%B8%B2%20II/" class="post-title-link" itemprop="url">「学习笔记」字符串 II</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2023-02-26 00:00:00 / Modified: 12:38:36" itemprop="dateCreated datePublished" datetime="2023-02-26T00:00:00+08:00">2023-02-26</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
 
     
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/do-while-true/p/16759278.html">前传</a></p>
-<h1 id="后缀结构"><a href="#后缀结构" class="headerlink" title="后缀结构"></a>后缀结构</h1><p><del>全都扔到一块儿</del></p>
-<h2 id="Suffix-Array-SA"><a href="#Suffix-Array-SA" class="headerlink" title="Suffix Array (SA)"></a>Suffix Array (SA)</h2><p>对一个字符串的所有后缀进行排序，最终得到所有后缀的排名。</p>
-<p>采用基数排序，对于 $k=1,2,…,\log n$，每次排序只看后缀的前 $2^k$ 位来给后缀排序（对于一个起点如果后面不够了，补一堆最小的字符），由于上一步已经排完了 $2^{k-1}$，所以可以直接双关键字排序：先按第二关键字（即 $2^k$ 的后半部分的排名）排序，然后再按照第一关键字（$2^k$ 的前半部分的排名）排序，这样就能双关键字排序了。由于排名是 $\mathcal{O}(n)$ 的，所以采用计数排序就能使得总复杂度为 $\mathcal{O}(n\log n)$．</p>
-<p>后缀数组的精华在于其 height 数组，下面是一些定义：</p>
-<ul>
-<li><p>$sa_i$：排名为 $i$ 的后缀编号。</p>
-</li>
-<li><p>$rk_i$：后缀 $i$ 的排名（$sa$ 和 $rk$ 互为逆排列）。</p>
-</li>
-<li><p>排名为 $i$ 的后缀和排名为 $(i-1)$ 的后缀的 LCP 长度为 $\text{height}_i$．</p>
-</li>
-</ul>
-<p>如果想求原串任意两个后缀的最长 LCP，如果按照排名来排序，那么这两个后缀 LCP 即为它们之间所有相邻后缀 LCP 的最小值。所以就是 $\text{height}$ 上的一个 RMQ 问题。</p>
-<p><strong>定理：$\text{height}_{rk[i-1]}-1\leq \text{height}_{rk[i]}$</strong></p>
-<p>证明很简单，假设 $S=s[i-1:]$ 是 $xAb…$ ，排它前面那个后缀是 $T=xAa…$，这里 $x,a,b$ 都是字符且 $a&lt;b$，$A=LCP(S,T)$。那么 $s[i:]$ 至少会和 $Aa…$ 形成一个长度为 $|A|-1$ 的 LCP。中间再插入什么后缀也不会使得这个 LCP 变小。</p>
-<p>所以 $\text{height}$ 可以枚举 $i$ 然后均摊 $\mathcal{O}(n)$ 求出了。</p>
-<h2 id="Suffix-Automaton-SAM"><a href="#Suffix-Automaton-SAM" class="headerlink" title="Suffix Automaton (SAM)"></a>Suffix Automaton (SAM)</h2><p><a target="_blank" rel="noopener" href="https://oi-wiki.org/string/sam/">oi-wiki</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/blog/command-block/hou-zhui-zi-dong-ji-xue-xi-bi-ji-ying-yong-pian-post">command_block</a></p>
-<h3 id="对-SAM-结构的基础理解"><a href="#对-SAM-结构的基础理解" class="headerlink" title="对 SAM 结构的基础理解"></a>对 SAM 结构的基础理解</h3><p>字符串 $s$ 的 SAM 是接受 $s$ 所有后缀的最小 DFA．不严谨地说：</p>
-<ul>
-<li>SAM 是一个 DAG．</li>
-<li>有一个源点 $t_0$．</li>
-<li>转移边上有一些字符。</li>
-<li>满足从 $t_0$ 开始走一条路径到一个终止状态路径上的字符连起来是一个后缀，并且所有后缀都可以用这么一条路径表示出。这是 DFA 的定义。如果不要求路径停在终止状态，那么路径和子串对应。</li>
-</ul>
-<p>$\text{endpos}(t)$ 为 $t$ 在 $s$ 中所有结束位置的集合。将 $\text{endpos}$ 相同的划分成一个等价类，代表 SAM 中一个状态。那么有以下性质：</p>
-<ul>
-<li>一个等价类里的串一定是里面最长串的若干后缀，并且是长度从大往小数的若干个。</li>
-<li>对于子串 $u,w,(|u|\leq |w|)$，要么 $\text{endpos}(u)\cap \text{endpos}(w)=\varnothing$，要么 $\text{endpos}(u)\subseteq \text{endpos}(w)$．</li>
-</ul>
-<p>这个关键性质同时导出了后缀链接（suffix link）：$\text{link}(u)$ 连向了 $u$ 这个等价类<strong>最长的不在 $u$ 里的后缀</strong>所代表的等价类（这里后缀指的是等价类里最长串的后缀）。而第二个性质指出后缀链接形成了一棵树，称之为 <strong>parent 树</strong>。</p>
-<ul>
-<li>parent 树满足祖先的 endpos 是子孙的 endpos 的子集。</li>
-<li><strong>parent 树是反串的（隐式）后缀树</strong>：</li>
-</ul>
-<blockquote>
-<p>parent 树相当于<strong>把所有前缀插入</strong>到 Trie 里建出来的 fail 树，然后对只有一个儿子的节点进行压缩（对 fail 树跑个压缩 Trie）；一个串的隐式后缀树相当于<strong>把所有后缀插入</strong>到 Trie 里面然后建出来压缩 Trie．</p>
-</blockquote>
-<p>补充定义：$\text{maxlen}(u)$ 指 $u$ 这个状态上的最长的那个字符串长度，$\text{minlen}(u)=\text{maxlen}(\text{link}(u))$ 为最短的那个。</p>
-<h3 id="构建-SAM"><a href="#构建-SAM" class="headerlink" title="构建 SAM"></a>构建 SAM</h3><p>均摊复杂度 $\mathcal{O}(n|\Sigma|)$ 的在线构造方法。</p>
-<p>现在要添加一个字符 $c$，令 $\text{last}$ 为插入 $c$ 之前代表整个串的节点，初始为 $0$．</p>
-<ul>
-<li>创建当前串的状态 $\text{cur}$，$\text{maxlen}$ 是当前串长。然后不断跳 $\text{last}$ 的 suffix link，如果没有 $c$ 转移边就连转移边到 $\text{cur}$，如果走到头都没有那么 $\text{link(cur)}$ 指向 $0$；否则考虑当前状态为 $p$ 有 $c$ 的转移边连向 $q$；</li>
-<li>如果 $\text{maxlen}(q)=\text{maxlen}(p)+1$，那么可以直接根据定义将 $\text{link(cur)}$ 指向 $q$；</li>
-<li>否则，考虑 $\text{link(cur)}$ 真正要指向的是 $q$ 这个节点中长度为 $\text{maxlen}(p)+1$ 的那个后缀，于是要从这里劈开形成两个节点，那就新建一个节点 $\text{clone}$ 继承 $q$ 除 $\text{maxlen}$ 以外的所有信息（suffix link 和转移边），然后将 $\text{maxlen}(clone)\gets \text{maxlen}(p)+1$．再连下 suffix link，也就是 $\text{link}(cur)\gets \text{clone}$，$\text{link}(q)\gets \text{clone}$；</li>
-<li>最后考虑转移边的变化，不断跳 $p$ 的 suffix link，如果原先有到 $q$ 的转移边，将它指向 $\text{clone}$ 即可。</li>
-</ul>
-<p>复杂度证明和状态/转移数证明不写了，不会<del>并且不想学</del>。</p>
-<p>记住节点数是 $2n-1$，转移边的个数是 $3n-4$ 就行了。所以要记住 SAM 要开<strong>两倍空间</strong>。</p>
-<p>有很多经典应用，不学相当于没学 SAM．</p>
-<h3 id="1-找模式串在文本串出现的最大前缀长度"><a href="#1-找模式串在文本串出现的最大前缀长度" class="headerlink" title="1. 找模式串在文本串出现的最大前缀长度"></a>1. 找模式串在文本串出现的最大前缀长度</h3><p>根据 SAM 的定义，直接按照转移边不断匹配即可。</p>
-<h3 id="2-求-end-pos-集合大小（求该节点所代表字符串出现次数）"><a href="#2-求-end-pos-集合大小（求该节点所代表字符串出现次数）" class="headerlink" title="2. 求 end_pos 集合大小（求该节点所代表字符串出现次数）"></a>2. 求 end_pos 集合大小（求该节点所代表字符串出现次数）</h3><p>考虑较为一般的情况，对于一个节点，代表的字符串右端点出现次数，是其所有前面加上一个字符的串右端点出现次数的总和，也就是它 parent 树上儿子的 end_pos 集合大小总和。</p>
-<p>但如果其是母串的一个前缀，会有一个右端点没有统计上，初始它们的<br>end_pos 集合大小为 $1$ 即可。</p>
-<p>也就是初始时在每个非克隆节点（也就是代表前缀的节点）设 $siz$ 为 $1$，然后在 parent 树上对 $siz$ 作子树和。</p>
-<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3804">栗题：洛谷 P3804 【模板】后缀自动机 (SAM)</a></p>
-<p><a target="_blank" rel="noopener" href="https://codeforces.com/problemset/problem/802/I">栗题：Codeforces 802I Fake News (hard)</a></p>
-<h3 id="3-不同子串数-不同子串总长度"><a href="#3-不同子串数-不同子串总长度" class="headerlink" title="3. 不同子串数/不同子串总长度"></a>3. 不同子串数/不同子串总长度</h3><p>方法一：利用 parent 树。</p>
-<p>$\text{minlen}(x)=\text{maxlen}(fa)+1$</p>
-<p>所以 $x$ 节点所代表的串的个数为 $\text{maxlen}(x)-\text{maxlen}(fa)$．</p>
-<p>既然知道 $\text{minlen}(x),\text{maxlen}(x)$，就可以算出 $x$ 对不同子串总长度的贡献，是个等差数列求和的形式。</p>
-<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4070">栗题：[SDOI2016]生成魔咒</a></p>
-<p>方法二：在 DAWG 上 dp。</p>
-<p>考虑到不同子串个数相当于自动机中以初始状态为起点的不同路径条数，则设 $d_x$ 为状态 $x$ 开始的路径数量，转移有：</p>
-<script type="math/tex; mode=display">
-d_u=1+\sum_{(u,v,c)\in E} d_v</script><p>去掉空子串还要 $-1$．</p>
-<p>不同子串总长度的话，也类似地 dp 即可：</p>
-<script type="math/tex; mode=display">
-ans_u=\sum_{(u,v,c)\in E}d_v+ans_v</script><p>要加上 $d_v$ 是因为从 $v$ 出发的子串都多了一个字符。</p>
-<h3 id="4-字典序第-k-小子串"><a href="#4-字典序第-k-小子串" class="headerlink" title="4. 字典序第 $k$ 小子串"></a>4. 字典序第 $k$ 小子串</h3><p>考虑在 DAWG 上匹配的过程，只需要知道从这条转移边走，能获取的多少个状态，就可以知道该不该走这条边。注意到这个节点本身也是有状态数的，经过这个点的时候要减去。</p>
-<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3975">栗题：[TJOI2015]弦论</a></p>
-<p>不同位置的相同子串算作一个状态：一个节点能到达的状态数，就是 <strong>3.</strong> 中的方法二所 dp 的 $d$．</p>
-<p>不同位置的相同子串算作多个状态：一个子串出现次数就是其 end_pos 集合大小 $+1$，利用 4. 中的方法求出 end_pos 集合大小，一个节点能到达的状态数就是它所有后继节点能到达的状态数，加上其 end_pos 集合的大小。</p>
-<h3 id="5-最小循环移位"><a href="#5-最小循环移位" class="headerlink" title="5. 最小循环移位"></a>5. 最小循环移位</h3><p>类似 4. 的思路，贪心地在 $S+S$ 的后缀自动机上寻找最小的长度为 $|S|$ 的路径。同样地记录一些信息可以做到。</p>
-<h3 id="6-求-LCS-最长公共子串"><a href="#6-求-LCS-最长公共子串" class="headerlink" title="6. 求 LCS 最长公共子串"></a>6. 求 LCS 最长公共子串</h3><p>给其中一个串建 SAM，然后让另一个串在 SAM 上匹配即可，如果失配，则不断跳 parent 树上的父亲，实际上 SAM 的 parent 树就是其后缀 Trie 的 fail 树的压缩版（或者理解这个东西为，所有后缀的 AC 自动机）。</p>
-<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/SP1811">SP1811 LCS - Longest Common Substring LCS</a></p>
-<h3 id="8-第一次出现的位置"><a href="#8-第一次出现的位置" class="headerlink" title="8. 第一次出现的位置"></a>8. 第一次出现的位置</h3><p>多次查询模式串 $P$ 在文本串 $T$ 中第一次出现位置。</p>
-<p>如果对 $T$ 的 SAM 中的每个状态 $v$，维护第一次出现 $v$ 的末端位置 $\mathrm{firstpos}(v)$，也就是该状态的 $\mathrm{endpos}$ 集合中的最小元素。</p>
-<p>每次加入一个新的字符的时候，创建一个新的状态 $cur$，其代表当前的整个字符串，则令 $\mathrm{firstpos}(cur)$ 为当前插入字符的下标。</p>
-<p>在建立好 $q$ 复制出的 $clone$ 以及更新其他节点的后缀链接后，考虑新加进的 $\mathrm{endpos}$ 肯定不如它们现在的 $\mathrm{firstpos}$ 更优，所以无须更新。只需将 $\mathrm{firstpos}(cur)$ 赋值为 $\mathrm{firstpos}(q)$．</p>
-<p>那么查询的答案就是 $\mathrm{firstpos}(t)-|P|+1$，其中 $t$ 为对应字符串 $P$ 的状态。单次查询只需要 $O(|P|)$ 的时间。</p>
-<h2 id="广义-SAM"><a href="#广义-SAM" class="headerlink" title="广义 SAM"></a>广义 SAM</h2><p>给定一个字符串集合，接受所有集合中的字符串的子串。</p>
-<p>广义 SAM，如此恐怖！很多构建方法都是错的！</p>
-<p>整理两个正确的建法：</p>
-<h3 id="离线-bfs"><a href="#离线-bfs" class="headerlink" title="离线 bfs"></a>离线 bfs</h3><p>先把所有的字符串都插到一个 Trie 里，然后在这个 Trie 上修改结构建后缀自动机。bfs 保证 len 从小到大插入。与不同 SAM 不同之处是：</p>
-<ul>
-<li>插入一个 $\text{cur}$ 的时候，$\text{last}$ 就是 $\text{cur}$ 在 Trie 上的父亲。</li>
-<li>$q$ 复制信息给 $\text{clone}$ 的时候，不能复制还没有插入的点。</li>
-</ul>
-<h3 id="在线增量构造"><a href="#在线增量构造" class="headerlink" title="在线增量构造"></a>在线增量构造</h3><p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/discuss/322224">from ix35．</a></p>
-<p>每次将 $\text{last}$ 重置成 $0$．如果 $p$ 在 $\text{last}$ 就找到了这个出边 $c$ 到 $q$ 了，如果 $\text{maxlen}(p)=\text{maxlen}(q)+1$ 就直接令 $\text{cur}\gets q$，否则就把 $q$ 分裂出 $\text{clone}$ 然后 $cur\gets \text{clone}$（注意这里和之前的区别是并没有新建一个 $\text{cur}$）．</p>
-<h1 id="回文结构"><a href="#回文结构" class="headerlink" title="回文结构"></a>回文结构</h1><h2 id="Manacher"><a href="#Manacher" class="headerlink" title="Manacher"></a>Manacher</h2><p>回文中心：回文串内到两端距离相等的位置（可以在两个字符中间）。</p>
-<p>回文半径：回文中心到两端之间的字符数。</p>
-<p>Manacher 是求出每个位置 $i$ 作为回文中心时最长回文半径 $mx_i$．有回文中心在字符中间的情况，所以在原串每个间隔位置插入一个字符 <code>#</code>．所以 Manacher 要注意开<strong>两倍空间</strong>。</p>
-<ul>
-<li>$i$ 从小到大枚举，同时记录前面最大的 $r=j+mx_j$ 以及其对应的 $j$；</li>
-<li>如果 $i\leq r$ 那么令 $mx_i\gets \min(r-i,mx[2j-i])$（画图理解）；</li>
-<li>然后不断暴力 check $mx_i$ 是否还能往右扩展。</li>
-</ul>
-<p>由于每 check 成功一次 $r$ 一定会增加 $1$，而 $r$ 最大不超过字符串长度，所以时间复杂度是线性的。</p>
-<h2 id="回文自动机-PAM"><a href="#回文自动机-PAM" class="headerlink" title="回文自动机 ( PAM )"></a>回文自动机 ( PAM )</h2><h3 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h3><p><strong>定理：一个串的本质不同回文子串数不超过 $n$．</strong></p>
-<p>首先这个上界就是全一样字符的时候取到。然后考虑每次往后新加一个字符的时候，新增了以它为右端点的若干回文串，只有最长的那个可能是新出现的，因为较短的那些一定在这个最长的字符串的开头出现了。</p>
-<p>这个定理告诉我们如果建一个接受字符串的所有回文子串的自动机，它的状态是大致是 $\mathcal{O}(n)$ 的。</p>
-<p>然后想想一个回文自动机应该是什么样子的，首先是如果<strong>走转移边添字符是从两边添字符</strong>，如果按照 ACAM 和 SAM 一个方式理解的话它是在走串的一半。而且回文串分奇数和偶数两种情况，那么需要两个源点分别去索引奇数和偶数长度的回文子串。然后 <strong>suffix link</strong> 就直接定义为<strong>非自身的最长回文后缀</strong>。<strong>定义偶根为 $0$，奇根为 $-1$</strong>，然后将 $0$ 的 suffix link 指向 $-1$，$-1$ 不可能失配因为它指向一个单个字符（这里这样定义是为了方便后面构造）。</p>
-<p>这个回文自动机实际上形成了一个树结构，也称为回文树。</p>
-<h3 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h3><p>然后 PAM 的构建就挺简单的了，没有像 SAM 那样需要划分等价类来压缩状态于是要讨论很多情况，还是直接不断尝试在 $\text {last}$（以上一个字符为结尾的最长后缀）后面接上这个字符，如果不行则不断跳 fail 直到能接上位置（因为最后会跳到 $-1$ 而 $-1$ 能接上任何字符）。如果节点不存在那就直接新建一个。</p>
-<p>如果新建节点要算当前这个节点的 fail，就再不断跳 fail 判断能不能接上。而再往上跳 fail 不会新建节点，就是 PAM 的那个前置定理。</p>
-<p>这里判断后面能不能接上就是判断 $[s_i=s_{i-len-1}]$，这里 $len$ 代指中间那个回文串的长度。这样构造的正确性和 KMP 自动机构造正确性类似，回文子串具有和 border 一样的全序关系性质，即回文子串的回文子串依然是回文子串。所以不断跳 fail 判断能不能接上就可以。</p>
-<p>这个构建方法的复杂度分析和 AC 自动机的构建方法一复杂度分析同理（事实上就是和 AC 自动机构建方法一几乎完全一样），fail 树上每条边最多被跳两次。</p>
-<h3 id="回文后缀结构"><a href="#回文后缀结构" class="headerlink" title="回文后缀结构"></a>回文后缀结构</h3><p>回文子串和 border 一样是一个全序关系。那么就想想弱周期引理，border 划分等东西是否也能搬到回文串这个结构上来。类比 border 是前缀等于后缀，那这里就尝试搬到回文后缀上。</p>
-<p><strong>引理：若 $s$ 是一个回文串，那么 $t$ 是 $s$ 的回文后缀当且仅当 $t$ 是 $s$ 的 border．</strong></p>
-<p>分 $2|t|&lt;|s|$ 和 $2|t|\geq |s|$ 两种情况，画图证明一下即可。</p>
-<p>有了这个，那么就能证明弱周期引理搬到回文串的回文后缀这里依然成立（因为回文后缀已经等价于 border 了）。border 划分在这类也是成立的。</p>
-<p>这里回文树上的 fail 和那个失配树类似。令 $diff(u)=len(u)-fail(len(u))$，令 $shink(u)$ 是 $u$ 祖先中离 $u$ 最近的 $diff$ 不同的节点，那么 $u$ 想要跳出它所在的等差数列就直接跳 $shink$ 就可以。（border 那里用失配树这么跳也是一样的）。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
@@ -353,10 +178,9 @@ ans_u=\sum_{(u,v,c)\in E}d_v+ans_v</script><p>要加上 $d_v$ 是因为从 $v$ �
       <meta itemprop="name" content="do_while_true's blog">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/02/26/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%AD%97%E7%AC%A6%E4%B8%B2%20I/" class="post-title-link" itemprop="url">「学习笔记」字符串 I</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          「学习笔记」字符串 I
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -389,7 +213,7 @@ ans_u=\sum_{(u,v,c)\in E}d_v+ans_v</script><p>要加上 $d_v$ 是因为从 $v$ �
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="约定"><a href="#约定" class="headerlink" title="约定"></a>约定</h1><p>1-index．</p>
+        <h1 id="约定"><a href="#约定" class="headerlink" title="约定"></a>约定</h1><p>1-index．</p>
 <p>$|s|$ 为字符串 $s$ 的长度，如果讨论中仅有一个字符串也称之为 $n$．</p>
 <p>$s[l,r]$ 表示字符串 $s$ 的 $[l,r]$ 子串。</p>
 <p>$pre(s,r)=s[:r]=s[1,r]$，前缀．</p>
@@ -600,652 +424,37 @@ ans_u=\sum_{(u,v,c)\in E}d_v+ans_v</script><p>要加上 $d_v$ 是因为从 $v$ �
 <p>然后所有的 $p,q$ 都和 $m-1$ 取个 $\min$，这样符合条件的 $x$ 的数量就是 $p-(m-q)+1$，而且要满足 $p\geq m-q$，这是第二维限制。</p>
 <p>于是变成一个二维数点问题。</p>
 
-      
     </div>
 
     
     
     
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
+          <div class="post-tags">
+              <a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/" rel="tag"># 字符串</a>
+          </div>
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://do-while-true.github.io/2022/10/02/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%AE%B9%E6%96%A5%E5%8E%9F%E7%90%86%E5%86%8D%E6%8E%A2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/head.gif">
-      <meta itemprop="name" content="do-while-true">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="do_while_true's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/10/02/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%AE%B9%E6%96%A5%E5%8E%9F%E7%90%86%E5%86%8D%E6%8E%A2/" class="post-title-link" itemprop="url">「学习笔记」容斥原理再探</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-10-02 00:00:00" itemprop="dateCreated datePublished" datetime="2022-10-02T00:00:00+08:00">2022-10-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-02-26 12:36:45" itemprop="dateModified" datetime="2023-02-26T12:36:45+08:00">2023-02-26</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><a href="https://do-while-true.github.io/2022/02/04/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%90%84%E7%B1%BB%E5%AE%B9%E6%96%A5%E5%8F%8D%E6%BC%94%E6%80%BB%E7%BB%93/">前传</a></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/10/02/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%AE%B9%E6%96%A5%E5%8E%9F%E7%90%86%E5%86%8D%E6%8E%A2/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
-    </div>
 
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://do-while-true.github.io/2022/09/27/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%9B%BE%E8%AE%BA%E5%9F%BA%E7%A1%80/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/head.gif">
-      <meta itemprop="name" content="do-while-true">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="do_while_true's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/09/27/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%9B%BE%E8%AE%BA%E5%9F%BA%E7%A1%80/" class="post-title-link" itemprop="url">「学习笔记」图论基础</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-09-27 00:00:00 / Modified: 23:07:58" itemprop="dateCreated datePublished" datetime="2022-09-27T00:00:00+08:00">2022-09-27</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>有些东西可能不说原理，或者干脆没有提到，有可能是太简单了没必要，也有可能是我还不会。</p>
-<p>根据我做题的经验，图论的很多结论都是要 “猜”，证明的话大部分思路是考虑反证，最终由定义或者引理导出矛盾。</p>
-<p>基本上是总结类型的，如果想要看教程的话直接看 “参考资料” 里的内容（）</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/09/27/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%9B%BE%E8%AE%BA%E5%9F%BA%E7%A1%80/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/10/02/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%AE%B9%E6%96%A5%E5%8E%9F%E7%90%86%E5%86%8D%E6%8E%A2/" rel="prev" title="「学习笔记」容斥原理再探">
+      <i class="fa fa-chevron-left"></i> 「学习笔记」容斥原理再探
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/02/26/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%AD%97%E7%AC%A6%E4%B8%B2%20II/" rel="next" title="「学习笔记」字符串 II">
+      「学习笔记」字符串 II <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
   
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://do-while-true.github.io/2022/08/29/-NOI2022/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/head.gif">
-      <meta itemprop="name" content="do-while-true">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="do_while_true's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/08/29/-NOI2022/" class="post-title-link" itemprop="url">NOI 2022 游记</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-08-29 00:00:00 / Modified: 20:55:27" itemprop="dateCreated datePublished" datetime="2022-08-29T00:00:00+08:00">2022-08-29</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%AE%B0%E4%BA%8B/" itemprop="url" rel="index"><span itemprop="name">记事</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>南偏西传来的强烈光线，我一直在追逐着它，</p>
-<p>在无论明后天又或是以后都会改变的天空下。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/08/29/-NOI2022/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://do-while-true.github.io/2022/05/17/SDOI2022/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/head.gif">
-      <meta itemprop="name" content="do-while-true">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="do_while_true's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/05/17/SDOI2022/" class="post-title-link" itemprop="url">2022 省选及以前的一些回忆</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-05-17 00:00:00 / Modified: 01:04:28" itemprop="dateCreated datePublished" datetime="2022-05-17T00:00:00+08:00">2022-05-17</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%AE%B0%E4%BA%8B/" itemprop="url" rel="index"><span itemprop="name">记事</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>提起笔，却总是无从下手；总是有很多话想说，含在嘴里还未说出，泪水却先布了满脸。最后只能远望，在心中默默祈祷。再提起笔时，心中却万分思绪。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/05/17/SDOI2022/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://do-while-true.github.io/2022/04/06/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E7%9C%81%E9%80%89%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%A4%8D%E4%B9%A0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/head.gif">
-      <meta itemprop="name" content="do-while-true">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="do_while_true's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/06/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E7%9C%81%E9%80%89%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%A4%8D%E4%B9%A0/" class="post-title-link" itemprop="url">「学习笔记」省选数据结构复习</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-04-06 00:00:00" itemprop="dateCreated datePublished" datetime="2022-04-06T00:00:00+08:00">2022-04-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-02-26 12:36:43" itemprop="dateModified" datetime="2023-02-26T12:36:43+08:00">2023-02-26</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>突然发现自己很多数据结构长时间不做题导致连几乎是模板题都不会，于是写一篇复习笔记，以后复习的时候可以直接看看笔记。感觉自己忘不了的就没写说明，也有可能是我还不会。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/04/06/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E7%9C%81%E9%80%89%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%A4%8D%E4%B9%A0/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://do-while-true.github.io/2022/02/15/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%8D%9A%E5%BC%88%E8%AE%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/head.gif">
-      <meta itemprop="name" content="do-while-true">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="do_while_true's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/15/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%8D%9A%E5%BC%88%E8%AE%BA/" class="post-title-link" itemprop="url">「学习笔记」博弈论</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-02-15 00:00:00" itemprop="dateCreated datePublished" datetime="2022-02-15T00:00:00+08:00">2022-02-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-04-06 23:19:45" itemprop="dateModified" datetime="2022-04-06T23:19:45+08:00">2022-04-06</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>很久之前就想开博弈论这个坑了，因为打比赛经常遇到博弈问题结论题，只能靠感觉来做，没有系统的学习过博弈论。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/02/15/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%8D%9A%E5%BC%88%E8%AE%BA/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://do-while-true.github.io/2022/02/14/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%8C%BA%E9%97%B4%E5%8D%8A%E7%BE%A4%E4%BF%A1%E6%81%AF%E6%9F%A5%E8%AF%A2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/head.gif">
-      <meta itemprop="name" content="do-while-true">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="do_while_true's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/14/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%8C%BA%E9%97%B4%E5%8D%8A%E7%BE%A4%E4%BF%A1%E6%81%AF%E6%9F%A5%E8%AF%A2/" class="post-title-link" itemprop="url">「学习笔记」区间半群信息查询</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-02-14 00:00:00 / Modified: 22:41:36" itemprop="dateCreated datePublished" datetime="2022-02-14T00:00:00+08:00">2022-02-14</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>对 <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/blog/qwaszx/jing-tai-ou-jian-jie-ge-lv-xin-xi-zha-xun">qwaszx 博客</a> 的抄写。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/02/14/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%8C%BA%E9%97%B4%E5%8D%8A%E7%BE%A4%E4%BF%A1%E6%81%AF%E6%9F%A5%E8%AF%A2/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://do-while-true.github.io/2022/02/14/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%88%86%E5%9D%97%E5%92%8C%E8%8E%AB%E9%98%9F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/head.gif">
-      <meta itemprop="name" content="do-while-true">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="do_while_true's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/14/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%88%86%E5%9D%97%E5%92%8C%E8%8E%AB%E9%98%9F/" class="post-title-link" itemprop="url">「学习笔记」分块和莫队</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-02-14 00:00:00" itemprop="dateCreated datePublished" datetime="2022-02-14T00:00:00+08:00">2022-02-14</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-02-16 17:32:47" itemprop="dateModified" datetime="2022-02-16T17:32:47+08:00">2022-02-16</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>各类根号算法。不太适合当作复习所用，就当写个教程了，可能因为这个东西不大需要复习（</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/02/14/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%88%86%E5%9D%97%E5%92%8C%E8%8E%AB%E9%98%9F/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
-  </nav>
 
 
 
@@ -1297,6 +506,7 @@ ans_u=\sum_{(u,v,c)\in E}d_v+ans_v</script><p>要加上 $d_v$ 是因为从 $v$ �
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BA%A6%E5%AE%9A"><span class="nav-number">1.</span> <span class="nav-text">约定</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%93%88%E5%B8%8C"><span class="nav-number">2.</span> <span class="nav-text">哈希</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%93%88%E5%B8%8C"><span class="nav-number">2.1.</span> <span class="nav-text">字符串哈希</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%86%E5%90%88%E5%93%88%E5%B8%8C"><span class="nav-number">2.2.</span> <span class="nav-text">集合哈希</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%91%E5%93%88%E5%B8%8C"><span class="nav-number">2.3.</span> <span class="nav-text">树哈希</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Border-%E7%90%86%E8%AE%BA"><span class="nav-number">3.</span> <span class="nav-text">Border 理论</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#KMP-%E5%92%8C-%E5%A4%B1%E9%85%8D%E6%A0%91"><span class="nav-number">4.</span> <span class="nav-text">KMP 和 失配树</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#KMP"><span class="nav-number">4.1.</span> <span class="nav-text">KMP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98"><span class="nav-number">4.1.1.</span> <span class="nav-text">例题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%B1%E9%85%8D%E6%A0%91"><span class="nav-number">4.2.</span> <span class="nav-text">失配树</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DFA"><span class="nav-number">5.</span> <span class="nav-text">DFA</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AC-%E8%87%AA%E5%8A%A8%E6%9C%BA"><span class="nav-number">6.</span> <span class="nav-text">AC 自动机</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#AC-%E8%87%AA%E5%8A%A8%E6%9C%BA%E7%9A%84%E6%9E%84%E5%BB%BA"><span class="nav-number">6.1.</span> <span class="nav-text">AC 自动机的构建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3-AC-%E8%87%AA%E5%8A%A8%E6%9C%BA%E7%BB%93%E6%9E%84"><span class="nav-number">6.2.</span> <span class="nav-text">深入理解 AC 自动机结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98-1"><span class="nav-number">6.3.</span> <span class="nav-text">例题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%89%A9%E5%B1%95-KMP"><span class="nav-number">7.</span> <span class="nav-text">扩展 KMP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80"><span class="nav-number">7.1.</span> <span class="nav-text">基础</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98-2"><span class="nav-number">7.2.</span> <span class="nav-text">例题</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
