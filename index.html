@@ -183,10 +183,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2023-02-26 00:00:00 / Modified: 12:37:56" itemprop="dateCreated datePublished" datetime="2023-02-26T00:00:00+08:00">2023-02-26</time>
+              <time title="Created: 2023-02-26 00:00:00" itemprop="dateCreated datePublished" datetime="2023-02-26T00:00:00+08:00">2023-02-26</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-03-02 22:53:18" itemprop="dateModified" datetime="2023-03-02T22:53:18+08:00">2023-03-02</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -208,7 +214,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="约定"><a href="#约定" class="headerlink" title="约定"></a>约定</h1><p>1-index．</p>
+          <span id="more"></span>
+<h1 id="约定"><a href="#约定" class="headerlink" title="约定"></a>约定</h1><p>1-index．</p>
 <p>$|s|$ 为字符串 $s$ 的长度，如果讨论中仅有一个字符串也称之为 $n$．</p>
 <p>$s[l,r]$ 表示字符串 $s$ 的 $[l,r]$ 子串。</p>
 <p>$pre(s,r)=s[:r]=s[1,r]$，前缀．</p>
@@ -460,10 +467,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2023-02-26 00:00:00 / Modified: 12:38:36" itemprop="dateCreated datePublished" datetime="2023-02-26T00:00:00+08:00">2023-02-26</time>
+              <time title="Created: 2023-02-26 00:00:00" itemprop="dateCreated datePublished" datetime="2023-02-26T00:00:00+08:00">2023-02-26</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-03-02 22:53:14" itemprop="dateModified" datetime="2023-03-02T22:53:14+08:00">2023-03-02</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -485,7 +498,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/do-while-true/p/16759278.html">前传</a></p>
+          <span id="more"></span>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/do-while-true/p/16759278.html">前传</a></p>
 <h1 id="后缀结构"><a href="#后缀结构" class="headerlink" title="后缀结构"></a>后缀结构</h1><p><del>全都扔到一块儿</del></p>
 <h2 id="Suffix-Array-SA"><a href="#Suffix-Array-SA" class="headerlink" title="Suffix Array (SA)"></a>Suffix Array (SA)</h2><p>对一个字符串的所有后缀进行排序，最终得到所有后缀的排名。</p>
 <p>采用基数排序，对于 $k=1,2,…,\log n$，每次排序只看后缀的前 $2^k$ 位来给后缀排序（对于一个起点如果后面不够了，补一堆最小的字符），由于上一步已经排完了 $2^{k-1}$，所以可以直接双关键字排序：先按第二关键字（即 $2^k$ 的后半部分的排名）排序，然后再按照第一关键字（$2^k$ 的前半部分的排名）排序，这样就能双关键字排序了。由于排名是 $\mathcal{O}(n)$ 的，所以采用计数排序就能使得总复杂度为 $\mathcal{O}(n\log n)$．</p>
