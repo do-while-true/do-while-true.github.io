@@ -160,194 +160,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://do-while-true.github.io/2023/02/26/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%AD%97%E7%AC%A6%E4%B8%B2%20II/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/head.gif">
-      <meta itemprop="name" content="do-while-true">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="do_while_true's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/02/26/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%AD%97%E7%AC%A6%E4%B8%B2%20II/" class="post-title-link" itemprop="url">「学习笔记」字符串 II</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-02-26 00:00:00" itemprop="dateCreated datePublished" datetime="2023-02-26T00:00:00+08:00">2023-02-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-03-02 22:53:14" itemprop="dateModified" datetime="2023-03-02T22:53:14+08:00">2023-03-02</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <span id="more"></span>
-<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/do-while-true/p/16759278.html">前传</a></p>
-<h1 id="后缀结构"><a href="#后缀结构" class="headerlink" title="后缀结构"></a>后缀结构</h1><p><del>全都扔到一块儿</del></p>
-<h2 id="Suffix-Array-SA"><a href="#Suffix-Array-SA" class="headerlink" title="Suffix Array (SA)"></a>Suffix Array (SA)</h2><p>对一个字符串的所有后缀进行排序，最终得到所有后缀的排名。</p>
-<p>采用基数排序，对于 $k=1,2,…,\log n$，每次排序只看后缀的前 $2^k$ 位来给后缀排序（对于一个起点如果后面不够了，补一堆最小的字符），由于上一步已经排完了 $2^{k-1}$，所以可以直接双关键字排序：先按第二关键字（即 $2^k$ 的后半部分的排名）排序，然后再按照第一关键字（$2^k$ 的前半部分的排名）排序，这样就能双关键字排序了。由于排名是 $\mathcal{O}(n)$ 的，所以采用计数排序就能使得总复杂度为 $\mathcal{O}(n\log n)$．</p>
-<p>后缀数组的精华在于其 height 数组，下面是一些定义：</p>
-<ul>
-<li><p>$sa_i$：排名为 $i$ 的后缀编号。</p>
-</li>
-<li><p>$rk_i$：后缀 $i$ 的排名（$sa$ 和 $rk$ 互为逆排列）。</p>
-</li>
-<li><p>排名为 $i$ 的后缀和排名为 $(i-1)$ 的后缀的 LCP 长度为 $\text{height}_i$．</p>
-</li>
-</ul>
-<p>如果想求原串任意两个后缀的最长 LCP，如果按照排名来排序，那么这两个后缀 LCP 即为它们之间所有相邻后缀 LCP 的最小值。所以就是 $\text{height}$ 上的一个 RMQ 问题。</p>
-<p><strong>定理：$\text{height}_{rk[i-1]}-1\leq \text{height}_{rk[i]}$</strong></p>
-<p>证明很简单，假设 $S=s[i-1:]$ 是 $xAb…$ ，排它前面那个后缀是 $T=xAa…$，这里 $x,a,b$ 都是字符且 $a&lt;b$，$A=LCP(S,T)$。那么 $s[i:]$ 至少会和 $Aa…$ 形成一个长度为 $|A|-1$ 的 LCP。中间再插入什么后缀也不会使得这个 LCP 变小。</p>
-<p>所以 $\text{height}$ 可以枚举 $i$ 然后均摊 $\mathcal{O}(n)$ 求出了。</p>
-<h2 id="Suffix-Automaton-SAM"><a href="#Suffix-Automaton-SAM" class="headerlink" title="Suffix Automaton (SAM)"></a>Suffix Automaton (SAM)</h2><p><a target="_blank" rel="noopener" href="https://oi-wiki.org/string/sam/">oi-wiki</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/blog/command-block/hou-zhui-zi-dong-ji-xue-xi-bi-ji-ying-yong-pian-post">command_block</a></p>
-<h3 id="对-SAM-结构的基础理解"><a href="#对-SAM-结构的基础理解" class="headerlink" title="对 SAM 结构的基础理解"></a>对 SAM 结构的基础理解</h3><p>字符串 $s$ 的 SAM 是接受 $s$ 所有后缀的最小 DFA．不严谨地说：</p>
-<ul>
-<li>SAM 是一个 DAG．</li>
-<li>有一个源点 $t_0$．</li>
-<li>转移边上有一些字符。</li>
-<li>满足从 $t_0$ 开始走一条路径到一个终止状态路径上的字符连起来是一个后缀，并且所有后缀都可以用这么一条路径表示出。这是 DFA 的定义。如果不要求路径停在终止状态，那么路径和子串对应。</li>
-</ul>
-<p>$\text{endpos}(t)$ 为 $t$ 在 $s$ 中所有结束位置的集合。将 $\text{endpos}$ 相同的划分成一个等价类，代表 SAM 中一个状态。那么有以下性质：</p>
-<ul>
-<li>一个等价类里的串一定是里面最长串的若干后缀，并且是长度从大往小数的若干个。</li>
-<li>对于子串 $u,w,(|u|\leq |w|)$，要么 $\text{endpos}(u)\cap \text{endpos}(w)=\varnothing$，要么 $\text{endpos}(u)\subseteq \text{endpos}(w)$．</li>
-</ul>
-<p>这个关键性质同时导出了后缀链接（suffix link）：$\text{link}(u)$ 连向了 $u$ 这个等价类<strong>最长的不在 $u$ 里的后缀</strong>所代表的等价类（这里后缀指的是等价类里最长串的后缀）。而第二个性质指出后缀链接形成了一棵树，称之为 <strong>parent 树</strong>。</p>
-<ul>
-<li>parent 树满足祖先的 endpos 是子孙的 endpos 的子集。</li>
-<li><strong>parent 树是反串的（隐式）后缀树</strong>：</li>
-</ul>
-<blockquote>
-<p>parent 树相当于<strong>把所有前缀插入</strong>到 Trie 里建出来的 fail 树，然后对只有一个儿子的节点进行压缩（对 fail 树跑个压缩 Trie）；一个串的隐式后缀树相当于<strong>把所有后缀插入</strong>到 Trie 里面然后建出来压缩 Trie．</p>
-</blockquote>
-<p>补充定义：$\text{maxlen}(u)$ 指 $u$ 这个状态上的最长的那个字符串长度，$\text{minlen}(u)=\text{maxlen}(\text{link}(u))$ 为最短的那个。</p>
-<h3 id="构建-SAM"><a href="#构建-SAM" class="headerlink" title="构建 SAM"></a>构建 SAM</h3><p>均摊复杂度 $\mathcal{O}(n|\Sigma|)$ 的在线构造方法。</p>
-<p>现在要添加一个字符 $c$，令 $\text{last}$ 为插入 $c$ 之前代表整个串的节点，初始为 $0$．</p>
-<ul>
-<li>创建当前串的状态 $\text{cur}$，$\text{maxlen}$ 是当前串长。然后不断跳 $\text{last}$ 的 suffix link，如果没有 $c$ 转移边就连转移边到 $\text{cur}$，如果走到头都没有那么 $\text{link(cur)}$ 指向 $0$；否则考虑当前状态为 $p$ 有 $c$ 的转移边连向 $q$；</li>
-<li>如果 $\text{maxlen}(q)=\text{maxlen}(p)+1$，那么可以直接根据定义将 $\text{link(cur)}$ 指向 $q$；</li>
-<li>否则，考虑 $\text{link(cur)}$ 真正要指向的是 $q$ 这个节点中长度为 $\text{maxlen}(p)+1$ 的那个后缀，于是要从这里劈开形成两个节点，那就新建一个节点 $\text{clone}$ 继承 $q$ 除 $\text{maxlen}$ 以外的所有信息（suffix link 和转移边），然后将 $\text{maxlen}(clone)\gets \text{maxlen}(p)+1$．再连下 suffix link，也就是 $\text{link}(cur)\gets \text{clone}$，$\text{link}(q)\gets \text{clone}$；</li>
-<li>最后考虑转移边的变化，不断跳 $p$ 的 suffix link，如果原先有到 $q$ 的转移边，将它指向 $\text{clone}$ 即可。</li>
-</ul>
-<p>复杂度证明和状态/转移数证明不写了，不会<del>并且不想学</del>。</p>
-<p>记住节点数是 $2n-1$，转移边的个数是 $3n-4$ 就行了。所以要记住 SAM 要开<strong>两倍空间</strong>。</p>
-<p>有很多经典应用，不学相当于没学 SAM．</p>
-<h3 id="1-找模式串在文本串出现的最大前缀长度"><a href="#1-找模式串在文本串出现的最大前缀长度" class="headerlink" title="1. 找模式串在文本串出现的最大前缀长度"></a>1. 找模式串在文本串出现的最大前缀长度</h3><p>根据 SAM 的定义，直接按照转移边不断匹配即可。</p>
-<h3 id="2-求-end-pos-集合大小（求该节点所代表字符串出现次数）"><a href="#2-求-end-pos-集合大小（求该节点所代表字符串出现次数）" class="headerlink" title="2. 求 end_pos 集合大小（求该节点所代表字符串出现次数）"></a>2. 求 end_pos 集合大小（求该节点所代表字符串出现次数）</h3><p>考虑较为一般的情况，对于一个节点，代表的字符串右端点出现次数，是其所有前面加上一个字符的串右端点出现次数的总和，也就是它 parent 树上儿子的 end_pos 集合大小总和。</p>
-<p>但如果其是母串的一个前缀，会有一个右端点没有统计上，初始它们的<br>end_pos 集合大小为 $1$ 即可。</p>
-<p>也就是初始时在每个非克隆节点（也就是代表前缀的节点）设 $siz$ 为 $1$，然后在 parent 树上对 $siz$ 作子树和。</p>
-<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3804">栗题：洛谷 P3804 【模板】后缀自动机 (SAM)</a></p>
-<p><a target="_blank" rel="noopener" href="https://codeforces.com/problemset/problem/802/I">栗题：Codeforces 802I Fake News (hard)</a></p>
-<h3 id="3-不同子串数-不同子串总长度"><a href="#3-不同子串数-不同子串总长度" class="headerlink" title="3. 不同子串数/不同子串总长度"></a>3. 不同子串数/不同子串总长度</h3><p>方法一：利用 parent 树。</p>
-<p>$\text{minlen}(x)=\text{maxlen}(fa)+1$</p>
-<p>所以 $x$ 节点所代表的串的个数为 $\text{maxlen}(x)-\text{maxlen}(fa)$．</p>
-<p>既然知道 $\text{minlen}(x),\text{maxlen}(x)$，就可以算出 $x$ 对不同子串总长度的贡献，是个等差数列求和的形式。</p>
-<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4070">栗题：[SDOI2016]生成魔咒</a></p>
-<p>方法二：在 DAWG 上 dp。</p>
-<p>考虑到不同子串个数相当于自动机中以初始状态为起点的不同路径条数，则设 $d_x$ 为状态 $x$ 开始的路径数量，转移有：</p>
-<script type="math/tex; mode=display">
-d_u=1+\sum_{(u,v,c)\in E} d_v</script><p>去掉空子串还要 $-1$．</p>
-<p>不同子串总长度的话，也类似地 dp 即可：</p>
-<script type="math/tex; mode=display">
-ans_u=\sum_{(u,v,c)\in E}d_v+ans_v</script><p>要加上 $d_v$ 是因为从 $v$ 出发的子串都多了一个字符。</p>
-<h3 id="4-字典序第-k-小子串"><a href="#4-字典序第-k-小子串" class="headerlink" title="4. 字典序第 $k$ 小子串"></a>4. 字典序第 $k$ 小子串</h3><p>考虑在 DAWG 上匹配的过程，只需要知道从这条转移边走，能获取的多少个状态，就可以知道该不该走这条边。注意到这个节点本身也是有状态数的，经过这个点的时候要减去。</p>
-<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3975">栗题：[TJOI2015]弦论</a></p>
-<p>不同位置的相同子串算作一个状态：一个节点能到达的状态数，就是 <strong>3.</strong> 中的方法二所 dp 的 $d$．</p>
-<p>不同位置的相同子串算作多个状态：一个子串出现次数就是其 end_pos 集合大小 $+1$，利用 4. 中的方法求出 end_pos 集合大小，一个节点能到达的状态数就是它所有后继节点能到达的状态数，加上其 end_pos 集合的大小。</p>
-<h3 id="5-最小循环移位"><a href="#5-最小循环移位" class="headerlink" title="5. 最小循环移位"></a>5. 最小循环移位</h3><p>类似 4. 的思路，贪心地在 $S+S$ 的后缀自动机上寻找最小的长度为 $|S|$ 的路径。同样地记录一些信息可以做到。</p>
-<h3 id="6-求-LCS-最长公共子串"><a href="#6-求-LCS-最长公共子串" class="headerlink" title="6. 求 LCS 最长公共子串"></a>6. 求 LCS 最长公共子串</h3><p>给其中一个串建 SAM，然后让另一个串在 SAM 上匹配即可，如果失配，则不断跳 parent 树上的父亲，实际上 SAM 的 parent 树就是其后缀 Trie 的 fail 树的压缩版（或者理解这个东西为，所有后缀的 AC 自动机）。</p>
-<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/SP1811">SP1811 LCS - Longest Common Substring LCS</a></p>
-<h3 id="8-第一次出现的位置"><a href="#8-第一次出现的位置" class="headerlink" title="8. 第一次出现的位置"></a>8. 第一次出现的位置</h3><p>多次查询模式串 $P$ 在文本串 $T$ 中第一次出现位置。</p>
-<p>如果对 $T$ 的 SAM 中的每个状态 $v$，维护第一次出现 $v$ 的末端位置 $\mathrm{firstpos}(v)$，也就是该状态的 $\mathrm{endpos}$ 集合中的最小元素。</p>
-<p>每次加入一个新的字符的时候，创建一个新的状态 $cur$，其代表当前的整个字符串，则令 $\mathrm{firstpos}(cur)$ 为当前插入字符的下标。</p>
-<p>在建立好 $q$ 复制出的 $clone$ 以及更新其他节点的后缀链接后，考虑新加进的 $\mathrm{endpos}$ 肯定不如它们现在的 $\mathrm{firstpos}$ 更优，所以无须更新。只需将 $\mathrm{firstpos}(cur)$ 赋值为 $\mathrm{firstpos}(q)$．</p>
-<p>那么查询的答案就是 $\mathrm{firstpos}(t)-|P|+1$，其中 $t$ 为对应字符串 $P$ 的状态。单次查询只需要 $O(|P|)$ 的时间。</p>
-<h2 id="广义-SAM"><a href="#广义-SAM" class="headerlink" title="广义 SAM"></a>广义 SAM</h2><p>给定一个字符串集合，接受所有集合中的字符串的子串。</p>
-<p>广义 SAM，如此恐怖！很多构建方法都是错的！</p>
-<p>整理两个正确的建法：</p>
-<h3 id="离线-bfs"><a href="#离线-bfs" class="headerlink" title="离线 bfs"></a>离线 bfs</h3><p>先把所有的字符串都插到一个 Trie 里，然后在这个 Trie 上修改结构建后缀自动机。bfs 保证 len 从小到大插入。与不同 SAM 不同之处是：</p>
-<ul>
-<li>插入一个 $\text{cur}$ 的时候，$\text{last}$ 就是 $\text{cur}$ 在 Trie 上的父亲。</li>
-<li>$q$ 复制信息给 $\text{clone}$ 的时候，不能复制还没有插入的点。</li>
-</ul>
-<h3 id="在线增量构造"><a href="#在线增量构造" class="headerlink" title="在线增量构造"></a>在线增量构造</h3><p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/discuss/322224">from ix35．</a></p>
-<p>每次将 $\text{last}$ 重置成 $0$．如果 $p$ 在 $\text{last}$ 就找到了这个出边 $c$ 到 $q$ 了，如果 $\text{maxlen}(p)=\text{maxlen}(q)+1$ 就直接令 $\text{cur}\gets q$，否则就把 $q$ 分裂出 $\text{clone}$ 然后 $cur\gets \text{clone}$（注意这里和之前的区别是并没有新建一个 $\text{cur}$）．</p>
-<h1 id="回文结构"><a href="#回文结构" class="headerlink" title="回文结构"></a>回文结构</h1><h2 id="Manacher"><a href="#Manacher" class="headerlink" title="Manacher"></a>Manacher</h2><p>回文中心：回文串内到两端距离相等的位置（可以在两个字符中间）。</p>
-<p>回文半径：回文中心到两端之间的字符数。</p>
-<p>Manacher 是求出每个位置 $i$ 作为回文中心时最长回文半径 $mx_i$．有回文中心在字符中间的情况，所以在原串每个间隔位置插入一个字符 <code>#</code>．所以 Manacher 要注意开<strong>两倍空间</strong>。</p>
-<ul>
-<li>$i$ 从小到大枚举，同时记录前面最大的 $r=j+mx_j$ 以及其对应的 $j$；</li>
-<li>如果 $i\leq r$ 那么令 $mx_i\gets \min(r-i,mx[2j-i])$（画图理解）；</li>
-<li>然后不断暴力 check $mx_i$ 是否还能往右扩展。</li>
-</ul>
-<p>由于每 check 成功一次 $r$ 一定会增加 $1$，而 $r$ 最大不超过字符串长度，所以时间复杂度是线性的。</p>
-<h2 id="回文自动机-PAM"><a href="#回文自动机-PAM" class="headerlink" title="回文自动机 ( PAM )"></a>回文自动机 ( PAM )</h2><h3 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h3><p><strong>定理：一个串的本质不同回文子串数不超过 $n$．</strong></p>
-<p>首先这个上界就是全一样字符的时候取到。然后考虑每次往后新加一个字符的时候，新增了以它为右端点的若干回文串，只有最长的那个可能是新出现的，因为较短的那些一定在这个最长的字符串的开头出现了。</p>
-<p>这个定理告诉我们如果建一个接受字符串的所有回文子串的自动机，它的状态是大致是 $\mathcal{O}(n)$ 的。</p>
-<p>然后想想一个回文自动机应该是什么样子的，首先是如果<strong>走转移边添字符是从两边添字符</strong>，如果按照 ACAM 和 SAM 一个方式理解的话它是在走串的一半。而且回文串分奇数和偶数两种情况，那么需要两个源点分别去索引奇数和偶数长度的回文子串。然后 <strong>suffix link</strong> 就直接定义为<strong>非自身的最长回文后缀</strong>。<strong>定义偶根为 $0$，奇根为 $-1$</strong>，然后将 $0$ 的 suffix link 指向 $-1$，$-1$ 不可能失配因为它指向一个单个字符（这里这样定义是为了方便后面构造）。</p>
-<p>这个回文自动机实际上形成了一个树结构，也称为回文树。</p>
-<h3 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h3><p>然后 PAM 的构建就挺简单的了，没有像 SAM 那样需要划分等价类来压缩状态于是要讨论很多情况，还是直接不断尝试在 $\text {last}$（以上一个字符为结尾的最长后缀）后面接上这个字符，如果不行则不断跳 fail 直到能接上位置（因为最后会跳到 $-1$ 而 $-1$ 能接上任何字符）。如果节点不存在那就直接新建一个。</p>
-<p>如果新建节点要算当前这个节点的 fail，就再不断跳 fail 判断能不能接上。而再往上跳 fail 不会新建节点，就是 PAM 的那个前置定理。</p>
-<p>这里判断后面能不能接上就是判断 $[s_i=s_{i-len-1}]$，这里 $len$ 代指中间那个回文串的长度。这样构造的正确性和 KMP 自动机构造正确性类似，回文子串具有和 border 一样的全序关系性质，即回文子串的回文子串依然是回文子串。所以不断跳 fail 判断能不能接上就可以。</p>
-<p>这个构建方法的复杂度分析和 AC 自动机的构建方法一复杂度分析同理（事实上就是和 AC 自动机构建方法一几乎完全一样），fail 树上每条边最多被跳两次。</p>
-<h3 id="回文后缀结构"><a href="#回文后缀结构" class="headerlink" title="回文后缀结构"></a>回文后缀结构</h3><p>回文子串和 border 一样是一个全序关系。那么就想想弱周期引理，border 划分等东西是否也能搬到回文串这个结构上来。类比 border 是前缀等于后缀，那这里就尝试搬到回文后缀上。</p>
-<p><strong>引理：若 $s$ 是一个回文串，那么 $t$ 是 $s$ 的回文后缀当且仅当 $t$ 是 $s$ 的 border．</strong></p>
-<p>分 $2|t|&lt;|s|$ 和 $2|t|\geq |s|$ 两种情况，画图证明一下即可。</p>
-<p>有了这个，那么就能证明弱周期引理搬到回文串的回文后缀这里依然成立（因为回文后缀已经等价于 border 了）。border 划分在这类也是成立的。</p>
-<p>这里回文树上的 fail 和那个失配树类似。令 $diff(u)=len(u)-fail(len(u))$，令 $shink(u)$ 是 $u$ 祖先中离 $u$ 最近的 $diff$ 不同的节点，那么 $u$ 想要跳出它所在的等差数列就直接跳 $shink$ 就可以。（border 那里用失配树这么跳也是一样的）。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://do-while-true.github.io/2023/02/26/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%AD%97%E7%AC%A6%E4%B8%B2%20I/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -379,7 +191,7 @@ ans_u=\sum_{(u,v,c)\in E}d_v+ans_v</script><p>要加上 $d_v$ 是因为从 $v$ �
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-03-02 22:53:18" itemprop="dateModified" datetime="2023-03-02T22:53:18+08:00">2023-03-02</time>
+                <time title="Modified: 2023-03-03 19:41:13" itemprop="dateModified" datetime="2023-03-03T19:41:13+08:00">2023-03-03</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -402,218 +214,96 @@ ans_u=\sum_{(u,v,c)\in E}d_v+ans_v</script><p>要加上 $d_v$ 是因为从 $v$ �
     <div class="post-body" itemprop="articleBody">
 
       
-          <span id="more"></span>
-<h1 id="约定"><a href="#约定" class="headerlink" title="约定"></a>约定</h1><p>1-index．</p>
-<p>$|s|$ 为字符串 $s$ 的长度，如果讨论中仅有一个字符串也称之为 $n$．</p>
-<p>$s[l,r]$ 表示字符串 $s$ 的 $[l,r]$ 子串。</p>
-<p>$pre(s,r)=s[:r]=s[1,r]$，前缀．</p>
-<p>$suf(s,l)=s[l:]=s[l,|s|]$，后缀．</p>
-<p>$a_i$ 第 $i$ 个 $a$，有时产生嵌套时为易于观看记作 $a[i]$．</p>
-<p>自动机那部分，suffix link 和 fail 指的是一个东西，可能会混用。suffix link 更偏向于其结构，而 fail 更偏向于匹配。</p>
-<h1 id="哈希"><a href="#哈希" class="headerlink" title="哈希"></a>哈希</h1><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/104346215">科学的讲解</a></p>
-<h2 id="字符串哈希"><a href="#字符串哈希" class="headerlink" title="字符串哈希"></a>字符串哈希</h2><p>将字符串的每一位看成多项式的一个系数，求其哈希值（多项式哈希）。</p>
-<p><strong>性质：字符串哈希是一个分治信息。</strong></p>
-<p><strong>P2757</strong></p>
-<p>首先只有 $len=3$ 是有用的，那么大概就判断是否有 $a_j-a_i=a_k-a_j,i&lt;j&lt;k$．</p>
-<p>这个 $j$ 很特殊，考虑枚举这个 $j$，然后记录它前面元素的桶，为 $1$ 是出现，为 $0$ 是没出现。那么就是判断 $a_j+k,a_j-k$ 不同就代表出现了一个等差子序列。没出现的话就相当于关于 $j$ 是个回文的，线段树维护哈希值即可。</p>
-<h2 id="集合哈希"><a href="#集合哈希" class="headerlink" title="集合哈希"></a>集合哈希</h2><p>对于多重集 $S$，直接将 $S$ 中的元素排序之后多项式哈希即可。</p>
-<p>线性实现是，其实只需要按照某种方式排序即可，所以可以将 $S$ 中的元素插入到哈希表中，然后以某种方式遍历哈希表后将其多项式哈希起来即可。</p>
-<h2 id="树哈希"><a href="#树哈希" class="headerlink" title="树哈希"></a>树哈希</h2><p>树蛙给出的哈希方法时，假如现在某个节点的子树们的哈希值是多重集 $A=\{a_1,a_2,\cdots,a_d\}$，然后<strong>树高</strong>（不是 dep）为 $i$ 的点用同一个哈希函数 $h_i$，然后用集合哈希将其哈希起来。</p>
-<p>上面那个很难写，我从 uoj 的树哈希模板上抄来了一个很好写的树哈希方法：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> fa)</span></span>&#123;</span><br><span class="line">	siz[x]=<span class="number">1</span>;has[x]=val[<span class="number">0</span>];</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">auto</span> v:eg[x])<span class="keyword">if</span>(v!=fa)&#123;</span><br><span class="line">		<span class="built_in">dfs</span>(v,x);</span><br><span class="line">		has[x]+=(has[v]^val[siz[v]])+val[<span class="number">0</span>];</span><br><span class="line">		siz[x]+=siz[v];</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>$val$ 是一个随机映射到某个数的随机函数。</p>
-<p>大概就是将所有子树的 $hash$ 异或其 $val(size)$，求和，再加上儿子个数 $+1$ 个 $val(0)$．</p>
-<p>错误率分析都不会！</p>
-<h1 id="Border-理论"><a href="#Border-理论" class="headerlink" title="Border 理论"></a>Border 理论</h1><p><strong>border</strong>：$pre(S,i)=suf(S,i)\neq S$，则称 $pre(S,i)$ 为 $S$ 的一个 border．</p>
-<p>在某些语境中亦指其长度。</p>
-<p><strong>性质一：一个串的所有 border 形成了一个全序关系，换而言之，border 的 border 依然是一个 border。</strong></p>
-<p><strong>周期</strong>：正整数 $p$ 是串 $S$ 的周期，当且仅当 $p\leq |S|$ 且 $S_i=S_{i+p}$，如果 $p$ 还整除 $|S|$ 则称其为整周期。</p>
-<p><strong>性质二：周期的正整数倍依然是一个周期。</strong></p>
-<p>两个性质画图均容易验证。</p>
-<p><strong>结论：$p$ 是 $S$ 的周期当且仅当 $pre(S,|S|-p)$ 是 $S$ 的 border。</strong></p>
-<p>把定义写出来。</p>
-<p><strong>性质三：一个串的所有前缀的最短周期不降。</strong></p>
-<p>换而言之，KMP 跑出来的 $i-nxt_i$ 是不降的。如果能对应上最短周期，那么最短周期不变，否则最短周期会变长，并且小的那些不会再变得合法（从这里就开始失配了）。一个小性质。</p>
-<hr>
-<p><strong>弱周期引理：$p$ 和 $q$ 都是 $S$ 的周期且 $p+q\leq |S|$，那么 $\gcd(p,q)$ 也是 $S$ 的一个周期。</strong></p>
-<p>证明：辗转相减。</p>
-<p>令 $p&gt;q$，首先对于所有 $1\leq i\leq |S|-p$ 均有 $S_i=S_{i+p}$，对于所有的 $1\leq i\leq |S|-q$ 都有 $S_i=S_{i+q}$．</p>
-<ul>
-<li>$1\leq i\leq |S|-p$ 均有 $S_i=S_{i+p}=S_{i+p-q}$</li>
-<li>$q&lt;i\leq |S|-(p-q)$ 均有 $S_i=S_{i-q}=S_{i+p-q}$</li>
-</ul>
-<p>那么即证 $(p-q)$ 也是 $S$ 的周期，辗转相减即可得到结论。</p>
-<p><strong>周期引理：$p$ 和 $q$ 都是 $S$ 的周期且 $p+q-\gcd(p,q)\leq |S|$，那么 $\gcd(p,q)$ 也是 $S$ 的一个周期。</strong></p>
-<p>证明很难，记住结论就好。</p>
-<hr>
-<p><strong>引理：$S$ 中所有 $\leq \lfloor\frac{|S|}{2}\rfloor$ 的周期都是最短周期的倍数；等价地，$S$ 中所有 $\geq \lceil\frac{|S|}{2}\rceil$ 的 border 构成等差数列。</strong></p>
-<p><strong>$\Rightarrow$ border 划分：$S$ 的 border 可划分为 $\mathcal{O}(\log |S|)$ 段值域上不交的等差数列。</strong></p>
-<p>考虑弱周期引理，长度 $\leq \lfloor\frac{|S|}{2}\rfloor$ 所有周期的 $\gcd$ 一定也是一个周期，并且是最短的周期，它的所有倍数也一定是周期。一个数的所有倍数就是等差数列，用 $|S|$ 减之得到的 border 也构成等差数列。从而可得引理。自然导出了 border 划分。</p>
-<p>如何构造转向后文 “失配树” 的例题 “Luogu P5829 【模板】失配树”</p>
-<hr>
-<p><strong>P3538</strong></p>
-<p>需要证明那个做法是对的。注意到根据弱周期引理，所有整周期一定是最小整周期的倍数就可以了。</p>
-<p><strong>WC2016 论战捆竹竿</strong></p>
-<p>若求出了所有 $border$ 构成的集合 $A=\{a_1,a_2,a_3,\cdots,a_k\}$，那么原问题等价于询问 $\sum a_ix_i,x_i\geq 0$ 能表示出 $[0,w-n]$ 中的多少数。</p>
-<p>如果仅考虑后面那个问题，是一个同余最短路，所以此处 $a$ 必然有某些性质，不难想到 border 划分使其形成了 $\mathcal{O}(\log n)$ 段值域上不交的等差数列。</p>
-<p>假设现对于一等差数列 $a,a+d,a+2d,\cdots,a+kd$ 跑同余最短路，以 $a$ 为模数，则有连边 $x\to (x+d)\bmod a$，不难推出此将图划分为 $\gcd(a,d)$ 个不交的长度都相等的环。</p>
-<p>对于每个环单独处理。以 $dis$ 最小的点作为起点，断环为链重新编号，写出贡献方式即为 $(q-p)\leq k$ 则 $dis_{q}\gets dis_{p}+(q-p)d$，于是可以用单调队列求解。</p>
-<p>现在考虑从一个公差为 $a$ 的等差数列换到另一个公差为 $b$ 的等差数列，现在 $dis_i$ 重新定义为最小的 $x$ 满足 $x\bmod a=i$ 且 $x$ 能被表示出。欲求出以 $b$ 为模数的新的 $dis’_i$．</p>
-<p>考虑 $dis_i$ 代表着，$dis_i+a\times k,k\geq 0$ 均可被表示出，通过其求 $dis’_i$ 类似，先将 $dis_i\to dis’_{dis_i\bmod b}$，然后问题变成了 $dis’_i+a$ 可以用来更新 $dis’_{(i+a)\bmod b}$，这和上一个问题是等价的，这不过这里的等差数列没有项数的限制可以只记一个前缀 $\min$．</p>
-<p>每次用一个等差数列更新同余最短路的复杂度是 $\mathcal{O}(n)$，一共要更新 $\mathcal{O}(\log n)$ 次，所以总复杂度就是 $\mathcal{O}(n\log n)$．</p>
-<h1 id="KMP-和-失配树"><a href="#KMP-和-失配树" class="headerlink" title="KMP 和 失配树"></a>KMP 和 失配树</h1><h2 id="KMP"><a href="#KMP" class="headerlink" title="KMP"></a>KMP</h2><p>KMP 解决的是单个文本串 $S$ 和单个模式串 $T$ 匹配的问题。它分为了两部分，求出模式串每个前缀的非自身的最长 border，现定义其为 next，以及利用模式串的每个前缀的 next 完成匹配。</p>
-<p>首先考虑如何求出模式串 $T$ 每个前缀的 next，如果 $T[:j]$ 是 $T[:i]$ 的 border，那么一定有 $T[:j-1]$ 是 $T[:i-1]$ 的 border．于是从大到小通过暴力跳 next，对 $T[:i-1]$ 的所有 border 检查出最大的 next 即可。</p>
-<p>由于每次代表 $S[:i]$ next 的 $j$ 最多 $+1$，所以跳 next 的次数均摊是 $\mathcal{O}(|T|)$ 的。那么这部分总复杂度就是 $\mathcal{O}(|T|)$．</p>
-<p>然后考虑如何完成匹配，原理类似，$S[i-j+1,i]$ 和 $T[:j]$ 匹配，那么一定有 $S[i-j+1,i-1]$ 和 $T[:j-1]$ 匹配，所以在暴力匹配的过程中产生失配时，将 $j$ 不断跳其 next 检查即可。复杂度分析同理是 $\mathcal{O}(|S|)$ 的。</p>
-<h3 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h3><p><strong>CF1200E</strong></p>
-<p>每次加入一个串的时候在前面串合并结果的尾部截取同样长度的串，reverse 之后跑 kmp 就知道截掉多少，如果最长 border 大于后面那个串的串长继续暴力跳 border 跳出第一个小于等于后面串串长的 border。</p>
-<p><strong>P4824</strong></p>
-<p>由于 KMP 的复杂度是均摊的，所以任意回退状态会导致复杂度出现问题。</p>
-<p>但是此题中复杂度是对的，因为只有匹配的时候会回退，回退的时候指针 $j$ 一定是变小的。依然可以均摊。</p>
-<p><strong>「HNOI2019」JOJO</strong></p>
-<p>next 的定义是，字符串的最长 border．</p>
-<p>考虑如果没有二操作怎么做：</p>
-<p>首先一个关键的性质就是相邻两次插入的字符不相同，这意味着对于一个 border，除了首尾两段不完整的段，中间的段必须完全相同。这提示我们只需要维护除了第一段以外的所有整段皆相同这样一个形式的 border，具体地：</p>
-<p>每次插进 $x$ 个字符 $c$ 的二元组 $(c,x)$，对这个二元组跑类似 KMP 的东西，定义 $nxt_i$ 为最大的 $j$ 满足 $\forall k\in [1,j],c_k=c_{i-k+1}, \forall k\in[2,j],x_{k}=x_{i-k+1}, x_1\leq x_{i-j+1}$．类似 KMP 预处理 $nxt$，在预处理这个 $nxt$ 的时候需要记录一下 $(c_i,x_i)$ 已经匹配成功每次匹配成功的长度 $mxlen$，即可计算 $mxlen$ 应该增加多少，并且计算出对答案的贡献，一个等差数列求和的形式，<a target="_blank" rel="noopener" href="https://www.cnblogs.com/cyf32768/p/12305384.html">具体的贡献形式</a>。</p>
-<p>现在就考虑怎么把这个东西可持久化掉。自然的想法是建出操作树，但是这样需要支持撤销，而这个 KMP 的复杂度也是均摊的，并不能支持撤销。</p>
-<p>如果对这个 KMP 建立一个 KMP 自动机，也就是处理出 $f_{i,c,x}$ 表示在 $i$ 节点之后来了一个 $(c,x)$ 所走到的节点，以及 $g$ 表示答案应该产生的贡献。回顾上述 KMP 答案的贡献形式，容易发现在修改操作是一个区间赋值，所以可以用主席树维护所有的 $f_{i,c}$ 和 $g_{i,c}$．复杂度毛咕咕一下应该是 $\mathcal{O}(n|\sum|\log n)$</p>
-<p>还有一个做法是考虑 border 划分。$nxt_i$ 实际上就是处理出了前 $i$ 个字符段的 border．它在字符串中对应着一个周期，由于相邻两个字符段的 $c$ 不同，所以其在 $(c,x)$ 形成的串中也是一个周期（这里周期的判定是要求逐个二元组完全相同）。</p>
-<p>虽然在 $(c,x)$ 串中 border 的定义改变了，但是这个周期的定义不变，所以弱周期引理仍然满足，进而 border 划分依然满足。故在 $(c,x)$ 串中做 KMP 的时候，当一次 $j+1$ 和 $i$ 产生失配时，由于存在 $j-nxt_j$ 的周期，所以 $j$ 所在的 border 等差数列中前面的 border 都会失配，可以直接跳到前一个等差数列。</p>
-<p>这样一次匹配的复杂度就是不均摊的 $\mathcal{O}(\log n)$ 的了。总复杂度就是 $\mathcal{O}(n\log n)$．这个做法的优点是字符集多大都能做，也启发我们普通的 KMP 字符串匹配往后匹配单个字符是可以利用 border 划分做到非均摊 $\mathcal{O}(\log n)$ 复杂度的。</p>
-<h2 id="失配树"><a href="#失配树" class="headerlink" title="失配树"></a>失配树</h2><p>$i$ 向 $i$ 的最长 border 连边，由于 border 的性质其形成了一棵树，前缀 $i$ 的所有祖先就是其所有 border。</p>
-<p>基本应用：</p>
-<ul>
-<li>两个前缀的最长 border 就是它们在树上的 LCA。</li>
-<li>查询一个串长度 $\geq k$ 的最小 border 可以倍增求得。</li>
-</ul>
-<p><strong>HDU 7084 Pty loves string</strong></p>
-<p>怎么想到失配树？考虑一个子串 $S[l,r]$ 合法当且仅当 $S[l,l+x-1]=S[1,x]$ 且 $S[r-y+1,r]=S[n-y+1,n]$，由此想到 border：一个 $l+x-1$ 合法需要满足 $S[1,x]$ 是 $S[1,l+x-1]$ 的 border，而根据 border 的子结构性质，所有合法的 $l+x-1$ 即为 $x$ 在失配树子树中的所有点。</p>
-<p>对于合法的 $r-y+1$ 也同理，只需要反过来建一个失配树。于是问题变成了多次询问两棵树，每次询问两个子树中有多少个相同编号的点，直接做就是线段树合并，也可以转化成二维数点问题，从而扫描线 + 树状数组解决。时间复杂度 $\mathcal{O}(n\log n)$．</p>
-<p><strong>Luogu P5829 【模板】失配树</strong></p>
-<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/crashed/p/15759091.html">crashed nb/se</a> 不过它解释为什么跳 $k\bmod d+d$ 确实有点迷，不懂为什么直接跳 $k\bmod d$ 会挂可以手摸一下<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/discuss/553622">峰峰峰的 hack</a>，从 25 开始跳。</p>
-<p>三个找等差数列的方法：</p>
-<ul>
-<li>倍增分块：$[1,2),[2,4),[4,8)\cdots,[2^k,2^{k+1}),\cdots$ 这么分块，然后断言每一块里面的 border 一定形成了一个等差数列。首先最后一块肯定满足，$\geq \lceil\frac{|s|}{2}\rceil$ 的 border 形成一个等差数列，对于中间的块同理，也就是对 $s[:2^{k+1}]$ 用那个结论。</li>
-<li>利用失配树：跳祖先过程中第一个 $v-nxt_v$ 和自身 $u-nxt_u$ 不同的 $v$，可以用倍增做到。</li>
-<li>后面要讲的：每次 $d=k-nxt_k,k\gets k\bmod d+d$．</li>
-</ul>
-<p>简单做法就是建出失配树然后跳 LCA．但是 border 的性质很好，所以就来考虑一些小常数做法：</p>
-<p>考虑一个等差数列在支配树上实际上就是一条链，而且端点具有祖孙关系。那么自然就想到了树链剖分，尝试利用 border 划分将整棵树进行剖分，使得从每个点往上跳一个树链相当于跳一个等差数列。那么问题就是怎么剖，怎么确定两个点是否在同一个等差数列上。</p>
-<p>怎么剖，实际上就是对于一个 $k$，确定 $k$ 所在的等差数列的头在哪里。</p>
-<ul>
-<li>$nxt_k\leq \lfloor\frac{k}{2}\rfloor$：它就是链头。</li>
-<li>否则，对于最短周期 $d=k-nxt_k$：考虑每次将 $k\gets k-d$，当 $d\leq \lfloor\frac{k}{2}\rfloor$ 的时候根据推 border 划分时的引理，$k-d$ 就是 $k$ 最长 border．否则就到了链头。考虑 $k\bmod d$，不断 $-d$ 的过程，只有最后一步会出现问题，所以链头就是 $k\bmod d+d$．</li>
-</ul>
-<p>然后问题就是怎么判终止条件，以及会不会出现跳过 LCA 的情况</p>
-<p>判终止直接看 $x\equiv y\pmod d$ 是否成立就行，这里 $x&gt;y,d=x-nxt_x$。如果不成立那么肯定不在同一个划分出的链上。如果成立，画图可知 $y$ 是 $x$ 的 border，所以 $y$ 就是 $x$ 的祖先，而且 $x,y$ 在同一条划分出的链上时一定能判出来。注意这里严格来说并不是看它们两个是否在同一个等差数列上。</p>
-<p>还是峰峰峰那个例子，树链是 $1\leftrightarrow 3\leftrightarrow 7\leftrightarrow 13\leftrightarrow 19\leftrightarrow 25$，1 和 25 能判对，7 和 25 能判对，但是 3 和 25 判不出。但是只要保证 $7\leftrightarrow 13\leftrightarrow 19\leftrightarrow 25$ 这条划分出的链上的点都能判出来，并且不会额外判错就行。</p>
-<h1 id="DFA"><a href="#DFA" class="headerlink" title="DFA"></a>DFA</h1><p>一个确定有限状态自动机（DFA）的组成：</p>
-<ol>
-<li>非空有限的字符集 $\Sigma$；</li>
-<li>非空有限的状态集合 $Q$；</li>
-<li>开始状态 $start\in Q$；</li>
-<li>接受状态的集合 $F\subseteq Q$；</li>
-<li>转移函数 $\delta =Q\times \Sigma \to Q$．</li>
-</ol>
-<p>也就是说，一个 DFA 由这样一个五元组组成，它可以一个字符一个字符地输入一个字符串，从 $start$ 开始，每次根据转移函数转移到下一个状态，如果最终停在终止状态，则称该自动机接受此字符串。</p>
-<p>DFA 很像一个有向图，在 OI 中将其视作一个有向图即可。</p>
-<p>一个应用是，将 dp 转移写成 DFA 的形式，然后压缩这个 DFA，然后在这个 DFA 上跑矩阵快速幂来优化转移。</p>
-<p>另一种理解角度是，一类判定性 dp 实际上可以写成 DFA 的形式，而对其计数即为 dp 套 dp，对内层 dp 值域/转移的剪枝，即为对内层 DFA 状态的剪枝，从而优化。</p>
-<p>例题：CF506E 鸽了</p>
-<h1 id="AC-自动机"><a href="#AC-自动机" class="headerlink" title="AC 自动机"></a>AC 自动机</h1><p>尝试一下写出更本质的理解。</p>
-<p>Trie 树和 AC 自动机的基本概念：略。</p>
-<p>AC 自动机解决的是多模式串匹配问题。</p>
-<h2 id="AC-自动机的构建"><a href="#AC-自动机的构建" class="headerlink" title="AC 自动机的构建"></a>AC 自动机的构建</h2><p>定义 $tr_{x,c}$ 表示 Trie 树上 $x$ 节点通过字符 $c$ 走到的点。</p>
-<p>$fail_x$ 指向 $x$ 节点代表的字符串在字典树中出现了的最长后缀。当只有一个串时，其即为 KMP 中的 next 指针（一个前缀的最长 border）。</p>
-<p><strong>构建方法一</strong></p>
-<p>考虑 $x$ 是由 Trie 中的父亲 $fa$ 通过 $c$ 转移边得到的。那么检索 $y=fail_{fa}$，若 $y$ 存在字符 $c$ 的转移边，则令 $x$ 指向 $tr_{y,c}$；否则，令 $y\gets fail_y$ 即不断跳 fail 检查是否有 $c$ 出边。若到了初始节点（Trie 的根节点）依然没有 $c$ 出边，则令 $fail_x$ 指向初始节点。</p>
-<p>注意需要用 bfs 实现，因为 dfs 可能导致 fail 的 fail 还未处理而出现问题。</p>
-<p>其时间复杂度为多少？</p>
-<p>如果是给定若干模式串建出的 Trie 求 fail：对于每个串在 Trie 中自顶向下考虑尝试寻找 fail 的 $y$ 在最终 fail 树中的深度变化，每次向下走一个儿子 $y$ 深度最多 $+1$，每次暴力跳 fail 深度都会 $-1$，均摊下来总的时间复杂度就是 $\mathcal{O}(\sum |S|)=\mathcal{O}(n)$．</p>
-<p>如果是像 <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2414">阿狸的打字机</a> 一样直接给定 Trie 求 fail 树：设总状态数为 $n$．在最终 fail 树上，对于每一个字符 $c$ 将 fail 树上所有有 $c$ 作为出边的点 $x$ 标记。那么对于每个被标记的 $x$，其代价为 $dep_x$ 减去祖先中最靠近 $x$ 的标记点的 $dep$．不难发现代价总和 $\leq$ 整棵树的大小。则对于每个颜色来说时间复杂度为 $\mathcal{O}(n)$，那么总的时间复杂度就是 $\mathcal{O}(|\Sigma|n)$，事实上这个上界也能卡到，构造一个链套菊花即可。</p>
-<p><strong>复杂度总结</strong>：如果内部用 <code>unordered_map</code> 存储转移边，可以做到 $\mathcal{O}(n)$ 的空间复杂度。给定若干模式串求 Trie 的 fail 时间复杂度是 $\mathcal{O}(n)$，直接给定 Trie 求 fail 的时间复杂度是 $\mathcal{O}(|\Sigma|n)$．</p>
-<p>根据上面的分析，即有 $dep[x]\leq dep[fa_x]+1$（$dep$ 是在 fail 树上的深度，$fa$ 是 Trie 上的父亲）。让文本串在 AC 自动机上匹配的时间复杂度是均摊 $\mathcal{O}(|S|)$ 的。</p>
-<p>在有些情况下需要求出一个新的转移函数 $tr_{x,c}$ 表示当前在 $x$ 节点，新来一个字符 $c$ 应该走到哪个点，那么引出了构建方法二，也是较为常用的一个构造方法。</p>
-<p><strong>构建方法二（更常用）</strong></p>
-<p>对 Trie 进行 bfs，每次搜索到一个点 $x$ 的时候处理出所有 $tr_x$ 以及 $x$ 所有儿子的 fail，具体地：</p>
-<ul>
-<li>若 $tr_{x,c}$ 已经存在，则 $fail[tr_{x,c}]\gets tr_{fail[x],c}$；</li>
-<li>若 $tr_{x,c}$ 不存在，则 $tr_{x,c}=tr_{fail[x],c}$．</li>
-</ul>
-<p>时空复杂度均为 $\mathcal{O}(|\Sigma|n)$．</p>
-<p>如果字符集特别大话，注意到 $tr_x$ 相对于 $tr_{fail[x]}$ 仅有 $x$ 有对应出边 $c$ 的哪些 $tr_{x,c}$ 会不一样，那么可以用可持久化线段树维护 $tr$，时间复杂度为 $\mathcal{O}(n\log n)$．</p>
-<blockquote>
-<p>注：在 KMP 的例题 「HNOI2019」JOJO 中运用到了这个思路。</p>
-</blockquote>
-<h2 id="深入理解-AC-自动机结构"><a href="#深入理解-AC-自动机结构" class="headerlink" title="深入理解 AC 自动机结构"></a>深入理解 AC 自动机结构</h2><p>补充定义：</p>
-<ul>
-<li>称上面构建方法二中处理出的 $tr$ 为转移边。</li>
-<li>后文中提到一个字符串 $s$ 在 AC 自动机中的节点，即为 $s$ 不断走转移边所走到的节点。</li>
-</ul>
-<p><strong>前缀</strong>：已经学习过 Trie（就当我写了 Trie）对于一个文本串 $S$，<strong>所有满足是其前缀的模式串 $T$</strong> 即为 <strong>$S$ 走 Trie 边经过的所有点</strong>（当然需要这个点代表某个完整 $T$，后面讨论到的也一样）。</p>
-<p><strong>后缀</strong>：</p>
-<ul>
-<li>首先考虑满足<strong>是文本串后缀的最长模式串前缀</strong>，就是 $S$ 在 AC 自动机里面<strong>走转移边走到的点</strong>；</li>
-<li>考虑 fail 树上的结构，在其上面跳一次父亲，相当于在字符串的前面删去若干个点得到的最长真后缀，那么 <strong>$S$ 走转移边走到的点在 fail 树上包括自己的所有祖先</strong>即为 <strong>$S$ 的所有出现了的后缀</strong>。</li>
-</ul>
-<p><strong>子串</strong>：</p>
-<p>$S$ 的前缀，$T$ 作为其后缀：$S$ 走转移边走到的所有节点在 fail 树上的根链的并（如果不去重就是和）；或者考虑 $T$ 给 $S$ 贡献就是在 $T$ 的终止节点 fail 树子树加，$S$ 走转移边所有走到节点的权值和（不去重计数）。</p>
-<p>$S$ 的后缀，$T$ 作为其前缀：$S$ 走转移边走到的终止节点，它的所有祖先在 Trie 树上的子树并（如果不去重就是和）；或者考虑 $T$ 给 $S$ 贡献就是在 $T$ 的终止节点 Trie 树上根链加，$S$ 终止节点 fail 树根链和。</p>
-<p>（如果彻底理解了 AC 自动机的结构，这几种贡献方式自己推推就能推出来）</p>
-<h2 id="例题-1"><a href="#例题-1" class="headerlink" title="例题"></a>例题</h2><p><strong>P5599</strong></p>
-<p>强制在线构建 AC 自动机。</p>
-<p>因为这个信息可以差分，给插入的和删除的各自维护一个 AC 自动机即可。</p>
-<p>无论构建方法一/二都需要 bfs，所以并不能支持在线插入字符串。</p>
-<p>对于这种只能离线构建的数据结构，当其需要支持在线插入时，实用的工具是二进制分组。</p>
-<p>具体地，假设现在有 $n$ 个字符串，$n$ 的二进制拆分是 $2^a+2^b+2^c+\cdots$，那么给前 $2^a$ 个字符串单独建一个 AC 自动机，再给之后 $2^b$ 个字符串单独建一个 AC 自动机……插入一个字符串时，先给它单独建一个 AC 自动机，然后看如果同时存在两个大小为 $1$ 的 AC 自动机，就暴力重构为一个大小为 $2$ 的 AC 自动机，然后检查是否同时存在两个大小为 $2$ 的 AC 自动机，再检查 $4,8,\cdots$．考虑一个字符串至多会被重构 $\log$ 次，所以总复杂度就是 $\mathcal{O}(m\log m\Sigma)$，其中 $m=\sum |s_i|$．如果使用构建方法 1 复杂度可以去掉那个 $\Sigma$．</p>
-<p><strong>P2292</strong></p>
-<p>作一个 dp，$f_i$ 表示 $t[:i]$ 能匹配到哪里。</p>
-<p>考虑这个怎么转移，就是 $t[:i]$ 如果有一个后缀 $s$ 是字典中的单词，那么 $f_i\gets f_{i-|s|}$，注意到不同的 $|s|$ 只有 $20$ 个，所以尝试预处理出每个 $t$ 的前缀中合法的 $|s|$ 有哪些。</p>
-<p>首先由于 $|s|$ 只有 $20$ 个，所以可以拿一个 <code>int</code> 来压位，然后考虑对字典建 AC 自动机，那么 $t[:i]$ 的合法后缀就是它在 AC 自动机上匹配的时候在 fail 树上的祖先中的终止节点。这样就能很好预处理出了。</p>
-<p>然后考虑 $f$ 的转移，它也能压位优化转移，也就是转移的时候记录 $f_i$ 它前面 $20$ 个 $f$ 的状态，转移的时候按位与一下。</p>
-<p><strong>P2336</strong></p>
-<p>题意有点绕啊。</p>
-<p>大概是首先姓和名之间插入一个 <code>#</code> 这样相当于每次是一个 $y$ 在 $x$ 里面出现过，那么 $x$ 这只猫就要喊到。</p>
-<p>第二问，对每个姓名串 $x$，查询点名串中有多少子串 $y$．子串怎么描述？是不是 $x$ 的所有前缀的后缀。对点名串作 AC 自动机，在 AC 自动机上就是 $x$ 走转移边走到的所有节点在 fail 树上的根链的并，查询这里面终止节点的个数。</p>
-<p>第一问，对每个点名串 $y$，查询它是多少个姓名串 $x$ 的子串。考虑刚刚那个第二问，相当于这个节点被多少 $x$ 的所有走到的节点在 fail 树上的根链的并所覆盖。</p>
-<p>那么问题就是在 fail 树上的根链并修改、单点查询。以及 fail 树上的单点修改，根链并查询。</p>
-<p>根链的并实际上就是它们的虚树，先加上（or 修改）所有的根链长度，按照 dfn 排序后减去两两相邻 lca 的根链即可（最后一个也和第一个相邻）。</p>
-<p>会这个题的话大概就能彻底理解 AC 自动机结构了吧（雾）</p>
-<p><strong>CF547E</strong></p>
-<p>考虑对这个 $s_k$ 在 $s_{l..r}$ 中出现，转化成以 $s_k$ 为后缀的串，其在 $s_{l..r}$ 中有多少次作为前缀出现。</p>
-<p>那么把询问差分成一个 $s_{1..r}$，然后作扫描线，每次扫入一个 $s_r$ 的时候把它在 Trie 上的祖先都 $+1$，询问 $s_k$ 就询问 $s_k$ 在 fail 树上的子树和。也就是在 fail 树上单点 $+1$，子树求和，时间复杂度是 $\mathcal{O}(n\log n)$．</p>
-<p><strong>CF587F</strong></p>
-<p>先差分一下，求 $s_{1…r}$ 在 $s_k$ 中出现次数。</p>
-<p>考虑答案是这样贡献的：对于 $s_{1..r}$ 每个字符串给它的终止节点 fail 树子树加，然后查询 $s_k$ 走到的所有点的权值和。</p>
-<p>polylog 想不到，那就试试根号。既然尝试根号，就考虑按 $s_k$ 串长根号分治。记根号分治的界限是 $B$，默认 $n,m,q$ 同阶统一为 $n$．</p>
-<p>$|s_k|\geq B$，只有 $\mathcal{O}(\frac{n}{B})$  个 $s_k$，对于每个 $s_k$，预处理出每个节点在 fail 树子树中有多少个 $s_k$ 走过的点，每个串的贡献就是固定的一个值了，一共 $\mathcal{O}(n\frac{n}{B})$ 次单点修改，$\mathcal{O}(n)$ 次前缀查询，但是是修改完再查询，用个前缀和解决即可。</p>
-<p>$|s_k|&lt;B$，扫描线扫 $r$，每扫进一个 $r$ 在其终止节点 fail 树子树加，遇到一次询问暴力将经过的每个点的答案单点询问得到。一共 $\mathcal{O}(n)$ 次区间修改，$\mathcal{O}(nB)$ 次单点查询。</p>
-<p>令 $B=\sqrt n$，$|s_k|&lt;B$ 的部分用一个 $\mathcal{O}(\sqrt n)$ 区间修改，$\mathcal{O}(1)$ 单点查询的分块，即可做到总时间复杂度 $\mathcal{O}(n\sqrt n)$．</p>
-<p><strong>P3735</strong></p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/sslz_fsy/article/details/104351203">想不出来怎么讲得比这个题解好</a></p>
-<h1 id="扩展-KMP"><a href="#扩展-KMP" class="headerlink" title="扩展 KMP"></a>扩展 KMP</h1><p><del>有用吗？</del></p>
-<h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><p>定义：字符串 $s$ 的 Z 函数定义为 $z_i=LCP(s[i:],s)$，也就是从 $i$ 开始的后缀与整个串的 LCP 长度。特别地，$z_1=0$（1-index）．</p>
-<p>Z 函数的求解方式和 Manacher 十分类似。</p>
-<p>对于 $i$，称 $[i,i+z_i-1]$ 为其匹配段，也称 Z-box．从小到大求解 $z_i$，并维护之前已经求得的右端点最大的 Z-box $[l,r]$．</p>
-<ul>
-<li>$i&gt;r$，直接暴力向后匹配求 $z_i$；</li>
-<li>$i\leq r$，将图画出来，根据 $z$ 的定义，即得 $z_i\geq \min(z_{i-l+1},r-i+1)$，先令 $z_i\gets \min(z_{i-l+1},r-i+1)$ 然后向后暴力匹配。</li>
-</ul>
-<p>注意在第二种情况下，如果 $z_{i-l+1}&lt;r-i+1$，那么一定不会向后暴力匹配成功，否则与 $z_{i-l+1}$ 是 LCP 产生矛盾（画图理解）。</p>
-<p>那么每次暴力匹配成功 $r$ 都会 $+1$，而 $r\leq n$，所以总的时间复杂度是均摊 $\mathcal{O}(n)$ 的。</p>
-<p>对于两个字符串 $s,t$ 求 $s$ 的每一个后缀与 $t$ 的 LCP 长度也是同理，具体实现参考下面模板题的代码。其实也可以将 $t$ 和 $s$ 拼接起来，中间塞一个不与字符集中其他任意字符相同的特殊字符，正常求 Z，也是可以求出答案的。事实上，这两种做法本质相同。</p>
-<h2 id="例题-2"><a href="#例题-2" class="headerlink" title="例题"></a>例题</h2><p><strong>P5410</strong></p>
-<p>模板题，求 $t$ 的 Z，以及 $t$ 与 $s$ 的每一个后缀的 LCP．</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">scanf</span>(<span class="string">&quot;%s&quot;</span>,s+<span class="number">1</span>);</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">&quot;%s&quot;</span>,t+<span class="number">1</span>);</span><br><span class="line">n=<span class="built_in">strlen</span>(s+<span class="number">1</span>);</span><br><span class="line">m=<span class="built_in">strlen</span>(t+<span class="number">1</span>);</span><br><span class="line"><span class="keyword">int</span> l=<span class="number">0</span>,r=<span class="number">0</span>;</span><br><span class="line">ll v=m+<span class="number">1</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">2</span>;i&lt;=m;i++)&#123;</span><br><span class="line">	<span class="keyword">if</span>(i&lt;=r)z[i]=<span class="built_in">min</span>(r-i+<span class="number">1</span>,z[i-l+<span class="number">1</span>]);</span><br><span class="line">	<span class="keyword">while</span>(i+z[i]&lt;=m&amp;&amp;t[i+z[i]]==t[z[i]+<span class="number">1</span>])++z[i];</span><br><span class="line">	<span class="keyword">if</span>(i+z[i]<span class="number">-1</span>&gt;r)r=i+z[i]<span class="number">-1</span>,l=i;</span><br><span class="line">	v^=<span class="number">1ll</span>*i*(z[i]+<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line">cout &lt;&lt; v &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">v=<span class="number">0</span>;</span><br><span class="line">l=r=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">	<span class="keyword">if</span>(i&lt;=r)p[i]=<span class="built_in">min</span>(r-i+<span class="number">1</span>,z[i-l+<span class="number">1</span>]);<span class="comment">//注意这里是 z[i-l+1]</span></span><br><span class="line">	<span class="keyword">while</span>(i+p[i]&lt;=n&amp;&amp;p[i]+<span class="number">1</span>&lt;=m&amp;&amp;s[i+p[i]]==t[p[i]+<span class="number">1</span>])++p[i];</span><br><span class="line">	<span class="keyword">if</span>(i+p[i]<span class="number">-1</span>&gt;r)r=i+p[i]<span class="number">-1</span>,l=i;</span><br><span class="line">	v^=<span class="number">1ll</span>*i*(p[i]+<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line">cout &lt;&lt; v &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br></pre></td></tr></table></figure>
-<p><strong>CF1313E</strong></p>
-<p>考虑这个 $l_1$ 一定是 $s$ 的开头，$r_2$ 一定是 $t$ 的结尾，那么就考虑假如固定了 $l_1,r_2$ 之后怎么计算对答案的贡献。</p>
-<p>一个河狸的想法是，固定 $l_1$ 之后可以通过 exkmp 求出 $LCP(a[l_1:],s)$，就知道 $r_1$ 能落在 $l_1$ 的 Z-box 里。同理也知道 $l_2$ 能落在 $r_2$ 的 Z-box 里。</p>
-<p>假设 $LCP(a[l_1:],s)=p,LCS(b[:r_2],s)=q$，$a$ 选了 $x$ 个，那么 $b$ 选 $m-x$ 个，则 $[l_1,r_1]=[l_1,l_1+x-1],[l_2,r_2]=[r_2-(m-x)+1,r_2]$．</p>
-<p>它俩有交当且仅当 $r_1\geq l_2$ 且 $r_2\geq l_1$，化简后可得 $l_1\leq r_2\leq l_1+m-2$，这是第一维限制。</p>
-<p>然后再考虑满足条件的 $x$ 数量，$1\leq x\leq p,1\leq m-x\leq q$，也就是 $\max(1,m-q)\leq x\leq \min(p,m-1)$．</p>
-<p>然后所有的 $p,q$ 都和 $m-1$ 取个 $\min$，这样符合条件的 $x$ 的数量就是 $p-(m-q)+1$，而且要满足 $p\geq m-q$，这是第二维限制。</p>
-<p>于是变成一个二维数点问题。</p>
+          <p>字符串 I．</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/02/26/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%AD%97%E7%AC%A6%E4%B8%B2%20I/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
 
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://do-while-true.github.io/2023/02/26/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%AD%97%E7%AC%A6%E4%B8%B2%20II/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head.gif">
+      <meta itemprop="name" content="do-while-true">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="do_while_true's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/02/26/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%AD%97%E7%AC%A6%E4%B8%B2%20II/" class="post-title-link" itemprop="url">「学习笔记」字符串 II</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-02-26 00:00:00" itemprop="dateCreated datePublished" datetime="2023-02-26T00:00:00+08:00">2023-02-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-03-03 19:41:18" itemprop="dateModified" datetime="2023-03-03T19:41:18+08:00">2023-03-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>字符串 II．</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/02/26/%E3%80%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%8D%E5%AD%97%E7%AC%A6%E4%B8%B2%20II/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
