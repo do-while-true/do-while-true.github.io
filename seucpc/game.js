@@ -1210,9 +1210,12 @@ function initGame(difficulty, province_choice, student_count){
     game.students.push(newStud);
     log(`对点招生：${recruited.name} 加入队伍`);
   }
-  
+  const usedNames = new Set();
   for(let i=0;i<student_count;i++){
     let name = generateName();
+    while (usedNames.has(name))
+      name = generateName();
+    usedNames.add(name);
     let mean = (min_val + max_val) / 2;
     let stddev = (max_val - min_val);
     let thinking = clamp(normal(mean, stddev), 0, 100);
