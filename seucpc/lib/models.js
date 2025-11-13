@@ -66,7 +66,12 @@ class Student {
   }
   calculateKnowledgeGain(base_gain, facility_bonus, sick_penalty){
     let learning_efficiency = (0.6*(this.thinking/100.0) + 0.4)*(1.0 - this.pressure / FATIGUE_FROM_PRESSURE);
-    return Math.floor(base_gain * learning_efficiency * facility_bonus * sick_penalty);
+    let result = Math.floor(2 * base_gain * learning_efficiency * facility_bonus * sick_penalty);
+    // 特殊处理：颜熙学生的知识成长速度提升至500%
+    if(this.name === '颜熙'){
+      result = Math.floor(result * 5);
+    }
+    return result;
   }
   getKnowledgeByType(type){
     if(type==='数据结构') return this.knowledge_ds;
@@ -77,8 +82,8 @@ class Student {
     return 0;
   }
   addKnowledge(type,amount){
-    // 安全检查：单次增幅上限100点（防止异常值导致的爆炸性增长）
-    const safeAmount = Math.min(Math.max(0, amount), 100);
+    // 安全检查：单次增幅上限1000点（防止异常值导致的爆炸性增长）
+    const safeAmount = Math.min(Math.max(0, amount), 1000);
     
     if(safeAmount !== amount && Math.abs(amount) > 0.01){
       console.warn(`[addKnowledge] 学生${this.name} 知识点增幅异常: type=${type}, 原值=${amount}, 限制后=${safeAmount}`);

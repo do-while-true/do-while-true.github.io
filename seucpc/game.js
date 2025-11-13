@@ -1163,7 +1163,16 @@ function startFromStartPage(){
 function initGame(difficulty, province_choice, student_count){
   game = new GameState();
   window.game = game;
-  game.difficulty = clampInt(difficulty,1,3);
+  game.difficulty = clampInt(difficulty,1,4);
+  
+  // 简单养猪模式（难度4）实际上是简单模式（难度1）的变体
+  let actualDifficulty = game.difficulty;
+  let isEasyPiggyMode = (game.difficulty === 4);
+  if(isEasyPiggyMode){
+    actualDifficulty = 1;
+  }
+  game.difficulty = actualDifficulty;
+  
   let prov = PROVINCES[province_choice] || PROVINCES[1];
   game.province_id = province_choice;
   game.province_name = prov.name; game.province_type = prov.type; game.is_north = prov.isNorth; game.budget = prov.baseBudget; game.base_comfort = prov.isNorth?BASE_COMFORT_NORTH:BASE_COMFORT_SOUTH;
@@ -1211,17 +1220,44 @@ function initGame(difficulty, province_choice, student_count){
     log(`对点招生：${recruited.name} 加入队伍`);
   }
   const usedNames = new Set();
+
   for(let i=0;i<student_count;i++){
-    let name = generateName();
-    while (usedNames.has(name))
+    let name;
+    // 简单养猪模式：第一个学生必须是"颜熙"
+    if(isEasyPiggyMode && i === 0){
+      name = '颜熙';
+    } else {
       name = generateName();
+      while (usedNames.has(name))
+        name = generateName();
+    }
+    name = name;
     usedNames.add(name);
     let mean = (min_val + max_val) / 2;
     let stddev = (max_val - min_val);
     let thinking = clamp(normal(mean, stddev), 0, 100);
     let coding = clamp(normal(mean, stddev), 0, 100);
     let mental = clamp(normal(mean, stddev), 0, 100);
+    
+    // 特殊处理："颜熙"学生初始天赋更优秀
+    if(name === '颜熙'){
+      thinking = clamp(thinking * 3 + 10, 0, 100);
+      coding = clamp(coding * 3 + 10, 0, 100);
+      mental = clamp(mental * 3 + 8, 0, 100);
+      log(`✨ 天才学生颜熙入选，初始能力提升！`);
+    }
+    
     const newStud = new Student(name, thinking, coding, mental);
+    
+    // 特殊处理："颜熙"的初始知识点更高
+    if(name === '颜熙'){
+      newStud.knowledge_ds = KNOWLEDGE_ABLILTY_START * 5;
+      newStud.knowledge_graph = KNOWLEDGE_ABLILTY_START * 5;
+      newStud.knowledge_string = KNOWLEDGE_ABLILTY_START * 5;
+      newStud.knowledge_math = KNOWLEDGE_ABLILTY_START * 5;
+      newStud.knowledge_dp = KNOWLEDGE_ABLILTY_START * 5;
+    }
+    
     try{ if(window.TalentManager && typeof window.TalentManager.assignInitialTalent === 'function') window.TalentManager.assignInitialTalent(newStud); }catch(e){}
     game.students.push(newStud);
   }
@@ -1258,7 +1294,7 @@ window.onload = ()=>{
   if(document.getElementById('action-train')){
     const qs = (function(){ try{ return new URLSearchParams(window.location.search); }catch(e){ return null; } })();
     if(qs && qs.get('new') === '1'){
-      const diff = clampInt(parseInt(qs.get('d')||2),1,3);
+      const diff = clampInt(parseInt(qs.get('d')||2),1,4);
       const prov = clampInt(parseInt(qs.get('p')||1),1,Object.keys(PROVINCES).length);
       const count = clampInt(parseInt(qs.get('c')||5),3,10);
       

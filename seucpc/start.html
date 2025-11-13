@@ -108,6 +108,7 @@
       <option value="1">简单 - 适合初次体验的人</option>
       <option value="2" selected>普通 - 标准游戏体验</option>
       <option value="3">困难 - 适合寻求挑战的人</option>
+      <option value="4">简单养猪模式 - 保证颜熙出场</option>
     </select>
     <div id="start-diff-grid" class="diff-grid" style="display:flex;gap:10px;margin-top:8px"></div>
     <div id="diff-note" class="small muted" style="margin-top:6px"></div>
@@ -218,7 +219,8 @@
       const defs = [
         {v:1,label:'简单',desc:'适合初次体验的人'},
         {v:2,label:'普通',desc:'标准游戏体验'},
-        {v:3,label:'专家',desc:'适合寻求挑战的人'}
+        {v:3,label:'专家',desc:'适合寻求挑战的人'},
+        {v:4,label:'简单养猪模式',desc:'简单模式 + 必定出现颜熙'}
       ];
       const grid = document.getElementById('start-diff-grid');
       const hidden = document.getElementById('start-diff');
